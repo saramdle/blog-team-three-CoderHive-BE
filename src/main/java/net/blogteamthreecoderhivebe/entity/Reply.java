@@ -12,7 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Reply extends AuditingFields{
+public class Reply extends AuditingFields {
     @Id
     @Column(name = "reply_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,8 +33,4 @@ public class Reply extends AuditingFields{
     @Setter
     @Column(updatable = false)
     private Long parentReplyId; //부모 댓글 ID ArticleComment parentComment 이런식으로 하면 양방향이 가능, 여기서는 단방향으로 설정
-
-
-
-
 }
