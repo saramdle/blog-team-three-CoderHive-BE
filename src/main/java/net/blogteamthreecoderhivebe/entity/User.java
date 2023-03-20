@@ -14,7 +14,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class User extends AuditingFields{
+public class User extends AuditingFields {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +23,6 @@ public class User extends AuditingFields{
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "job_id")
     private Job job;
-
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "technology_id")
-    private Technology technology;
 
     @Column(nullable = false, unique = true)
     private String email;

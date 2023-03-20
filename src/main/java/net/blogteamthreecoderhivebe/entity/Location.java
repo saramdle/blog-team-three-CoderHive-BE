@@ -11,6 +11,7 @@ import lombok.*;
 @Entity
 public class Location {
     @Id
+    @Column(name = "location_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
