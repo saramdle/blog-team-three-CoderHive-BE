@@ -6,10 +6,8 @@ import lombok.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Builder
-@ToString(callSuper = true, exclude = {"user", "post", "childReplys"})
+@ToString(callSuper = true, exclude = {"member", "post", "childReplys"})
 @Getter
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Reply extends AuditingFields {
@@ -19,8 +17,8 @@ public class Reply extends AuditingFields {
     private Long id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
@@ -33,4 +31,12 @@ public class Reply extends AuditingFields {
     @Setter
     @Column(updatable = false)
     private Long parentReplyId; //부모 댓글 ID ArticleComment parentComment 이런식으로 하면 양방향이 가능, 여기서는 단방향으로 설정
+
+    @Builder
+    public Reply(Long id, Member member, Post post, Long parentReplyId) {
+        this.id = id;
+        this.member = member;
+        this.post = post;
+        this.parentReplyId = parentReplyId;
+    }
 }

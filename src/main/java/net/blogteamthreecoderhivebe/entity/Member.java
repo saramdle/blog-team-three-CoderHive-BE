@@ -2,21 +2,21 @@ package net.blogteamthreecoderhivebe.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import net.blogteamthreecoderhivebe.entity.constant.UserCareer;
-import net.blogteamthreecoderhivebe.entity.constant.UserLevel;
-import net.blogteamthreecoderhivebe.entity.constant.UserRole;
+import net.blogteamthreecoderhivebe.entity.constant.MemberCareer;
+import net.blogteamthreecoderhivebe.entity.constant.MemberLevel;
+import net.blogteamthreecoderhivebe.entity.constant.MemberRole;
 
 import java.util.Objects;
 
 @Builder
-@ToString(exclude = {"job", "technology"})
+@ToString(exclude = "job")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class User extends AuditingFields {
+public class Member extends AuditingFields {
     @Id
-    @Column(name = "user_id")
+    @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -28,23 +28,30 @@ public class User extends AuditingFields {
     private String email;
 
     @Enumerated(EnumType.STRING)
-    private UserLevel level;
+    private MemberLevel level;
 
     @Enumerated(EnumType.STRING)
-    private UserCareer career;
+    private MemberCareer career;
 
     @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+    private MemberRole memberRole;
 
     private String nickname;
     private String profileImageUrl;
 
     private String introduction;
 
+    public static Member of (Job job, String email, MemberLevel level,
+                MemberCareer career, String nickname) {
+        return new Member(null, job, email, level, career, MemberRole.USER, nickname, null, null);
+    }
+
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User that)) return false;
+        if (!(o instanceof Member that)) return false;
         return this.getId().equals(that.getId());
     }
 

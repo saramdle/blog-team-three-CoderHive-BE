@@ -5,20 +5,20 @@ import lombok.*;
 import net.blogteamthreecoderhivebe.entity.constant.ApplyResult;
 
 @Builder
-@ToString(exclude = {"user", "postJob"})
+@ToString(exclude = {"member", "postJob"})
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class UserApply {
+public class MemberApply {
     @Id
-    @Column(name = "user_apply_id")
+    @Column(name = "member_apply_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_job_id")

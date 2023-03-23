@@ -2,14 +2,13 @@ package net.blogteamthreecoderhivebe.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import net.blogteamthreecoderhivebe.entity.constant.Platform;
 import net.blogteamthreecoderhivebe.entity.constant.PostCategory;
 import net.blogteamthreecoderhivebe.entity.constant.PostStatus;
 
 import java.util.Objects;
 
 @Builder
-@ToString(callSuper = true, exclude = {"user", "location"})
+@ToString(callSuper = true, exclude = {"member", "location"})
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -21,8 +20,8 @@ public class Post extends AuditingFields {
     private Long id;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(updatable = false, name = "user_id")
-    private User user;
+    @JoinColumn(updatable = false, name = "member_id")
+    private Member member;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")

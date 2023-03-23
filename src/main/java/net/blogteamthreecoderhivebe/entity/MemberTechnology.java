@@ -4,20 +4,20 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Builder
-@ToString(exclude = {"user", "technology"})
+@ToString(exclude = {"member", "technology"})
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class UserTechnology {
+public class MemberTechnology {
     @Id
-    @Column(name = "user_technology")
+    @Column(name = "member_technology")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "technology_id")
