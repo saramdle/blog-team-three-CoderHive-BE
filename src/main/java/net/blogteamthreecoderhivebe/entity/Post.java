@@ -35,12 +35,15 @@ public class Post extends AuditingFields {
     @Enumerated(EnumType.STRING)
     private PostCategory postCategory;
 
-    @Enumerated(EnumType.STRING)
-    private Platform platform;
+    // use only Enum (constant) > platform
+    private String platforms;
 
     @Enumerated(EnumType.STRING)
     private PostStatus poststatus;
 
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_id")
+    private Job job;
 
     @Override
     public boolean equals(Object o) {
