@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Builder
-@ToString(exclude = {"user", "post"})
+@ToString(exclude = {"member", "post"})
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -17,7 +17,7 @@ public class LikePost {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")

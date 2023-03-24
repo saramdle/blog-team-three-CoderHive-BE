@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Job {
+public class Job extends AuditingFields {
     @Id
     @Column(name = "job_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,5 +17,10 @@ public class Job {
 
     private String main;
     private String detail;
+
+
+    public static Job of(String main, String detail) {
+        return new Job(null, main, detail);
+    }
 
 }
