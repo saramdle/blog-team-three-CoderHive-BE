@@ -1,20 +1,30 @@
 package net.blogteamthreecoderhivebe.repository;
 
-import net.blogteamthreecoderhivebe.entity.SkillRequirement;
-import net.blogteamthreecoderhivebe.entity.Technology;
-import net.blogteamthreecoderhivebe.entity.UserTechnology;
+import jakarta.persistence.EntityManager;
+import net.blogteamthreecoderhivebe.config.TestJpaConfig;
+import net.blogteamthreecoderhivebe.entity.Job;
+import net.blogteamthreecoderhivebe.entity.Member;
+import net.blogteamthreecoderhivebe.entity.constant.MemberCareer;
+import net.blogteamthreecoderhivebe.entity.constant.MemberLevel;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 
+
+@DisplayName("JPA 연결 테스트")
 @DataJpaTest
+@Import(TestJpaConfig.class)
 public class CoderHiveRepositoryTest {
 
     @Autowired
-    private UserRepository userRepository;
+    private MemberRepository memberRepository;
     @Autowired
     private PostRepository postRepository;
 
@@ -40,15 +50,18 @@ public class CoderHiveRepositoryTest {
     private TechnologyRepository technologyRepository;
 
     @Autowired
-    private UserApplyRepository userApplyRepository;
+    private MemberApplyRepository memberApplyRepository;
 
     @Autowired
-    private UserTechnologyRepository userTechnologyRepository;
+    private MemberTechnologyRepository memberTechnologyRepository;
 
+    @Autowired
+    private EntityManager em;
 
+    @DisplayName("isNotNull 테스트")
     @Test
     public void isNotNullRepository() {
-        assertThat(userRepository).isNotNull();
+        assertThat(memberRepository).isNotNull();
         assertThat(postRepository).isNotNull();
         assertThat(replyRepository).isNotNull();
         assertThat(jobRepository).isNotNull();
@@ -57,8 +70,56 @@ public class CoderHiveRepositoryTest {
         assertThat(postJobRepository).isNotNull();
         assertThat(skillRequirementRepository).isNotNull();
         assertThat(technologyRepository).isNotNull();
-        assertThat(userApplyRepository).isNotNull();
-        assertThat(userTechnologyRepository).isNotNull();
+        assertThat(memberApplyRepository).isNotNull();
+        assertThat(memberTechnologyRepository).isNotNull();
+    }
+
+    @DisplayName("job 테스트")
+    @Test
+    public void testDataInsertingWorkFine() throws Exception {
+        // Job
+        final Job job = Job.builder()
+                .main("백엔드 개발")
+                .detail("웹 서버")
+                .build();
+
+
+    }
+
+    @DisplayName("Member - 유저정보 조회 - Id")
+    @Test
+    public void getMemberById() {
+        Job job = Job.of("백엔드 개발", "웹 서버");
+        System.out.println("wait");
+        jobRepository.save(job);
+        //long id = 0;
+        String nickname = "한샘";
+//        Member member = Member.of(job, "example@coderhive.com", MemberLevel.BEGINNER, MemberCareer.ASSOCIATE, nickname);
+
+        Job savedJob = jobRepository.findById((long)1).get();
+
+        Member member = Member.builder()
+                        .job(savedJob)
+                        .email("example@coderhive.com")
+                        .level(MemberLevel.BEGINNER)
+                        .career(MemberCareer.ASSOCIATE)
+                        .nickname(nickname)
+                        .build();
+
+
+
+        memberRepository.save(member);
+        System.out.println("wait");
+        Optional<Member> savedMember = memberRepository.findByNickname(nickname);
+
+        assertThat(member.equals(savedMember));
+
+    }
+
+    @DisplayName("Member - 유저/직무/기술 정보 조회 - Id")
+    @Test
+    public void getMemberByIdWithTechnologyAndApply() {
+
     }
 
 
