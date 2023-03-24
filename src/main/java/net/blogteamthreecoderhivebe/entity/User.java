@@ -39,6 +39,8 @@ public class User extends AuditingFields {
     private String nickname;
     private String profileImageUrl;
 
+    private String introduction;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
