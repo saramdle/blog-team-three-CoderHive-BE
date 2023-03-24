@@ -1,7 +1,8 @@
 package net.blogteamthreecoderhivebe.repository;
 
-import jakarta.persistence.EntityManager;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import net.blogteamthreecoderhivebe.config.TestJpaConfig;
+import net.blogteamthreecoderhivebe.config.TestQueryDslConfig;
 import net.blogteamthreecoderhivebe.entity.Job;
 import net.blogteamthreecoderhivebe.entity.Member;
 import net.blogteamthreecoderhivebe.entity.constant.MemberCareer;
@@ -14,13 +15,14 @@ import org.springframework.context.annotation.Import;
 
 import java.util.Optional;
 
+import static net.blogteamthreecoderhivebe.entity.QMember.member;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
 
 @DisplayName("JPA 연결 테스트")
 @DataJpaTest
-@Import(TestJpaConfig.class)
+@Import({TestJpaConfig.class, TestQueryDslConfig.class})
 public class CoderHiveRepositoryTest {
 
     @Autowired
@@ -55,8 +57,15 @@ public class CoderHiveRepositoryTest {
     @Autowired
     private MemberTechnologyRepository memberTechnologyRepository;
 
+
+
+    private final JPAQueryFactory queryFactory;
+
     @Autowired
-    private EntityManager em;
+    public CoderHiveRepositoryTest(JPAQueryFactory queryFactory) {
+        this.queryFactory = queryFactory;
+    }
+
 
     @DisplayName("isNotNull 테스트")
     @Test
@@ -116,9 +125,43 @@ public class CoderHiveRepositoryTest {
 
     }
 
+    @DisplayName("QueryFactory 테스트")
+    @Test
+    public void QueryFactoryTest() {
+        Job job = Job.of("백엔드 개발", "웹 서버");
+        System.out.println("wait");
+        jobRepository.save(job);
+        //long id = 0;
+        String nickname = "한샘";
+//        Member member = Member.of(job, "example@coderhive.com", MemberLevel.BEGINNER, MemberCareer.ASSOCIATE, nickname);
+
+        Job savedJob = jobRepository.findById((long)1).get();
+
+        Member mem = Member.builder()
+                .job(savedJob)
+                .email("example@coderhive.com")
+                .level(MemberLevel.BEGINNER)
+                .career(MemberCareer.ASSOCIATE)
+                .nickname(nickname)
+                .build();
+
+        memberRepository.save(mem);
+
+        Member fetch = queryFactory.selectFrom(member)
+                .fetchOne();
+
+        assertThat(member.equals(mem));
+    }
+
     @DisplayName("Member - 유저/직무/기술 정보 조회 - Id")
     @Test
     public void getMemberByIdWithTechnologyAndApply() {
+
+    }
+
+    @DisplayName("Member - 유저 정보 조회 - ")
+    @Test
+    public void queryDsl_findMemberByNickname() {
 
     }
 
