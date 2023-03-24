@@ -57,15 +57,8 @@ public class CoderHiveRepositoryTest {
     @Autowired
     private MemberTechnologyRepository memberTechnologyRepository;
 
-
-
-    private final JPAQueryFactory queryFactory;
-
     @Autowired
-    public CoderHiveRepositoryTest(JPAQueryFactory queryFactory) {
-        this.queryFactory = queryFactory;
-    }
-
+    private JPAQueryFactory queryFactory;
 
     @DisplayName("isNotNull 테스트")
     @Test
