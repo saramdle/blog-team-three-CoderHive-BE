@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Job extends AuditingFields {
+public class Job{
     @Id
     @Column(name = "job_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

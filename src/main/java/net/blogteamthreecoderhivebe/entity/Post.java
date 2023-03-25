@@ -28,6 +28,8 @@ public class Post extends AuditingFields {
     private Location location;
 
     private String title;
+
+    @Column(length=1000)
     private String content;
     private String thumbImageUrl;
 
@@ -38,7 +40,7 @@ public class Post extends AuditingFields {
     private String platforms;
 
     @Enumerated(EnumType.STRING)
-    private PostStatus poststatus;
+    private PostStatus postStatus;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "job_id")

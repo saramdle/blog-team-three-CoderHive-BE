@@ -39,6 +39,7 @@ public class Member extends AuditingFields {
     private String nickname;
     private String profileImageUrl;
 
+    @Column(length=1000)
     private String introduction;
 
     public static Member of (Job job, String email, MemberLevel level,
