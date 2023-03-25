@@ -24,6 +24,9 @@ public class Reply extends AuditingFields {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    @Column(length=1000)
+    private String content;
+
     @OrderBy("createdAt ASC") // 대댓글은 먼저 생성된 것부터 순차적으로 정렬
     @OneToMany(mappedBy = "parentReplyId", cascade = CascadeType.ALL) //부모가 지워지면 자식이 전부 지워지게
     private Set<Reply> childReplys = new LinkedHashSet<>(); //jpa 에서는 final 을 추천하지 않는다.

@@ -11,7 +11,7 @@ import lombok.*;
 @Entity
 public class MemberTechnology {
     @Id
-    @Column(name = "member_technology")
+    @Column(name = "member_technology_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
