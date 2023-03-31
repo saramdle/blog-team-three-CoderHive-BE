@@ -56,7 +56,7 @@ public class MemberService {
                 })
                 .toList();
 
-        List<PostDto> participatedDtos = applyPostsMap.get(ApplyResult.NON).stream()
+        List<PostDto> participatedDtos = applyPostsMap.get(ApplyResult.PASS).stream()
                 .map(p -> {
                     List<String> postSkills = skillRequirementRepository.searchTechnology(p.getId());
                     return PostDto.from(p, postSkills);

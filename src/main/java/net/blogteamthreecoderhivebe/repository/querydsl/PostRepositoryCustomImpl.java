@@ -1,7 +1,6 @@
 package net.blogteamthreecoderhivebe.repository.querydsl;
 
 import com.querydsl.core.Tuple;
-import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.entity.Post;
@@ -27,24 +26,20 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
                 .from(memberApply)
                 .join(memberApply.postJob, postJob)
                 .join(postJob.post, post)
-                .where(memberApply.postJob.post.id.in(
-                        JPAExpressions
-                                .select(memberApply.member.id)
-                                .from(memberApply)
-                                .where(
-                                        memberApply.applyResult.ne(ApplyResult.FAIL),
-                                        memberApply.member.id.eq(memberId)
-                                )
-                ))
+                .where(
+                        memberApply.member.id.eq(memberId)
+                )
                 .fetch();
+
         Map<ApplyResult, List<Post>> posts = new HashMap<>();
+
         List<Post> passPost = new ArrayList<>();
         List<Post> nonPost = new ArrayList<>();
         for (Tuple tuple : result) {
+            System.out.println(tuple.get(memberApply.applyResult));
             if (tuple.get(memberApply.applyResult) == ApplyResult.NON) {
                 nonPost.add(tuple.get(post));
-            }
-            else {
+            } else if (tuple.get(memberApply.applyResult) == ApplyResult.PASS) {
                 passPost.add(tuple.get(post));
             }
         }
