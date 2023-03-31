@@ -42,7 +42,7 @@ insert into location (region) values ('전라도');
 insert into location (region) values ('경상도');
 insert into location (region) values ('제주도');
 
---기술 목록
+-- 기술 목록
 insert into technology (detail) values ('Agit');
 insert into technology (detail) values ('Airflow');
 insert into technology (detail) values ('Alamofire');
@@ -292,7 +292,7 @@ insert into technology (detail) values ('Zeppelin');
 insert into technology (detail) values ('Zipkin');
 insert into technology (detail) values ('Zustand');
 
---member
+-- member
 insert into member (job_id, email, nickname, profile_image_url, level, career, member_role, introduction, created_at, created_by, modified_at, modified_by) values (1, 'twennam0@mapquest.com', 'cmcwhirter0', 'http://dummyimage.com/154x100.png/5fa2dd/ffffff', 'NEWBIE', 'NON', 'USER', 'Integer ac neque. Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus. In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti. In eleifend quam a odio.', '2023-01-19 12:02:39', 'bpetrillo0', '2022-07-04 00:20:55', 'iflisher0');
 insert into member (job_id, email, nickname, profile_image_url, level, career, member_role, introduction, created_at, created_by, modified_at, modified_by) values (3, 'cfenix1@adobe.com', 'ukennaird1', 'http://dummyimage.com/107x100.png/5fa2dd/ffffff', 'NEWBIE', 'NON', 'USER', 'Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus. In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus. Suspendisse potenti.', '2023-02-13 16:48:15', 'jcoupman1', '2022-09-01 09:31:45', 'dbraunstein1');
 insert into member (job_id, email, nickname, profile_image_url, level, career, member_role, introduction, created_at, created_by, modified_at, modified_by) values (8, 'hbraiden2@epa.gov', 'sworsnap2', 'http://dummyimage.com/141x100.png/dddddd/000000', 'NEWBIE', 'NON', 'USER', 'Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem. Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio. Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo. In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Proin interdum mauris non ligula pellentesque ultrices.', '2022-06-21 19:40:14', 'trowena2', '2022-03-31 04:07:00', 'jvernall2');
