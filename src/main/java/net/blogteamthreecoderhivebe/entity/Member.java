@@ -6,10 +6,12 @@ import net.blogteamthreecoderhivebe.entity.constant.MemberCareer;
 import net.blogteamthreecoderhivebe.entity.constant.MemberLevel;
 import net.blogteamthreecoderhivebe.entity.constant.MemberRole;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Builder
-@ToString(exclude = "job")
+@ToString(callSuper = true, exclude = {"job", "listPosts"})
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -36,18 +38,15 @@ public class Member extends AuditingFields {
     @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
 
+    @Builder.Default
+    @OneToMany(mappedBy = "member")
+    private List<LikePost> listPosts = new ArrayList<>();
+
     private String nickname;
     private String profileImageUrl;
 
     @Column(length=1000)
     private String introduction;
-
-    public static Member of (Job job, String email, MemberLevel level,
-                MemberCareer career, String nickname) {
-        return new Member(null, job, email, level, career, MemberRole.USER, nickname, null, null);
-    }
-
-
 
     @Override
     public boolean equals(Object o) {

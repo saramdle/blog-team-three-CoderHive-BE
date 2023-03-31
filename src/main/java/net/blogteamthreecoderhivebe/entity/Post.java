@@ -5,6 +5,8 @@ import lombok.*;
 import net.blogteamthreecoderhivebe.entity.constant.PostCategory;
 import net.blogteamthreecoderhivebe.entity.constant.PostStatus;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Builder
@@ -22,6 +24,10 @@ public class Post extends AuditingFields {
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(updatable = false, name = "member_id")
     private Member member;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "post")
+    private List<LikePost> likingMembers = new ArrayList<>();
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
