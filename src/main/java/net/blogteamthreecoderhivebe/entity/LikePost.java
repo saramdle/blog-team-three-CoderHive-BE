@@ -23,5 +23,14 @@ public class LikePost {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    // 연관 관계 편의 메소드
+    public void addPost(Post post) {
+        this.post = post;
+        post.getLikingMembers().add(this);
+    }
 
+    public void addMember(Member member) {
+        this.member = member;
+        member.getListPosts().add(this);
+    }
 }

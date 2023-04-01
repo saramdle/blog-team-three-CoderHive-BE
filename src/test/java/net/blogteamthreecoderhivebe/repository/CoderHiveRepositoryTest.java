@@ -18,8 +18,6 @@ import java.util.Optional;
 import static net.blogteamthreecoderhivebe.entity.QMember.member;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-
 @DisplayName("JPA 연결 테스트")
 @DataJpaTest
 @Import({TestJpaConfig.class, TestQueryDslConfig.class})
