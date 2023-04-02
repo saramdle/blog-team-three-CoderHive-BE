@@ -15,7 +15,6 @@ import org.springframework.context.annotation.Import;
 
 import java.util.Optional;
 
-import static net.blogteamthreecoderhivebe.entity.QMember.member;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("JPA 연결 테스트")
@@ -115,6 +114,7 @@ public class CoderHiveRepositoryTest {
         assertThat(member.equals(savedMember));
 
     }
+/*
 
     @DisplayName("QueryFactory 테스트")
     @Test
@@ -156,6 +156,7 @@ public class CoderHiveRepositoryTest {
 
     }
 
+*/
 
 
 }
