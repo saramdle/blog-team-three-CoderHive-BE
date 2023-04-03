@@ -25,4 +25,10 @@ public class PostJob {
 
     private int number;
 
+    private int passNumber;
+
+    public void addPost(Post post) {
+        this.post = post;
+        post.getPostJobs().add(this);
+    }
 }

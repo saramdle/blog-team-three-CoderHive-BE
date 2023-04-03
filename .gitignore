@@ -37,4 +37,4 @@ out/
 .vscode/
 
 ### Querydsl build file ###
-!**/src/main/generated/
+**/src/main/generated/
