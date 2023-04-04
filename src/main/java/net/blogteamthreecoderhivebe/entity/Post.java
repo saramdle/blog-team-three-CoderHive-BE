@@ -10,10 +10,11 @@ import java.util.List;
 import java.util.Objects;
 
 @Builder
-@ToString(callSuper = true, exclude = {"member", "location"})
+@ToString(callSuper = true, exclude = {"member", "postJobs", "likingMembers", "location", "job"})
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(indexes = @Index(columnList = "modifiedAt DESC"))
 @Entity
 public class Post extends AuditingFields {
     @Id
@@ -29,13 +30,17 @@ public class Post extends AuditingFields {
     @OneToMany(mappedBy = "post")
     private List<LikePost> likingMembers = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "post")
+    private List<PostJob> postJobs = new ArrayList<>();
+
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
 
     private String title;
 
-    @Column(length=1000)
+    @Column(length = 1000)
     private String content;
     private String thumbImageUrl;
 

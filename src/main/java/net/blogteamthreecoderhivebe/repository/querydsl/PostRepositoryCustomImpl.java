@@ -1,16 +1,24 @@
 package net.blogteamthreecoderhivebe.repository.querydsl;
 
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.entity.Post;
 import net.blogteamthreecoderhivebe.entity.constant.ApplyResult;
+import net.blogteamthreecoderhivebe.entity.constant.PostCategory;
+import net.blogteamthreecoderhivebe.entity.constant.PostStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.support.PageableExecutionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static net.blogteamthreecoderhivebe.entity.QLocation.location;
 import static net.blogteamthreecoderhivebe.entity.QMemberApply.memberApply;
 import static net.blogteamthreecoderhivebe.entity.QPost.post;
 import static net.blogteamthreecoderhivebe.entity.QPostJob.postJob;
@@ -47,4 +55,47 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
         posts.put(ApplyResult.PASS, passPost);
         return posts;
     }
+
+    @Override
+    public Page<Post> getAllPost(PostCategory postCategory, List<Long> regions, List<Long> jobs, PostStatus postStatus, Pageable pageable) {
+        List<Post> Posts = queryFactory
+                .select(post)
+                .from(post)
+                .join(post.postJobs, postJob)
+                .join(post.location, location).fetchJoin()
+                .where(
+                        postCategoryEq(postCategory), regionIn(regions), jobsIn(jobs), postStatusEq(postStatus)
+                )
+                .groupBy(post.id)
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .orderBy(post.modifiedAt.desc())
+                .fetch();
+
+        JPAQuery<Long> countQuery = queryFactory
+                .select(post.count())
+                .from(post);
+
+        return PageableExecutionUtils.getPage(Posts, pageable, countQuery::fetchOne);
+    }
+
+    private BooleanExpression postCategoryEq(PostCategory postCategory) {
+        return postCategory != null ? post.postCategory.eq(postCategory): null;
+    }
+
+    private BooleanExpression regionIn(List<Long> regions) {
+        return regions != null ? post.location.id.in(regions): null;
+    }
+
+    private BooleanExpression jobsIn(List<Long> jobs) {
+        return jobs != null ? postJob.job.id.in(jobs): null;
+    }
+
+    private BooleanExpression postStatusEq(PostStatus postStatus) {
+        return postStatus != null ? post.postStatus.eq(postStatus): null;
+    }
+
+
 }
+
+

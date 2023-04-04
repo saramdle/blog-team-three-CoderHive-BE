@@ -5,7 +5,6 @@ import net.blogteamthreecoderhivebe.dto.MemberWithPostDto;
 import net.blogteamthreecoderhivebe.entity.constant.MemberCareer;
 import net.blogteamthreecoderhivebe.entity.constant.MemberLevel;
 import net.blogteamthreecoderhivebe.entity.constant.MemberRole;
-import net.blogteamthreecoderhivebe.entity.constant.PostStatus;
 
 import java.util.List;
 
@@ -23,7 +22,7 @@ public record MemberInfoWithPostResponse(
         List<PostResponse> hostingPost,
         List<PostResponse> participatedPost
 ) {
-    public static MemberInfoWithPostResponse from(MemberWithPostDto dto, List<Long> lidePostIds) {
+    public static MemberInfoWithPostResponse from(MemberWithPostDto dto, List<Long> likePostIds) {
         return MemberInfoWithPostResponse.builder()
                 .id(dto.id())
                 .job(JobResponse.from(dto.jobDto()))
@@ -36,12 +35,12 @@ public record MemberInfoWithPostResponse(
                 .skills(dto.skills())
                 .hostingPost(
                         dto.hostPostDtos().stream()
-                                .map(d -> PostResponse.from(d, lidePostIds))
+                                .map(d -> PostResponse.from(d, likePostIds))
                                 .toList()
                 )
                 .participatedPost(
                         dto.participatedPostDtos().stream()
-                                .map(d -> PostResponse.from(d, lidePostIds))
+                                .map(d -> PostResponse.from(d, likePostIds))
                                 .toList()
                 )
                 .build();
