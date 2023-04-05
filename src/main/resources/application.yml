@@ -7,11 +7,11 @@ spring:
   config:
     activate:
       on-profile: local
-    import: secret/application-local.yml
+    import: application-local.yml
 
 ---
 spring:
   config:
     activate:
       on-profile: develop
-    import: secret/application-develop.yml
+    import: application-develop.yml
