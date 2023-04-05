@@ -1,13 +1,10 @@
 package net.blogteamthreecoderhivebe.entity.constant;
 
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.core.AuthorizationGrantType;
-import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
-
 public enum ThirdOAuth2Provider {
 
 
-    KAKAO {
+
+    /*KAKAO {
         @Override
         public ClientRegistration.Builder getBuilder(String registrationId) {
             ClientRegistration.Builder builder = getBuilder(
@@ -15,12 +12,12 @@ public enum ThirdOAuth2Provider {
                     ClientAuthenticationMethod.CLIENT_SECRET_POST,
                     DEFAULT_REDIRECT_URL
             );
-            builder.scope("profile");
-            builder.authorizationUri("https://kauth.kakao.com/oauth/authorize");
-            builder.tokenUri("https://kauth.kakao.com/oauth/token");
-            builder.userInfoUri("https://kapi.kakao.com/v2/user/me");
+            //builder.scope("profile");
+            //builder.authorizationUri("https://kauth.kakao.com/oauth/authorize");
+            //builder.tokenUri("https://kauth.kakao.com/oauth/token");
+            //builder.userInfoUri("https://kapi.kakao.com/v2/user/me");
             builder.userNameAttributeName("id");
-            builder.clientName("Kakao");
+            //builder.clientName("Kakao");
 
             return builder;
         }
@@ -55,5 +52,5 @@ public enum ThirdOAuth2Provider {
 
     private static final String DEFAULT_REDIRECT_URL = "{baseUrl}/{action}/oauth2/code/{registrationId}";
 
-    public abstract ClientRegistration.Builder getBuilder(String registrationId);
+    public abstract ClientRegistration.Builder getBuilder(String registrationId);*/
 }
