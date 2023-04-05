@@ -18,6 +18,7 @@ public enum ThirdOAuth2Provider {
             builder.scope("profile");
             builder.authorizationUri("https://kauth.kakao.com/oauth/authorize");
             builder.tokenUri("https://kauth.kakao.com/oauth/token");
+            builder.userInfoUri("https://kapi.kakao.com/v2/user/me");
             builder.userNameAttributeName("id");
             builder.clientName("Kakao");
 
@@ -41,6 +42,7 @@ public enum ThirdOAuth2Provider {
             return builder;
         }
     };
+
 
     protected final ClientRegistration.Builder getBuilder(String registrationId, ClientAuthenticationMethod method,
                                                           String redirectUri) {
