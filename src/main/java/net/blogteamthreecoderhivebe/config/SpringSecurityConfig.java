@@ -29,9 +29,10 @@ public class SpringSecurityConfig {
                         .redirectionEndpoint(redirect -> redirect
                                 .baseUri("/")
                         )
-                        .userInfoEndpoint(userInfo -> userInfo
+
+                        /*.userInfoEndpoint(userInfo -> userInfo
                                 .userService(this.oauth2UserService())
-                        )
+                        )*/
 
                         //.defaultSuccessUrl("/")
                 );
@@ -46,7 +47,7 @@ public class SpringSecurityConfig {
         return (userRequest) -> {
             OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
-            return user
+            return null;
         };
     }
 }

@@ -16,9 +16,12 @@ public class OAuth2Controller {
 
 //    @GetMapping("/code/google")
 //    public RedirectView redirectUri() {
-    @GetMapping("/code/{registrationId}")
-    public RedirectView redirectUri(@PathVariable("registrationId") String registrationId) {
-        System.out.println("redirect : " + registrationId);
+    @GetMapping("/code/{socialLoginType}")
+    public RedirectView redirectUri(
+            @PathVariable("socialLoginType") String socialLoginType,
+            @RequestParam("code") String code) {
+        //GoogleOauth
+        System.out.println("redirect : " + socialLoginType + " -> " + code);  // code : Access Token
         return new RedirectView("http://localhost:3000");
     }
 
