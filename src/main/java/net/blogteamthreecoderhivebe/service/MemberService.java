@@ -25,7 +25,7 @@ import java.util.Optional;
 
 
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional//(readOnly = true)
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
@@ -114,10 +114,11 @@ public class MemberService {
     }
 
 
-    public MemberDto saveMember(String nickname, String email) {
+    public MemberDto saveMember(String email) {
         return MemberDto.from(memberRepository.save(Member.builder()
-                .nickname(nickname)
                 .email(email)
+                .modifiedBy(email)
+                .createdBy(email)
                 .build())
         );
     }

@@ -15,22 +15,21 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Builder
-public record MemberPrincipal(String nickname,
+public record MemberPrincipal(
                               String email,
                               Collection<? extends GrantedAuthority> authorities,
                               Map<String, Object> oAuth2Attributes
 ) implements UserDetails, OAuth2User {
 
-    public static MemberPrincipal of(String email, String nickname) {
-        return MemberPrincipal.of(nickname, email, Collections.emptyMap());
+    public static MemberPrincipal of(String email) {
+        return MemberPrincipal.of(email, Collections.emptyMap());
     }
 
-    public static MemberPrincipal of(String nickname, String email, Map<String, Object> oAuth2Attributes) {
+    public static MemberPrincipal of(String email, Map<String, Object> oAuth2Attributes) {
         // 지금은 인증만 하고 권한을 다루고 있지 않아서 임의로 세팅한다.
         Set<RoleType> roleTypes = Set.of(RoleType.USER);
 
         return new MemberPrincipal(
-                nickname,
                 email,
                 roleTypes.stream()
                         .map(RoleType::getDescription)
@@ -43,8 +42,7 @@ public record MemberPrincipal(String nickname,
 
     public static MemberPrincipal from(MemberDto dto) {
         return MemberPrincipal.of(
-                dto.email(),
-                dto.nickname()
+                dto.email()
         );
     }
 
@@ -61,7 +59,7 @@ public record MemberPrincipal(String nickname,
     @Override
     public boolean isEnabled() {    return true;   }
     @Override
-    public String getName() {   return nickname;    }
+    public String getName() {   return email;    }
 
 
     @Override
@@ -70,7 +68,7 @@ public record MemberPrincipal(String nickname,
     }
     @Override
     public String getUsername() {
-        return nickname;
+        return email;
     }
 
     @Getter

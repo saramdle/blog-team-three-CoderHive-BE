@@ -31,7 +31,6 @@ public class PageController {
             @RequestParam(required = false) PostStatus postStatus,
             Pageable pageable
     ) {
-        System.out.println("postCategory: " + postCategory);
         List<Long> likePosts = likePostService.searchLikePost(memberId);
         return postService.searchPost(postCategory, regions, jobs, postStatus, pageable).map(
                 p -> PostWithApplyNumberResponse.from(p, likePosts)

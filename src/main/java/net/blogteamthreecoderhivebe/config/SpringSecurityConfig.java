@@ -1,9 +1,7 @@
 package net.blogteamthreecoderhivebe.config;
 
 import jakarta.persistence.EntityNotFoundException;
-import net.blogteamthreecoderhivebe.dto.security.KakaoOAuth2Response;
-import net.blogteamthreecoderhivebe.dto.security.MemberPrincipal;
-import net.blogteamthreecoderhivebe.dto.security.SocialLoginDto;
+import net.blogteamthreecoderhivebe.dto.security.*;
 import net.blogteamthreecoderhivebe.service.MemberService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -53,27 +51,26 @@ public class SpringSecurityConfig {
             //System.out.println("oauthUser : " + oAuth2User);
 
             String registrationId = userRequest.getClientRegistration().getRegistrationId();
-            //SocialLoginDto socialLoginDto = null;
-            KakaoOAuth2Response kakaoResponse = KakaoOAuth2Response.from(oAuth2User.getAttributes());
-            final SocialLoginDto socialLoginDto = SocialLoginDto.fromKakao(kakaoResponse);
+
+            //KakaoOAuth2Response kakaoResponse = KakaoOAuth2Response.from(oAuth2User.getAttributes());
+            SocialLoginDto socialLoginDto = null;  // SocialLoginDto.fromKakao(kakaoResponse);
+
+            System.out.println(oAuth2User.getAttributes());
 
             if (registrationId.toUpperCase().equals("KAKAO")) {
-                //KakaoOAuth2Response kakaoResponse = KakaoOAuth2Response.from(oAuth2User.getAttributes());
-                //socialLoginDto = SocialLoginDto.fromKakao(kakaoResponse);
-
-
+                KakaoOAuth2Response kakaoResponse = KakaoOAuth2Response.from(oAuth2User.getAttributes());
+                socialLoginDto = SocialLoginDto.fromKakao(kakaoResponse);
             }
             if (registrationId.toUpperCase().equals("NAVER")) {
+                NaverOAuth2Response naverResponse = NaverOAuth2Response.from(oAuth2User.getAttributes());
+                socialLoginDto = SocialLoginDto.fromNaver(naverResponse);
 
             }
             if (registrationId.toUpperCase().equals("GOOGLE")) {
-
+                GoogleOauth2Response googleResponse = GoogleOauth2Response.from(oAuth2User.getAttributes());
+                socialLoginDto = SocialLoginDto.fromGoogle(googleResponse);
             }
-
-            //String providerId = String.valueOf(kakaoResponse.id());
-            //String memberId = registrationId + "_" + providerId;
-
-            String nickname = socialLoginDto.nickname();
+            System.out.println(socialLoginDto);
             String email = socialLoginDto.email();
 
             if (socialLoginDto.email().isEmpty()) throw new EntityNotFoundException("멤버가 없습니다 - member email: " + email);
@@ -81,15 +78,10 @@ public class SpringSecurityConfig {
                 return memberService.searchMemberByEmail(email)
                         .map(MemberPrincipal::from)
                         .orElseGet(() ->
-                                MemberPrincipal.from(memberService.saveMember(nickname, email)
+                                MemberPrincipal.from(memberService.saveMember(email)
                                 )
                         );
-
             }
-
-
         };
-
-
     }
 }
