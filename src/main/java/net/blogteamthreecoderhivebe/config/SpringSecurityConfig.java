@@ -1,6 +1,9 @@
 package net.blogteamthreecoderhivebe.config;
 
+import jakarta.persistence.EntityNotFoundException;
 import net.blogteamthreecoderhivebe.dto.security.KakaoOAuth2Response;
+import net.blogteamthreecoderhivebe.dto.security.MemberPrincipal;
+import net.blogteamthreecoderhivebe.dto.security.SocialLoginDto;
 import net.blogteamthreecoderhivebe.service.MemberService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,42 +28,9 @@ public class SpringSecurityConfig {
                         .anyRequest().permitAll()//authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        //.loginPage("/login")
-                        //CommonOAuth2Provider.GOOGLE
-
-//                        .authorizationEndpoint(authorization -> authorization
-//                                .baseUri("/login/oauth2/authorization")  // localhost:8080/login/oauth2/authorization/google
-//                                //.baseUri("/")   // localhost:8080/google
-//                        )
-//                        .redirectionEndpoint(redirect -> redirect
-//                                .baseUri("/")
-//                        )
-
-//                        .tokenEndpoint(token -> {
-//                            var defaultMapConverter = new DefaultMapOAuth2AccessTokenResponseConverter();
-//                            Converter<Map<String, Object>, OAuth2AccessTokenResponse> socialMapConverter = tokenResponse -> {
-//                                var withTokenType = new HashMap<>(tokenResponse);
-//                                withTokenType.put(OAuth2ParameterNames.TOKEN_TYPE, OAuth2AccessToken.TokenType.BEARER.getValue());
-//                                return defaultMapConverter.convert(withTokenType);
-//                            };
-//
-//                            var httpConverter = new OAuth2AccessTokenResponseHttpMessageConverter();
-//                            httpConverter.setAccessTokenResponseConverter(socialMapConverter);
-//
-//                            var restOperations = new RestTemplate(List.of(new FormHttpMessageConverter(), httpConverter));
-//                            restOperations.setErrorHandler(new OAuth2ErrorResponseErrorHandler());
-//
-//                            var client = new DefaultAuthorizationCodeTokenResponseClient();
-//                            client.setRestOperations(restOperations);
-//
-//                            token.accessTokenResponseClient(client);
-//                        })
-
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(oauth2UserService)
                         )
-
-                        //.defaultSuccessUrl("/")
                 )
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
@@ -82,10 +52,44 @@ public class SpringSecurityConfig {
             OAuth2User oAuth2User = delegate.loadUser(userRequest);
             //System.out.println("oauthUser : " + oAuth2User);
 
+            String registrationId = userRequest.getClientRegistration().getRegistrationId();
+            //SocialLoginDto socialLoginDto = null;
             KakaoOAuth2Response kakaoResponse = KakaoOAuth2Response.from(oAuth2User.getAttributes());
-            System.out.println("kakaoResponse: " + kakaoResponse);
+            final SocialLoginDto socialLoginDto = SocialLoginDto.fromKakao(kakaoResponse);
 
-            return oAuth2User;
+            if (registrationId.toUpperCase().equals("KAKAO")) {
+                //KakaoOAuth2Response kakaoResponse = KakaoOAuth2Response.from(oAuth2User.getAttributes());
+                //socialLoginDto = SocialLoginDto.fromKakao(kakaoResponse);
+
+
+            }
+            if (registrationId.toUpperCase().equals("NAVER")) {
+
+            }
+            if (registrationId.toUpperCase().equals("GOOGLE")) {
+
+            }
+
+            //String providerId = String.valueOf(kakaoResponse.id());
+            //String memberId = registrationId + "_" + providerId;
+
+            String nickname = socialLoginDto.nickname();
+            String email = socialLoginDto.email();
+
+            if (socialLoginDto.email().isEmpty()) throw new EntityNotFoundException("멤버가 없습니다 - member email: " + email);
+            else {
+                return memberService.searchMemberByEmail(email)
+                        .map(MemberPrincipal::from)
+                        .orElseGet(() ->
+                                MemberPrincipal.from(memberService.saveMember(nickname, email)
+                                )
+                        );
+
+            }
+
+
         };
+
+
     }
 }

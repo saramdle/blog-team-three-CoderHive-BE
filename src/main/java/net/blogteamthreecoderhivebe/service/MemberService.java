@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -76,6 +77,10 @@ public class MemberService {
      * - Kakao
      * - Naver
      */
+
+    /**
+     * 사용자 등록
+     */
     public MemberDto saveMember(String nickname,
                                 String email,
                                 MemberLevel level,
@@ -100,5 +105,20 @@ public class MemberService {
         );
     }
 
+    /**
+     * 이메일로 사용자 찾기
+     *
+     */
+    public Optional<MemberDto> searchMemberByEmail(String email) {
+        return memberRepository.findByEmail(email).map(MemberDto::from);
+    }
 
+
+    public MemberDto saveMember(String nickname, String email) {
+        return MemberDto.from(memberRepository.save(Member.builder()
+                .nickname(nickname)
+                .email(email)
+                .build())
+        );
+    }
 }
