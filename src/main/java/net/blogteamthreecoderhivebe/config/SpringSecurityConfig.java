@@ -1,5 +1,6 @@
 package net.blogteamthreecoderhivebe.config;
 
+import net.blogteamthreecoderhivebe.dto.security.KakaoOAuth2Response;
 import net.blogteamthreecoderhivebe.service.MemberService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,18 +22,20 @@ public class SpringSecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/members/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()//authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
                         //.loginPage("/login")
                         //CommonOAuth2Provider.GOOGLE
-                        .authorizationEndpoint(authorization -> authorization
-                                .baseUri("/login/oauth2/authorization")  // localhost:8080/login/oauth2/authorization/google
-                                //.baseUri("/")   // localhost:8080/google
-                        )
-                        .redirectionEndpoint(redirect -> redirect
-                                .baseUri("/")
-                        )
+
+//                        .authorizationEndpoint(authorization -> authorization
+//                                .baseUri("/login/oauth2/authorization")  // localhost:8080/login/oauth2/authorization/google
+//                                //.baseUri("/")   // localhost:8080/google
+//                        )
+//                        .redirectionEndpoint(redirect -> redirect
+//                                .baseUri("/")
+//                        )
+
 //                        .tokenEndpoint(token -> {
 //                            var defaultMapConverter = new DefaultMapOAuth2AccessTokenResponseConverter();
 //                            Converter<Map<String, Object>, OAuth2AccessTokenResponse> socialMapConverter = tokenResponse -> {
@@ -69,17 +72,20 @@ public class SpringSecurityConfig {
     }
 
     @Bean
-    private OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService(
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService(
             MemberService memberService
-
     ) {
 
         final DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
 
         return (userRequest) -> {
             OAuth2User oAuth2User = delegate.loadUser(userRequest);
+            //System.out.println("oauthUser : " + oAuth2User);
 
-            return null;
+            KakaoOAuth2Response kakaoResponse = KakaoOAuth2Response.from(oAuth2User.getAttributes());
+            System.out.println("kakaoResponse: " + kakaoResponse);
+
+            return oAuth2User;
         };
     }
 }
