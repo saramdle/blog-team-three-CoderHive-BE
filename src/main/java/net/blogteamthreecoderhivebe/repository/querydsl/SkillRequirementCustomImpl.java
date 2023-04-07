@@ -1,14 +1,14 @@
 package net.blogteamthreecoderhivebe.repository.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
 import static net.blogteamthreecoderhivebe.entity.QSkillRequirement.skillRequirement;
 import static net.blogteamthreecoderhivebe.entity.QTechnology.technology;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SkillRequirementCustomImpl implements SkillRequirementCustom{
     private final JPAQueryFactory queryFactory;
 
