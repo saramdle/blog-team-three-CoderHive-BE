@@ -1,6 +1,7 @@
 package net.blogteamthreecoderhivebe.controller;
 
 import lombok.RequiredArgsConstructor;
+import net.blogteamthreecoderhivebe.dto.response.JobsResponse;
 import net.blogteamthreecoderhivebe.dto.response.LocationsResponse;
 import net.blogteamthreecoderhivebe.service.TableInfoService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,5 +18,10 @@ public class TableInfoController {
     @GetMapping("/locations")
     public LocationsResponse searchAllLocation() {
         return LocationsResponse.from(tableInfoService.searchAllLocation());
+    }
+
+    @GetMapping("/jobs")
+    public JobsResponse searchAllJobs() {
+        return JobsResponse.from(tableInfoService.searchAllJobs());
     }
 }
