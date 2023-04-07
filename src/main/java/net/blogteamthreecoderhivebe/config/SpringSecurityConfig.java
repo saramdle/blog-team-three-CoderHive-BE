@@ -66,7 +66,7 @@ public class SpringSecurityConfig {
                 socialLoginDto = SocialLoginDto.fromNaver(naverResponse);
             }
             if (registrationId.toUpperCase().equals("GOOGLE")) {
-                GoogleOauth2Response googleResponse = GoogleOauth2Response.from(oAuth2User.getAttributes());
+                GoogleOAuth2Response googleResponse = GoogleOAuth2Response.from(oAuth2User.getAttributes());
                 socialLoginDto = SocialLoginDto.fromGoogle(googleResponse);
             }
             System.out.println(socialLoginDto);

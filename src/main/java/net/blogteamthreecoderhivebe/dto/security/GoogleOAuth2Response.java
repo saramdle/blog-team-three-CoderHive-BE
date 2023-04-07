@@ -5,7 +5,7 @@ import lombok.Builder;
 import java.util.Map;
 
 @Builder
-public record GoogleOauth2Response(
+public record GoogleOAuth2Response(
         String sub,
         String name,
         String givenName,
@@ -15,8 +15,8 @@ public record GoogleOauth2Response(
         Boolean emailVerified,
         String locale
 ) {
-    public static GoogleOauth2Response from(Map<String, Object> attributes) {
-        return GoogleOauth2Response.builder()
+    public static GoogleOAuth2Response from(Map<String, Object> attributes) {
+        return GoogleOAuth2Response.builder()
                 .sub(String.valueOf(attributes.get("sub")))
                 .name(String.valueOf(attributes.get("name")))
                 .givenName(String.valueOf(attributes.get("given_name")))

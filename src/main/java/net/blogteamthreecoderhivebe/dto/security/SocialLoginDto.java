@@ -20,7 +20,7 @@ public record SocialLoginDto(//String nickname,
                 .build();
     }
 
-    public static SocialLoginDto fromGoogle(GoogleOauth2Response googleResponse) {
+    public static SocialLoginDto fromGoogle(GoogleOAuth2Response googleResponse) {
 
         return SocialLoginDto.builder()
                 //.nickname(naverResponse.nickname())
