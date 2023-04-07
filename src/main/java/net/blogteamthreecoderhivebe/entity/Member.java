@@ -2,6 +2,7 @@ package net.blogteamthreecoderhivebe.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import net.blogteamthreecoderhivebe.entity.constant.MemberCareer;
 import net.blogteamthreecoderhivebe.entity.constant.MemberLevel;
 import net.blogteamthreecoderhivebe.entity.constant.MemberRole;
@@ -10,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Builder
+@SuperBuilder
 @ToString(callSuper = true, exclude = {"job", "listPosts"})
 @Getter
 @AllArgsConstructor
@@ -22,7 +23,7 @@ public class Member extends AuditingFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "job_id")
     private Job job;
 

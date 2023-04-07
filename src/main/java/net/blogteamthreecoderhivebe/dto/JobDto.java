@@ -1,7 +1,5 @@
 package net.blogteamthreecoderhivebe.dto;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import net.blogteamthreecoderhivebe.entity.Job;
 
@@ -12,7 +10,8 @@ public record JobDto(
         String detail
 ) {
      public static JobDto from(Job entity) {
-        return JobDto.builder()
+         if (entity == null) return null;
+         return JobDto.builder()
                 .id(entity.getId())
                 .main(entity.getMain())
                 .detail(entity.getDetail())

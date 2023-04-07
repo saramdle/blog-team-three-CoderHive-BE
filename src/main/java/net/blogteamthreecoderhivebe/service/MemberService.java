@@ -5,9 +5,13 @@ import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.dto.MemberDto;
 import net.blogteamthreecoderhivebe.dto.MemberWithPostDto;
 import net.blogteamthreecoderhivebe.dto.PostDto;
+import net.blogteamthreecoderhivebe.entity.Job;
 import net.blogteamthreecoderhivebe.entity.Member;
 import net.blogteamthreecoderhivebe.entity.Post;
 import net.blogteamthreecoderhivebe.entity.constant.ApplyResult;
+import net.blogteamthreecoderhivebe.entity.constant.MemberCareer;
+import net.blogteamthreecoderhivebe.entity.constant.MemberLevel;
+import net.blogteamthreecoderhivebe.entity.constant.MemberRole;
 import net.blogteamthreecoderhivebe.repository.MemberRepository;
 import net.blogteamthreecoderhivebe.repository.MemberTechnologyRepository;
 import net.blogteamthreecoderhivebe.repository.PostRepository;
@@ -17,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -66,4 +71,56 @@ public class MemberService {
         return MemberWithPostDto.from(memberDto, memberHostPostDtos, appliedPostDtos, participatedDtos);
     }
 
+    /**
+     * 소셜 로그인을 이용한 사용자 회원가입
+     * - Google
+     * - Kakao
+     * - Naver
+     */
+
+    /**
+     * 사용자 등록
+     */
+    public MemberDto saveMember(String nickname,
+                                String email,
+                                MemberLevel level,
+                                MemberCareer career,
+                                MemberRole memberRole,
+                                String profileImageUrl,
+                                String introduction,
+                                Job job
+                                ) {
+        return MemberDto.from(memberRepository.save(Member.builder()
+                                        .nickname(nickname)
+                                        .email(email)
+                                        .level(level)
+                                        .career(career)
+                                        .memberRole(memberRole)
+                                        .profileImageUrl(profileImageUrl)
+                                        .introduction(introduction)
+                                        .job(job)
+                                        .createdBy(nickname)
+                                        .modifiedBy(nickname)
+                                        .build())
+        );
+    }
+
+    /**
+     * 이메일로 사용자 찾기
+     *
+     */
+    public Optional<MemberDto> searchMemberByEmail(String email) {
+        return memberRepository.findByEmail(email).map(MemberDto::from);
+    }
+
+
+    @Transactional
+    public MemberDto saveMember(String email) {
+        return MemberDto.from(memberRepository.save(Member.builder()
+                .email(email)
+                .modifiedBy(email)
+                .createdBy(email)
+                .build())
+        );
+    }
 }
