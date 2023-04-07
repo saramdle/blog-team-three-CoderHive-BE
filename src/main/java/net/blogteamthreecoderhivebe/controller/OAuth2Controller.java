@@ -19,7 +19,7 @@ public class OAuth2Controller {
 
     @GetMapping("/")
     public RedirectView oauth2LoginUser(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
-        System.out.println("member : " + memberPrincipal);
+        //System.out.println("member : " + memberPrincipal);
         String memberEmail = memberPrincipal.email();
         Optional<MemberDto> memberDto = memberService.searchMemberByEmail(memberEmail);
 

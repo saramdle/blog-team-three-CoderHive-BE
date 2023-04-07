@@ -69,7 +69,7 @@ public class SpringSecurityConfig {
                 GoogleOAuth2Response googleResponse = GoogleOAuth2Response.from(oAuth2User.getAttributes());
                 socialLoginDto = SocialLoginDto.fromGoogle(googleResponse);
             }
-            System.out.println(socialLoginDto);
+            //System.out.println(socialLoginDto);
             String email = socialLoginDto.email();
 
             if (socialLoginDto.email().isEmpty()) throw new EntityNotFoundException("멤버가 없습니다 - member email: " + email);
