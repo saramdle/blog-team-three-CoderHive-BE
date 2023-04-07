@@ -26,6 +26,8 @@ public class SpringSecurityConfig {
                         .anyRequest().permitAll()//authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
+                        //.authorizationEndpoint(authorization  -> authorization
+                        //        .baseUri("/"))
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(oauth2UserService)
                         )
@@ -49,13 +51,11 @@ public class SpringSecurityConfig {
         return (userRequest) -> {
             OAuth2User oAuth2User = delegate.loadUser(userRequest);
             //System.out.println("oauthUser : " + oAuth2User);
-
             String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
             //KakaoOAuth2Response kakaoResponse = KakaoOAuth2Response.from(oAuth2User.getAttributes());
             SocialLoginDto socialLoginDto = null;  // SocialLoginDto.fromKakao(kakaoResponse);
-
-            System.out.println(oAuth2User.getAttributes());
+            //System.out.println(oAuth2User.getAttributes());
 
             if (registrationId.toUpperCase().equals("KAKAO")) {
                 KakaoOAuth2Response kakaoResponse = KakaoOAuth2Response.from(oAuth2User.getAttributes());
@@ -64,7 +64,6 @@ public class SpringSecurityConfig {
             if (registrationId.toUpperCase().equals("NAVER")) {
                 NaverOAuth2Response naverResponse = NaverOAuth2Response.from(oAuth2User.getAttributes());
                 socialLoginDto = SocialLoginDto.fromNaver(naverResponse);
-
             }
             if (registrationId.toUpperCase().equals("GOOGLE")) {
                 GoogleOauth2Response googleResponse = GoogleOauth2Response.from(oAuth2User.getAttributes());
