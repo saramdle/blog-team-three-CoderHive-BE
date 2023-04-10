@@ -2,9 +2,11 @@ package net.blogteamthreecoderhivebe.service;
 
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.dto.LocationDto;
+import net.blogteamthreecoderhivebe.dto.TechnologyDto;
 import net.blogteamthreecoderhivebe.entity.Job;
 import net.blogteamthreecoderhivebe.repository.JobRepository;
 import net.blogteamthreecoderhivebe.repository.LocationRepository;
+import net.blogteamthreecoderhivebe.repository.TechnologyRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,8 @@ public class TableInfoService {
     private final LocationRepository locationRepository;
     private final JobRepository jobRepository;
 
+    private final TechnologyRepository technologyRepository;
+
     public List<LocationDto> searchAllLocation() {
         return locationRepository.findAll().stream().map(LocationDto::from).toList();
     }
@@ -30,7 +34,7 @@ public class TableInfoService {
                 .collect(Collectors.groupingBy(
                         Job::getMain,
                         Collectors.mapping(
-                                job -> Map.of("jobId", job.getId(), "fields", job.getDetail()),
+                                job -> Map.of("jobId", job.getId(), "field", job.getDetail()),
                                 Collectors.toList()
                         )
                 ))
@@ -45,7 +49,11 @@ public class TableInfoService {
                     return resultEntry;
                 })
                 .toList();
-
-
     }
+
+    public List<TechnologyDto> searchTop4Skills(String keyword) {
+        return technologyRepository.findTop4ByDetailContaining(keyword);
+    }
+
+
 }
