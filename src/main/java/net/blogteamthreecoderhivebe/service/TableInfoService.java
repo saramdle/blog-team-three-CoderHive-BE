@@ -30,7 +30,7 @@ public class TableInfoService {
                 .collect(Collectors.groupingBy(
                         Job::getMain,
                         Collectors.mapping(
-                                job -> Map.of("jobId", job.getId(), "fields", job.getDetail()),
+                                job -> Map.of("jobId", job.getId(), "field", job.getDetail()),
                                 Collectors.toList()
                         )
                 ))
