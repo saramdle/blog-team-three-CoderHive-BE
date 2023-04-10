@@ -3,6 +3,7 @@ package net.blogteamthreecoderhivebe.controller;
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.dto.response.CareerResponse;
 import net.blogteamthreecoderhivebe.dto.response.LevelResponse;
+import net.blogteamthreecoderhivebe.dto.response.JobsResponse;
 import net.blogteamthreecoderhivebe.dto.response.LocationsResponse;
 import net.blogteamthreecoderhivebe.dto.response.PlatformResponse;
 import net.blogteamthreecoderhivebe.entity.constant.MemberCareer;
@@ -24,6 +25,11 @@ public class TableInfoController {
     public LocationsResponse searchAllLocation() {
         return LocationsResponse.from(tableInfoService.searchAllLocation());
     }
+    @GetMapping("/jobs")
+    public JobsResponse searchAllJobs() {
+        return JobsResponse.from(tableInfoService.searchAllJobs());
+    }
+
 
     @GetMapping("/careers")
     public CareerResponse searchAllCareer() {
@@ -38,5 +44,6 @@ public class TableInfoController {
     @GetMapping("/platforms")
     public PlatformResponse searchAllPlatform() {
         return PlatformResponse.from(Platform.toList());
-    }
+
+    
 }
