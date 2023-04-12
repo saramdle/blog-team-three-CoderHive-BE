@@ -2,20 +2,11 @@ package net.blogteamthreecoderhivebe.service;
 
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import net.blogteamthreecoderhivebe.dto.MemberDto;
-import net.blogteamthreecoderhivebe.dto.MemberWithPostDto;
-import net.blogteamthreecoderhivebe.dto.PostDto;
-import net.blogteamthreecoderhivebe.entity.Job;
+import net.blogteamthreecoderhivebe.dto.*;
 import net.blogteamthreecoderhivebe.entity.Member;
 import net.blogteamthreecoderhivebe.entity.Post;
 import net.blogteamthreecoderhivebe.entity.constant.ApplyResult;
-import net.blogteamthreecoderhivebe.entity.constant.MemberCareer;
-import net.blogteamthreecoderhivebe.entity.constant.MemberLevel;
-import net.blogteamthreecoderhivebe.entity.constant.MemberRole;
-import net.blogteamthreecoderhivebe.repository.MemberRepository;
-import net.blogteamthreecoderhivebe.repository.MemberTechnologyRepository;
-import net.blogteamthreecoderhivebe.repository.PostRepository;
-import net.blogteamthreecoderhivebe.repository.SkillRequirementRepository;
+import net.blogteamthreecoderhivebe.repository.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +23,8 @@ public class MemberService {
     private final MemberTechnologyRepository memberTechnologyRepository;
     private final PostRepository postRepository;
     private final SkillRequirementRepository skillRequirementRepository;
+
+    private final JobRepository jobRepository;
 
     public MemberDto searchMember(Long memberId) {
         return memberRepository.findById(memberId).map(MemberDto::from)
@@ -79,33 +72,6 @@ public class MemberService {
      */
 
     /**
-     * 사용자 등록
-     */
-    public MemberDto saveMember(String nickname,
-                                String email,
-                                MemberLevel level,
-                                MemberCareer career,
-                                MemberRole memberRole,
-                                String profileImageUrl,
-                                String introduction,
-                                Job job
-                                ) {
-        return MemberDto.from(memberRepository.save(Member.builder()
-                                        .nickname(nickname)
-                                        .email(email)
-                                        .level(level)
-                                        .career(career)
-                                        .memberRole(memberRole)
-                                        .profileImageUrl(profileImageUrl)
-                                        .introduction(introduction)
-                                        .job(job)
-                                        .createdBy(nickname)
-                                        .modifiedBy(nickname)
-                                        .build())
-        );
-    }
-
-    /**
      * 이메일로 사용자 찾기
      *
      */
@@ -113,14 +79,24 @@ public class MemberService {
         return memberRepository.findByEmail(email).map(MemberDto::from);
     }
 
-
+    /**
+     * 사용자 등록
+     *
+     */
     @Transactional
-    public MemberDto saveMember(String email) {
-        return MemberDto.from(memberRepository.save(Member.builder()
-                .email(email)
-                .modifiedBy(email)
-                .createdBy(email)
-                .build())
+    public MemberDto saveMember(SignUpDto signUpDto) {
+        JobDto jobDto = JobDto.from(jobRepository.findById(signUpDto.jobId()).get());
+        return MemberDto.from(memberRepository.save(
+                    Member.builder()
+                            .email(signUpDto.email())
+                            .nickname(signUpDto.nickname())
+                            .job(jobDto.toEntity())
+                            .level(signUpDto.level())
+                            .career(signUpDto.career())
+                            .createdBy(signUpDto.email())
+                            .modifiedBy(signUpDto.email())
+                            .build()
+                )
         );
     }
 }

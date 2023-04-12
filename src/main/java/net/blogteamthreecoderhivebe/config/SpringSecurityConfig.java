@@ -26,11 +26,16 @@ public class SpringSecurityConfig {
                         .anyRequest().permitAll()//authenticated()
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        //.authorizationEndpoint(authorization  -> authorization
-                        //        .baseUri("/"))
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(oauth2UserService)
-                        )
+//                        .loginPage("/login/oauth2")
+//                        .authorizationEndpoint(authorization  -> authorization
+//                                .baseUri("/login/oauth2/authorization")
+//                        )
+//                        .redirectionEndpoint(redirection -> redirection
+//                                .baseUri("/")
+//                        )
+                          .userInfoEndpoint(userInfo -> userInfo
+                                  .userService(oauth2UserService)
+                          )
                 )
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
@@ -50,12 +55,9 @@ public class SpringSecurityConfig {
 
         return (userRequest) -> {
             OAuth2User oAuth2User = delegate.loadUser(userRequest);
-            //System.out.println("oauthUser : " + oAuth2User);
             String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
-            //KakaoOAuth2Response kakaoResponse = KakaoOAuth2Response.from(oAuth2User.getAttributes());
             SocialLoginDto socialLoginDto = null;  // SocialLoginDto.fromKakao(kakaoResponse);
-            //System.out.println(oAuth2User.getAttributes());
 
             if (registrationId.toUpperCase().equals("KAKAO")) {
                 KakaoOAuth2Response kakaoResponse = KakaoOAuth2Response.from(oAuth2User.getAttributes());
@@ -77,8 +79,8 @@ public class SpringSecurityConfig {
                 return memberService.searchMemberByEmail(email)
                         .map(MemberPrincipal::from)
                         .orElseGet(() ->
-                                MemberPrincipal.from(memberService.saveMember(email)
-                                )
+                                //MemberPrincipal.from(memberService.saveMember(email) // DB 저장
+                                MemberPrincipal.from(email, false)
                         );
             }
         };

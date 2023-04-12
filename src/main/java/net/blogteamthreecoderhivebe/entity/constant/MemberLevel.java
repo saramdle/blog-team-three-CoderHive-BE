@@ -32,6 +32,6 @@ public enum MemberLevel {
             }
         }
 
-        throw new IllegalArgumentException("일치하는 경력 목록이 없습니다.");
+        throw new IllegalArgumentException("일치하는 레벨 목록이 없습니다.");
     }
 }
