@@ -9,9 +9,12 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public interface PostRepositoryCustom {
     Map<ApplyResult, List<Post>> memberApplyPost(Long memberId);
 
     Page<Post> getAllPost(PostCategory postCategory, List<Long> regions, List<Long> jobs, PostStatus status, Pageable pageable);
+
+    Optional<Post> findByPostIdFetchJoin(Long postId);
 }

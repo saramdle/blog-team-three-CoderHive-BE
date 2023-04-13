@@ -13,11 +13,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import static net.blogteamthreecoderhivebe.entity.QJob.job;
 import static net.blogteamthreecoderhivebe.entity.QLocation.location;
 import static net.blogteamthreecoderhivebe.entity.QMemberApply.memberApply;
 import static net.blogteamthreecoderhivebe.entity.QPost.post;
@@ -54,6 +52,15 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
         posts.put(ApplyResult.NON, nonPost);
         posts.put(ApplyResult.PASS, passPost);
         return posts;
+    }
+
+    @Override
+    public Optional<Post> findByPostIdFetchJoin(Long postId) {
+        return Optional.ofNullable(queryFactory.selectFrom(post)
+                .join(post.job, job).fetchJoin()
+                .join(post.location, location).fetchJoin()
+                .where(post.id.eq(postId))
+                .fetchOne());
     }
 
     @Override

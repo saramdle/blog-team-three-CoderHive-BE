@@ -1,11 +1,14 @@
 package net.blogteamthreecoderhivebe.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.dto.PostWithApplyNumberDto;
+import net.blogteamthreecoderhivebe.dto.PostWithPostJobsDto;
 import net.blogteamthreecoderhivebe.entity.Post;
 import net.blogteamthreecoderhivebe.entity.PostJob;
 import net.blogteamthreecoderhivebe.entity.constant.PostCategory;
 import net.blogteamthreecoderhivebe.entity.constant.PostStatus;
+import net.blogteamthreecoderhivebe.repository.PostJobRepository;
 import net.blogteamthreecoderhivebe.repository.PostRepository;
 import net.blogteamthreecoderhivebe.repository.SkillRequirementRepository;
 import org.springframework.data.domain.Page;
@@ -21,6 +24,7 @@ import java.util.List;
 @Service
 public class PostService {
     private final PostRepository postRepository;
+    private final PostJobRepository postJobRepository;
     private final SkillRequirementRepository skillRequirementRepository;
 
     public Page<PostWithApplyNumberDto> searchPost(PostCategory postCategory, List<Long> regions, List<Long> jobs, PostStatus postStatus, Pageable pageable) {
@@ -38,5 +42,16 @@ public class PostService {
                 }).toList();
 
         return new PageImpl<>(postWithApplyNumberDtos, postInfos.getPageable(), postInfos.getTotalElements());
+    }
+
+    public PostWithPostJobsDto searchDetailPost(Long postId) {
+        Post post = postRepository.findByPostIdFetchJoin(postId)
+                .orElseThrow(() -> new EntityNotFoundException("게시글이 없습니다 - postId: " + postId));
+        List<PostJob> postJobs = postJobRepository.getPostJobByPostId(postId);
+        for (PostJob postJob : postJobs) {
+            System.out.println(postJob);
+        }
+        List<String> postSkills = skillRequirementRepository.searchTechnology(postId);
+        return PostWithPostJobsDto.from(post, postJobs, postSkills);
     }
 }
