@@ -27,6 +27,7 @@ out/
 !**/src/test/**/out/
 application-develop.yml
 application-local.yml
+application-oauth.yml
 data.sql
 
 ### NetBeans ###
@@ -41,5 +42,3 @@ data.sql
 
 ### Querydsl build file ###
 **/src/main/generated/
-
-
