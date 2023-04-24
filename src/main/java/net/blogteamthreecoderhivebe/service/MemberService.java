@@ -90,18 +90,17 @@ public class MemberService {
                                 String introduction,
                                 Job job
                                 ) {
-        return MemberDto.from(memberRepository.save(Member.builder()
-                                        .nickname(nickname)
-                                        .email(email)
-                                        .level(level)
-                                        .career(career)
-                                        .memberRole(memberRole)
-                                        .profileImageUrl(profileImageUrl)
-                                        .introduction(introduction)
-                                        .job(job)
-                                        .createdBy(nickname)
-                                        .modifiedBy(nickname)
-                                        .build())
+        return MemberDto.from(memberRepository.save(
+                Member.builder()
+                        .nickname(nickname)
+                        .email(email)
+                        .level(level)
+                        .career(career)
+                        .memberRole(memberRole)
+                        .profileImageUrl(profileImageUrl)
+                        .introduction(introduction)
+                        .job(job)
+                        .build())
         );
     }
 
@@ -116,11 +115,10 @@ public class MemberService {
 
     @Transactional
     public MemberDto saveMember(String email) {
-        return MemberDto.from(memberRepository.save(Member.builder()
-                .email(email)
-                .modifiedBy(email)
-                .createdBy(email)
-                .build())
+        return MemberDto.from(memberRepository.save(
+                Member.builder()
+                        .email(email)
+                        .build())
         );
     }
 }

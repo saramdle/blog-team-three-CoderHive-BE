@@ -2,7 +2,6 @@ package net.blogteamthreecoderhivebe.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import net.blogteamthreecoderhivebe.entity.constant.MemberCareer;
 import net.blogteamthreecoderhivebe.entity.constant.MemberLevel;
 import net.blogteamthreecoderhivebe.entity.constant.MemberRole;
@@ -11,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@SuperBuilder
 @ToString(callSuper = true, exclude = {"job", "listPosts"})
 @Getter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
