@@ -19,28 +19,17 @@ public class OAuth2Controller {
 
     final MemberService memberService;
 
-
-//    @GetMapping("/")
-//    public RedirectView oauth2LoginUser(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
-//        //System.out.println("member : " + memberPrincipal);
-//        String memberEmail = memberPrincipal.email();
-//        Optional<MemberDto> memberDto = memberService.searchMemberByEmail(memberEmail);
-//
-//        if (memberDto.get().nickname() == null) return new RedirectView("http://localhost:3000/register");
-//        else {
-//            return new RedirectView("http://localhost:3000");
-//        }
-//    }
-
     @GetMapping("/")
     public RedirectView oauth2LoginUser(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+    //public RedirectView oauth2LoginUser(@CurrentUser MemberPrincipal memberPrincipal) {
         //System.out.println("member : " + memberPrincipal);
         String memberEmail = memberPrincipal.email();
         Optional<MemberDto> memberDto = memberService.searchMemberByEmail(memberEmail);
+        //System.out.println("is oauth2LoginUser: " + memberPrincipal);
 
         if (memberPrincipal.isSignUp()) return new RedirectView("http://localhost:3000");
         else {
-            return new RedirectView("http://localhost:3000/register");  // 추가 정보 입력 페이지
+            return new RedirectView("http://localhost:3000/register?email="+memberEmail);  // 추가 정보 입력 페이지
         }
     }
 

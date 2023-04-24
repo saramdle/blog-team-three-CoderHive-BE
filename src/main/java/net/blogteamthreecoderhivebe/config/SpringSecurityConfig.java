@@ -6,7 +6,6 @@ import net.blogteamthreecoderhivebe.service.MemberService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -23,12 +22,17 @@ public class SpringSecurityConfig {
     ) throws Exception{
         http.httpBasic().disable()
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+                //.cors()
+                //.and()
+                //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                //.and()
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/members/**").permitAll()
+                        //.requestMatchers("/info/jobs").authenticated()
                         .anyRequest().permitAll()//authenticated()
                 )
+                //.addFilterBefore(new JwtExceptionFilter(),
+                //        OAuth2LoginAuthenticationFilter.class)
                 .oauth2Login(oauth2 -> oauth2
 //                        .loginPage("/login/oauth2")
 //                        .authorizationEndpoint(authorization  -> authorization
@@ -46,6 +50,7 @@ public class SpringSecurityConfig {
                         .logoutSuccessUrl("/login/oauth2/mainpage")
                 )
                 ;
+
 
         return http.build();
     }
