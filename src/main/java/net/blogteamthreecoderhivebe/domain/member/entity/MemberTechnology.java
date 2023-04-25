@@ -2,10 +2,10 @@ package net.blogteamthreecoderhivebe.domain.member.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import net.blogteamthreecoderhivebe.domain.info.entity.Technology;
+import net.blogteamthreecoderhivebe.domain.info.entity.Skill;
 
 @Builder
-@ToString(exclude = {"member", "technology"})
+@ToString(exclude = {"member", "skill"})
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -22,5 +22,5 @@ public class MemberTechnology {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "technology_id")
-    private Technology technology;
+    private Skill skill;
 }

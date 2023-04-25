@@ -9,9 +9,9 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Technology {
+public class Skill {
     @Id
-    @Column(name = "technology_id")
+    @Column(name = "skill_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

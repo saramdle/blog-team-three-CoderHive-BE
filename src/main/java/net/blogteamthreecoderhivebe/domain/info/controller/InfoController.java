@@ -3,7 +3,7 @@ package net.blogteamthreecoderhivebe.domain.info.controller;
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.info.constant.Platform;
 import net.blogteamthreecoderhivebe.domain.info.dto.response.*;
-import net.blogteamthreecoderhivebe.domain.info.service.TableInfoService;
+import net.blogteamthreecoderhivebe.domain.info.service.InfoService;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberCareer;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberLevel;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,22 +15,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("info")
 @RestController
-public class TableInfoController {
-    private final TableInfoService tableInfoService;
+public class InfoController {
+    private final InfoService infoService;
 
     @GetMapping("/locations")
     public LocationsResponse searchAllLocation() {
-        return LocationsResponse.from(tableInfoService.searchAllLocation());
+        return LocationsResponse.from(infoService.searchAllLocation());
     }
+
     @GetMapping("/jobs")
     public JobsResponse searchAllJobs() {
-        return JobsResponse.from(tableInfoService.searchAllJobs());
+        return JobsResponse.from(infoService.searchAllJobs());
     }
 
     @GetMapping("/skills")
     public TechnologyResponse searchTop4Skills(
             @RequestParam(required = false, defaultValue="") final String keyword) {
-        return TechnologyResponse.from(tableInfoService.searchTop4Skills(keyword));
+        return TechnologyResponse.from(infoService.searchTop4Skills(keyword));
     }
 
 

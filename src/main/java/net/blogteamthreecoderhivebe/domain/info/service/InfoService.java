@@ -2,11 +2,11 @@ package net.blogteamthreecoderhivebe.domain.info.service;
 
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.info.dto.LocationDto;
-import net.blogteamthreecoderhivebe.domain.info.dto.TechnologyDto;
+import net.blogteamthreecoderhivebe.domain.info.dto.SkillDto;
 import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 import net.blogteamthreecoderhivebe.domain.info.repository.JobRepository;
 import net.blogteamthreecoderhivebe.domain.info.repository.LocationRepository;
-import net.blogteamthreecoderhivebe.domain.info.repository.TechnologyRepository;
+import net.blogteamthreecoderhivebe.domain.info.repository.SkillRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +19,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
-public class TableInfoService {
+public class InfoService {
     private final LocationRepository locationRepository;
     private final JobRepository jobRepository;
 
-    private final TechnologyRepository technologyRepository;
+    private final SkillRepository skillRepository;
 
     public List<LocationDto> searchAllLocation() {
         return locationRepository.findAll().stream().map(LocationDto::from).toList();
@@ -51,8 +51,8 @@ public class TableInfoService {
                 .toList();
     }
 
-    public List<TechnologyDto> searchTop4Skills(String keyword) {
-        return technologyRepository.findTop4ByDetailContaining(keyword);
+    public List<SkillDto> searchTop4Skills(String keyword) {
+        return skillRepository.findTop4ByDetailContaining(keyword);
     }
 
 

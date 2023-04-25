@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @DisplayName("Table 정보 불러오기")
 @Transactional
 @SpringBootTest
-class TableInfoServiceTest {
+class InfoServiceTest {
 
     @Autowired
     private JobRepository jobRepository;
