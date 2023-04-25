@@ -5,7 +5,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import net.blogteamthreecoderhivebe.domain.member.constant.ApplyResult;
+import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostStatus;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
@@ -19,40 +19,40 @@ import java.util.List;
 import java.util.Map;
 
 import static net.blogteamthreecoderhivebe.domain.info.entity.QLocation.location;
-import static net.blogteamthreecoderhivebe.domain.member.entity.QMemberApply.memberApply;
+import static net.blogteamthreecoderhivebe.domain.member.entity.QApplicationInfo.applicationInfo;
 import static net.blogteamthreecoderhivebe.domain.post.entity.QPost.post;
-import static net.blogteamthreecoderhivebe.domain.post.entity.QPostJob.postJob;
+import static net.blogteamthreecoderhivebe.domain.post.entity.QRecruitmentJob.recruitmentJob;
 
 @RequiredArgsConstructor
 public class PostRepositoryCustomImpl implements PostRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Map<ApplyResult, List<Post>> memberApplyPost(Long memberId) {
+    public Map<ApplicationResult, List<Post>> memberApplyPost(Long memberId) {
         List<Tuple> result = queryFactory
-                .select(post, memberApply.applyResult)
-                .from(memberApply)
-                .join(memberApply.postJob, postJob)
-                .join(postJob.post, post)
+                .select(post, applicationInfo)
+                .from(applicationInfo)
+                .join(applicationInfo.recruitmentJob, recruitmentJob)
+                .join(recruitmentJob.post, post)
                 .where(
-                        memberApply.member.id.eq(memberId)
+                        applicationInfo.member.id.eq(memberId)
                 )
                 .fetch();
 
-        Map<ApplyResult, List<Post>> posts = new HashMap<>();
+        Map<ApplicationResult, List<Post>> posts = new HashMap<>();
 
         List<Post> passPost = new ArrayList<>();
         List<Post> nonPost = new ArrayList<>();
         for (Tuple tuple : result) {
-            System.out.println(tuple.get(memberApply.applyResult));
-            if (tuple.get(memberApply.applyResult) == ApplyResult.NON) {
+            System.out.println(tuple.get(applicationInfo.applicationResult));
+            if (tuple.get(applicationInfo.applicationResult) == ApplicationResult.NON) {
                 nonPost.add(tuple.get(post));
-            } else if (tuple.get(memberApply.applyResult) == ApplyResult.PASS) {
+            } else if (tuple.get(applicationInfo.applicationResult) == ApplicationResult.PASS) {
                 passPost.add(tuple.get(post));
             }
         }
-        posts.put(ApplyResult.NON, nonPost);
-        posts.put(ApplyResult.PASS, passPost);
+        posts.put(ApplicationResult.NON, nonPost);
+        posts.put(ApplicationResult.PASS, passPost);
         return posts;
     }
 
@@ -61,7 +61,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
         List<Post> Posts = queryFactory
                 .select(post)
                 .from(post)
-                .join(post.postJobs, postJob)
+                .join(post.recruitmentJobs, recruitmentJob)
                 .join(post.location, location).fetchJoin()
                 .where(
                         postCategoryEq(postCategory), regionIn(regions), jobsIn(jobs), postStatusEq(postStatus)
@@ -88,7 +88,7 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
     }
 
     private BooleanExpression jobsIn(List<Long> jobs) {
-        return jobs != null ? postJob.job.id.in(jobs): null;
+        return jobs != null ? recruitmentJob.job.id.in(jobs) : null;
     }
 
     private BooleanExpression postStatusEq(PostStatus postStatus) {

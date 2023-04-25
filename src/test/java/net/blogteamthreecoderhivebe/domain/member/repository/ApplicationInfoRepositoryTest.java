@@ -1,6 +1,6 @@
 package net.blogteamthreecoderhivebe.domain.member.repository;
 
-import net.blogteamthreecoderhivebe.domain.member.entity.MemberApply;
+import net.blogteamthreecoderhivebe.domain.member.entity.ApplicationInfo;
 import net.blogteamthreecoderhivebe.global.config.TestJpaConfig;
 import net.blogteamthreecoderhivebe.global.config.TestQueryDslConfig;
 import org.junit.jupiter.api.DisplayName;
@@ -12,20 +12,20 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@DisplayName("MemberApplyRepository 테스트")
+@DisplayName("ApplicationInfoRepository 테스트")
 @Transactional
 @DataJpaTest
 @Import({TestJpaConfig.class, TestQueryDslConfig.class})
-public class MemberApplyRepositoryTest {
+public class ApplicationInfoRepositoryTest {
     @Autowired
-    private MemberApplyRepository memberApplyRepository;
+    private ApplicationInfoRepository applicationInfoRepository;
 
     @DisplayName("member id로 지원한 공고 확인")
     @Test
     public void searchApplyPost() {
-        List<MemberApply> byMemberId = memberApplyRepository.findByMember_Id(1L);
-        for (MemberApply memberApply : byMemberId) {
-            System.out.println(memberApply);
+        List<ApplicationInfo> byMemberId = applicationInfoRepository.findByMember_Id(1L);
+        for (ApplicationInfo applicationInfo : byMemberId) {
+            System.out.println(applicationInfo);
         }
 
 

@@ -3,7 +3,7 @@ package net.blogteamthreecoderhivebe.domain.member.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.info.entity.Job;
-import net.blogteamthreecoderhivebe.domain.member.constant.ApplyResult;
+import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberCareer;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberLevel;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberRole;
@@ -52,16 +52,16 @@ public class MemberService {
                     return PostDto.from(post, postSkills);
                 })
                 .toList();
-        Map<ApplyResult, List<Post>> applyPostsMap = postRepository.memberApplyPost(memberId);
+        Map<ApplicationResult, List<Post>> applyPostsMap = postRepository.memberApplyPost(memberId);
 
-        List<PostDto> appliedPostDtos = applyPostsMap.get(ApplyResult.NON).stream()
+        List<PostDto> appliedPostDtos = applyPostsMap.get(ApplicationResult.NON).stream()
                 .map(p -> {
                     List<String> postSkills = recruitmentSkillRepository.searchSkill(p.getId());
                     return PostDto.from(p, postSkills);
                 })
                 .toList();
 
-        List<PostDto> participatedDtos = applyPostsMap.get(ApplyResult.PASS).stream()
+        List<PostDto> participatedDtos = applyPostsMap.get(ApplicationResult.PASS).stream()
                 .map(p -> {
                     List<String> postSkills = recruitmentSkillRepository.searchSkill(p.getId());
                     return PostDto.from(p, postSkills);

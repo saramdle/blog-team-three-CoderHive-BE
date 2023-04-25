@@ -2,7 +2,7 @@ package net.blogteamthreecoderhivebe.domain.member.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import net.blogteamthreecoderhivebe.domain.member.constant.ApplyResult;
+import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
 import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
 
 @Builder
@@ -11,9 +11,9 @@ import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class MemberApply {
+public class ApplicationInfo {
     @Id
-    @Column(name = "member_apply_id")
+    @Column(name = "application_info_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -26,5 +26,5 @@ public class MemberApply {
     private RecruitmentJob recruitmentJob;
 
     @Enumerated(EnumType.STRING)
-    private ApplyResult applyResult;
+    private ApplicationResult applicationResult;
 }
