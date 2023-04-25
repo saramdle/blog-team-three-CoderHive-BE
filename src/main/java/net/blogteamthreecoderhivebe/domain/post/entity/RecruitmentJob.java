@@ -10,9 +10,9 @@ import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class PostJob {
+public class RecruitmentJob {
     @Id
-    @Column(name = "post_job_id")
+    @Column(name = "recruitment_job_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -30,6 +30,6 @@ public class PostJob {
 
     public void addPost(Post post) {
         this.post = post;
-        post.getPostJobs().add(this);
+        post.getRecruitmentJobs().add(this);
     }
 }

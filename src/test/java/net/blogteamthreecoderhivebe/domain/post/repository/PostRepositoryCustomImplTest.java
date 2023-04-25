@@ -3,7 +3,7 @@ package net.blogteamthreecoderhivebe.domain.post.repository;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostStatus;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
-import net.blogteamthreecoderhivebe.domain.post.entity.PostJob;
+import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +28,9 @@ public class PostRepositoryCustomImplTest {
         Page<Post> allPost = postRepository.getAllPost(PostCategory.PROJECT, List.of((long) 1, (long) 2, (long) 3), List.of((long) 1), PostStatus.HIRING, page);
         for (Post post : allPost) {
             System.out.println(post.getLocation().getRegion());
-            List<PostJob> postJobs = post.getPostJobs();
-            for (PostJob postJob : postJobs) {
-                System.out.println(postJob.getJob().getDetail());
+            List<RecruitmentJob> recruitmentJobs = post.getRecruitmentJobs();
+            for (RecruitmentJob recruitmentJob : recruitmentJobs) {
+                System.out.println(recruitmentJob.getJob().getDetail());
             }
         }
     }

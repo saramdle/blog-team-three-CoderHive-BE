@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Builder
-@ToString(callSuper = true, exclude = {"member", "postJobs", "likingMembers", "location", "job"})
+@ToString(callSuper = true, exclude = {"member", "recruitmentJobs", "likingMembers", "location", "job"})
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -37,7 +37,7 @@ public class Post extends AuditingFields {
 
     @Builder.Default
     @OneToMany(mappedBy = "post")
-    private List<PostJob> postJobs = new ArrayList<>();
+    private List<RecruitmentJob> recruitmentJobs = new ArrayList<>();
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
