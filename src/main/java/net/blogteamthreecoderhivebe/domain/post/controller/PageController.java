@@ -1,7 +1,7 @@
 package net.blogteamthreecoderhivebe.domain.post.controller;
 
 import lombok.RequiredArgsConstructor;
-import net.blogteamthreecoderhivebe.domain.member.service.LikePostService;
+import net.blogteamthreecoderhivebe.domain.heart.service.HeartService;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostStatus;
 import net.blogteamthreecoderhivebe.domain.post.dto.response.PostWithApplyNumberResponse;
@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 public class PageController {
     private final PostService postService;
-    private final LikePostService likePostService;
+    private final HeartService heartService;
 
     @GetMapping
     public Page<PostWithApplyNumberResponse> searchPostList(
@@ -31,7 +31,7 @@ public class PageController {
             @RequestParam(required = false) PostStatus postStatus,
             Pageable pageable
     ) {
-        List<Long> likePosts = likePostService.searchLikePost(memberId);
+        List<Long> likePosts = heartService.searchHeartPostIds(memberId);
         return postService.searchPost(postCategory, regions, jobs, postStatus, pageable).map(
                 p -> PostWithApplyNumberResponse.from(p, likePosts)
         );

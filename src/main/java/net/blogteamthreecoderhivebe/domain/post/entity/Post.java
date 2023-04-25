@@ -2,9 +2,9 @@ package net.blogteamthreecoderhivebe.domain.post.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import net.blogteamthreecoderhivebe.domain.heart.entity.Heart;
 import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 import net.blogteamthreecoderhivebe.domain.info.entity.Location;
-import net.blogteamthreecoderhivebe.domain.member.entity.LikePost;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostStatus;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Builder
-@ToString(callSuper = true, exclude = {"member", "recruitmentJobs", "likingMembers", "location", "job"})
+@ToString(callSuper = true, exclude = {"member", "recruitmentJobs", "hearts", "location", "job"})
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,7 +33,7 @@ public class Post extends AuditingFields {
 
     @Builder.Default
     @OneToMany(mappedBy = "post")
-    private List<LikePost> likingMembers = new ArrayList<>();
+    private List<Heart> hearts = new ArrayList<>();
 
     @Builder.Default
     @OneToMany(mappedBy = "post")

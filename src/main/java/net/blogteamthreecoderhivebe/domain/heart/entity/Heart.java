@@ -1,7 +1,8 @@
-package net.blogteamthreecoderhivebe.domain.member.entity;
+package net.blogteamthreecoderhivebe.domain.heart.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 
 @Builder
@@ -10,9 +11,9 @@ import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class LikePost {
+public class Heart {
     @Id
-    @Column(name = "like_post_id")
+    @Column(name = "heart_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -27,11 +28,11 @@ public class LikePost {
     // 연관 관계 편의 메소드
     public void addPost(Post post) {
         this.post = post;
-        post.getLikingMembers().add(this);
+        post.getHearts().add(this);
     }
 
     public void addMember(Member member) {
         this.member = member;
-        member.getListPosts().add(this);
+        member.getHearts().add(this);
     }
 }

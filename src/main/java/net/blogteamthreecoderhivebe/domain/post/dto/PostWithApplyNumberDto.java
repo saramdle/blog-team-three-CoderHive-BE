@@ -31,7 +31,7 @@ public record PostWithApplyNumberDto(
                 .locationDto(LocationDto.from(post.getLocation()))
                 .thumbImageUrl(post.getThumbImageUrl())
                 .skills(skills)
-                .likes(post.getLikingMembers().size())
+                .likes(post.getHearts().size())
                 .thumbImageUrl(post.getThumbImageUrl())
                 .number(number)
                 .passNumber(passNumber)

@@ -38,7 +38,7 @@ public record PostDto(
                 .platforms(post.getPlatforms())
                 .postStatus(post.getPostStatus())
                 .jobDto(JobDto.from(post.getJob()))
-                .likes(post.getLikingMembers().size())
+                .likes(post.getHearts().size())
                 .build();
     }
 
@@ -55,7 +55,7 @@ public record PostDto(
                 .postStatus(post.getPostStatus())
                 .jobDto(JobDto.from(post.getJob()))
                 .skills(skills)
-                .likes(post.getLikingMembers().size())
+                .likes(post.getHearts().size())
                 .build();
     }
 

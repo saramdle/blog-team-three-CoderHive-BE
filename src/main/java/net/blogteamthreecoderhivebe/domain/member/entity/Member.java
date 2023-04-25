@@ -2,6 +2,7 @@ package net.blogteamthreecoderhivebe.domain.member.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import net.blogteamthreecoderhivebe.domain.heart.entity.Heart;
 import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberCareer;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberLevel;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@ToString(callSuper = true, exclude = {"job", "listPosts"})
+@ToString(callSuper = true, exclude = {"job", "hearts"})
 @Getter
 @Builder
 @AllArgsConstructor
@@ -42,7 +43,7 @@ public class Member extends AuditingFields {
 
     @Builder.Default
     @OneToMany(mappedBy = "member")
-    private List<LikePost> listPosts = new ArrayList<>();
+    private List<Heart> hearts = new ArrayList<>();
 
     private String nickname;
     private String profileImageUrl;
