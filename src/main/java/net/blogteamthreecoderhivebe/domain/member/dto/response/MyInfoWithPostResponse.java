@@ -55,5 +55,4 @@ public record MyInfoWithPostResponse(
                 )
                 .build();
     }
-
 }

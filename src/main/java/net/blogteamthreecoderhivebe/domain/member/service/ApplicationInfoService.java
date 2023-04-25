@@ -17,6 +17,4 @@ public class ApplicationInfoService {
     public List<ApplicationInfo> searchApplyPost(Long memberId) {
         return applicationInfoRepository.findByMember_Id(memberId);
     }
-
-
 }

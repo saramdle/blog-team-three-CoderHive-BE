@@ -6,10 +6,10 @@ import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 
 @Builder
-@ToString(exclude = {"member", "post"})
 @Getter
-@AllArgsConstructor
+@ToString(exclude = {"member", "post"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Entity
 public class Heart {
     @Id

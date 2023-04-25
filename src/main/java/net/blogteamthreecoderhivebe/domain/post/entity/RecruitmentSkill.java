@@ -1,15 +1,14 @@
 package net.blogteamthreecoderhivebe.domain.post.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 import net.blogteamthreecoderhivebe.domain.info.entity.Skill;
 
 @Builder
-@ToString(exclude = {"skill", "post"})
 @Getter
-@AllArgsConstructor
+@ToString(exclude = {"skill", "post"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Entity
 public class RecruitmentSkill {
     @Id
@@ -24,5 +23,4 @@ public class RecruitmentSkill {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
-
 }

@@ -16,7 +16,6 @@ import java.util.Optional;
 @RequestMapping("")
 @RestController
 public class OAuth2Controller {
-
     final MemberService memberService;
 
     @GetMapping("/")
@@ -25,8 +24,9 @@ public class OAuth2Controller {
         String memberEmail = memberPrincipal.email();
         Optional<MemberDto> memberDto = memberService.searchMemberByEmail(memberEmail);
 
-        if (memberDto.get().nickname() == null) return new RedirectView("http://localhost:3000/register");
-        else {
+        if (memberDto.get().nickname() == null) {
+            return new RedirectView("http://localhost:3000/register");
+        } else {
             return new RedirectView("http://localhost:3000");
         }
     }
@@ -57,5 +57,4 @@ public class OAuth2Controller {
         return new RedirectView("http://localhost:3000");
     }
 */
-
 }

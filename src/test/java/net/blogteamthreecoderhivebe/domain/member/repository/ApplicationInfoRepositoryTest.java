@@ -13,9 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @DisplayName("ApplicationInfoRepository 테스트")
+@Import({TestJpaConfig.class, TestQueryDslConfig.class})
 @Transactional
 @DataJpaTest
-@Import({TestJpaConfig.class, TestQueryDslConfig.class})
 public class ApplicationInfoRepositoryTest {
     @Autowired
     private ApplicationInfoRepository applicationInfoRepository;
@@ -27,8 +27,5 @@ public class ApplicationInfoRepositoryTest {
         for (ApplicationInfo applicationInfo : byMemberId) {
             System.out.println(applicationInfo);
         }
-
-
     }
-
 }

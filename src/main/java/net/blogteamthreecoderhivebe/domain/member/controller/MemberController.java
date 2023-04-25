@@ -17,7 +17,6 @@ import java.util.List;
 @RequestMapping("/members")
 @RestController
 public class MemberController {
-
     private final MemberService memberService;
     private final HeartService heartService;
 

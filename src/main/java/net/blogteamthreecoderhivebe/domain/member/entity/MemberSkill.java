@@ -5,10 +5,10 @@ import lombok.*;
 import net.blogteamthreecoderhivebe.domain.info.entity.Skill;
 
 @Builder
-@ToString(exclude = {"member", "skill"})
 @Getter
-@AllArgsConstructor
+@ToString(exclude = {"member", "skill"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Entity
 public class MemberSkill {
     @Id

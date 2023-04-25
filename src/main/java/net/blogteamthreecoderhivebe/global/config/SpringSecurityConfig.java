@@ -13,14 +13,14 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-
 @Configuration
 public class SpringSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http,
                                            OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService
-    ) throws Exception{
-        http.csrf().disable()
+    ) throws Exception {
+        http.
+                csrf().disable()
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/members/**").permitAll()
                         .anyRequest().permitAll()//authenticated()
@@ -35,17 +35,13 @@ public class SpringSecurityConfig {
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
                         .logoutSuccessUrl("/login/oauth2/mainpage")
-                )
-                ;
+                );
 
         return http.build();
     }
 
     @Bean
-    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService(
-            MemberService memberService
-    ) {
-
+    public OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService(MemberService memberService) {
         final DefaultOAuth2UserService delegate = new DefaultOAuth2UserService();
 
         return (userRequest) -> {
@@ -72,7 +68,8 @@ public class SpringSecurityConfig {
             //System.out.println(socialLoginDto);
             String email = socialLoginDto.email();
 
-            if (socialLoginDto.email().isEmpty()) throw new EntityNotFoundException("멤버가 없습니다 - member email: " + email);
+            if (socialLoginDto.email().isEmpty())
+                throw new EntityNotFoundException("멤버가 없습니다 - member email: " + email);
             else {
                 return memberService.searchMemberByEmail(email)
                         .map(MemberPrincipal::from)

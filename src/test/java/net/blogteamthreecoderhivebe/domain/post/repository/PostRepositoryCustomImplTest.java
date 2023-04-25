@@ -18,14 +18,17 @@ import java.util.List;
 @Transactional
 @SpringBootTest
 public class PostRepositoryCustomImplTest {
-
     @Autowired
     private PostRepository postRepository;
 
     @Test
     void postPageTest() {
         PageRequest page = PageRequest.of(0, 20);
-        Page<Post> allPost = postRepository.getAllPost(PostCategory.PROJECT, List.of((long) 1, (long) 2, (long) 3), List.of((long) 1), PostStatus.HIRING, page);
+        Page<Post> allPost = postRepository.getAllPost(
+                PostCategory.PROJECT,
+                List.of((long) 1, (long) 2, (long) 3),
+                List.of((long) 1), PostStatus.HIRING, page
+        );
         for (Post post : allPost) {
             System.out.println(post.getLocation().getRegion());
             List<RecruitmentJob> recruitmentJobs = post.getRecruitmentJobs();

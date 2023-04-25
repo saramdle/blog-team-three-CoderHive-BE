@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RequiredArgsConstructor
 @RequestMapping("info")
 @RestController
@@ -29,11 +28,9 @@ public class InfoController {
     }
 
     @GetMapping("/skills")
-    public TechnologyResponse searchTop4Skills(
-            @RequestParam(required = false, defaultValue="") final String keyword) {
+    public TechnologyResponse searchTop4Skills(@RequestParam(required = false, defaultValue = "") final String keyword) {
         return TechnologyResponse.from(infoService.searchTop4Skills(keyword));
     }
-
 
     @GetMapping("/careers")
     public CareerResponse searchAllCareer() {
@@ -49,6 +46,4 @@ public class InfoController {
     public PlatformResponse searchAllPlatform() {
         return PlatformResponse.from(Platform.toList());
     }
-
-    
 }

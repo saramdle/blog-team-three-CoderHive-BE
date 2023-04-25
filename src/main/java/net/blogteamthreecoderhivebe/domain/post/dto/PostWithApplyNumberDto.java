@@ -8,7 +8,6 @@ import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 
 import java.util.List;
 
-
 @Builder
 public record PostWithApplyNumberDto(
         Long id,

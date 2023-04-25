@@ -12,11 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @DisplayName("MemberSkillRepository 테스트")
+@Import({TestJpaConfig.class, TestQueryDslConfig.class})
 @Transactional
 @DataJpaTest
-@Import({TestJpaConfig.class, TestQueryDslConfig.class})
 class MemberSkillRepositoryTest {
-
     @Autowired
     private MemberSkillRepository memberSkillRepository;
 
@@ -26,6 +25,4 @@ class MemberSkillRepositoryTest {
         List<String> strings = memberSkillRepository.searchSkill(1L);
         System.out.println(strings);
     }
-
-
 }

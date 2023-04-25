@@ -22,8 +22,6 @@ public record MemberDto(
         String introduction,
         List<String> skills
 ) {
-
-
     public static MemberDto from(Member entity) {
         return MemberDto.builder()
                 .id(entity.getId())

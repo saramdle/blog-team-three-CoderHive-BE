@@ -47,7 +47,11 @@ public record NaverOAuth2Response(
                 .build();
     }
 
-    public String email() { return this.naverResponse().email(); }
-    public String nickname() { return this.naverResponse().nickname(); }
+    public String email() {
+        return this.naverResponse().email();
+    }
 
+    public String nickname() {
+        return this.naverResponse().nickname();
+    }
 }

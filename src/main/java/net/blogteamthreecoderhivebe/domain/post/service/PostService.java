@@ -23,7 +23,11 @@ public class PostService {
     private final PostRepository postRepository;
     private final RecruitmentSkillRepository recruitmentSkillRepository;
 
-    public Page<PostWithApplyNumberDto> searchPost(PostCategory postCategory, List<Long> regions, List<Long> jobs, PostStatus postStatus, Pageable pageable) {
+    public Page<PostWithApplyNumberDto> searchPost(PostCategory postCategory,
+                                                   List<Long> regions,
+                                                   List<Long> jobs,
+                                                   PostStatus postStatus,
+                                                   Pageable pageable) {
         Page<Post> postInfos = postRepository.getAllPost(postCategory, regions, jobs, postStatus, pageable);
         List<PostWithApplyNumberDto> postWithApplyNumberDtos = postInfos.stream()
                 .map(p -> {

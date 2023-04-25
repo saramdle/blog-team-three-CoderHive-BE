@@ -25,7 +25,6 @@ public record MemberWithPostDto(
         List<PostDto> appliedPostDtos,
         List<PostDto> participatedPostDtos
 ) {
-
     public static MemberWithPostDto from(MemberDto memberDto, List<PostDto> hostPostDtos, List<PostDto> appliedPostDtos, List<PostDto> participatedPostDtos) {
         return MemberWithPostDto.builder()
                 .id(memberDto.id())
@@ -43,5 +42,4 @@ public record MemberWithPostDto(
                 .participatedPostDtos(participatedPostDtos)
                 .build();
     }
-
 }

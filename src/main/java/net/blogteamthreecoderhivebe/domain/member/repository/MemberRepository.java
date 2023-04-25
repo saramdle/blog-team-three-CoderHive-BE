@@ -1,6 +1,5 @@
 package net.blogteamthreecoderhivebe.domain.member.repository;
 
-
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 

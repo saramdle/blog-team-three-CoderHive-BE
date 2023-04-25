@@ -6,10 +6,10 @@ import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
 import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
 
 @Builder
-@ToString(exclude = {"member", "recruitmentJob"})
 @Getter
-@AllArgsConstructor
+@ToString(exclude = {"member", "recruitmentJob"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Entity
 public class ApplicationInfo {
     @Id

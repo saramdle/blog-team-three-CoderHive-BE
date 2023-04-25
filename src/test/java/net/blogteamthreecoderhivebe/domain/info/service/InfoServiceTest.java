@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 @Transactional
 @SpringBootTest
 class InfoServiceTest {
-
     @Autowired
     private JobRepository jobRepository;
     @Autowired
@@ -45,9 +44,6 @@ class InfoServiceTest {
                     return result;
                 })
                 .toList();
-
         System.out.println(groupedJobs);
-
     }
-
 }

@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@ToString(callSuper = true, exclude = {"job", "hearts"})
-@Getter
 @Builder
-@AllArgsConstructor
+@Getter
+@ToString(callSuper = true, exclude = {"job", "hearts"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Entity
 public class Member extends AuditingFields {
     @Id
@@ -25,12 +25,14 @@ public class Member extends AuditingFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_id")
-    private Job job;
-
     @Column(nullable = false, unique = true)
     private String email;
+
+    private String nickname;
+    private String profileImageUrl;
+
+    @Column(length = 1000)
+    private String introduction;
 
     @Enumerated(EnumType.STRING)
     private MemberLevel level;
@@ -41,15 +43,13 @@ public class Member extends AuditingFields {
     @Enumerated(EnumType.STRING)
     private MemberRole memberRole;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_id")
+    private Job job;
+
     @Builder.Default
     @OneToMany(mappedBy = "member")
     private List<Heart> hearts = new ArrayList<>();
-
-    private String nickname;
-    private String profileImageUrl;
-
-    @Column(length=1000)
-    private String introduction;
 
     @Override
     public boolean equals(Object o) {

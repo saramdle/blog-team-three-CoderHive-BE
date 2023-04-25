@@ -20,10 +20,9 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 @Service
 public class InfoService {
-    private final LocationRepository locationRepository;
     private final JobRepository jobRepository;
-
     private final SkillRepository skillRepository;
+    private final LocationRepository locationRepository;
 
     public List<LocationDto> searchAllLocation() {
         return locationRepository.findAll().stream().map(LocationDto::from).toList();
@@ -54,6 +53,4 @@ public class InfoService {
     public List<SkillDto> searchTop4Skills(String keyword) {
         return skillRepository.findTop4ByDetailContaining(keyword);
     }
-
-
 }

@@ -7,7 +7,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public enum MemberLevel {
-    NEWBIE("초심자"), BEGINNER("초보"), INTERMEDIATE("중수"), EXPERT("고수"), MASTER("구루");
+    NEWBIE("초심자"),
+    BEGINNER("초보"),
+    INTERMEDIATE("중수"),
+    EXPERT("고수"),
+    MASTER("구루");
+
     @Getter
     private final String description;
 

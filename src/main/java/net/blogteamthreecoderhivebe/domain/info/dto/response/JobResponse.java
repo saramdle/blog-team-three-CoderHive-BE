@@ -4,10 +4,7 @@ import lombok.Builder;
 import net.blogteamthreecoderhivebe.domain.info.dto.JobDto;
 
 @Builder
-public record JobResponse(
-        String main,
-        String detail
-) {
+public record JobResponse(String main, String detail) {
     public static JobResponse from(JobDto dto) {
         return JobResponse.builder()
                 .main(dto.main())

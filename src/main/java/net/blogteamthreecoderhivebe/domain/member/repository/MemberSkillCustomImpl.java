@@ -10,7 +10,6 @@ import static net.blogteamthreecoderhivebe.domain.member.entity.QMemberSkill.mem
 
 @RequiredArgsConstructor
 public class MemberSkillCustomImpl implements MemberSkillCustom {
-
     private final JPAQueryFactory queryFactory;
 
     @Override

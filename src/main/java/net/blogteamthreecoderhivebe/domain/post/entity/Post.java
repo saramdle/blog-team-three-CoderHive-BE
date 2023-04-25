@@ -15,10 +15,10 @@ import java.util.List;
 import java.util.Objects;
 
 @Builder
-@ToString(callSuper = true, exclude = {"member", "recruitmentJobs", "hearts", "location", "job"})
 @Getter
-@AllArgsConstructor
+@ToString(callSuper = true, exclude = {"member", "recruitmentJobs", "hearts", "location", "job"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Table(indexes = @Index(columnList = "modifiedAt DESC"))
 @Entity
 public class Post extends AuditingFields {
@@ -31,6 +31,14 @@ public class Post extends AuditingFields {
     @JoinColumn(updatable = false, name = "member_id")
     private Member member;
 
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_id")
+    private Job job;
+
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "location_id")
+    private Location location;
+
     @Builder.Default
     @OneToMany(mappedBy = "post")
     private List<Heart> hearts = new ArrayList<>();
@@ -39,28 +47,20 @@ public class Post extends AuditingFields {
     @OneToMany(mappedBy = "post")
     private List<RecruitmentJob> recruitmentJobs = new ArrayList<>();
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "location_id")
-    private Location location;
+    @Enumerated(EnumType.STRING)
+    private PostCategory postCategory;
+
+    @Enumerated(EnumType.STRING)
+    private PostStatus postStatus;
 
     private String title;
 
     @Column(length = 1000)
     private String content;
+
     private String thumbImageUrl;
 
-    @Enumerated(EnumType.STRING)
-    private PostCategory postCategory;
-
-    // use only Enum (constant) > platform
-    private String platforms;
-
-    @Enumerated(EnumType.STRING)
-    private PostStatus postStatus;
-
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "job_id")
-    private Job job;
+    private String platforms; // use only Enum (constant) > platform
 
     @Override
     public boolean equals(Object o) {

@@ -5,10 +5,10 @@ import lombok.*;
 import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 
 @Builder
-@ToString(exclude = {"post", "job"})
 @Getter
-@AllArgsConstructor
+@ToString(exclude = {"post", "job"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Entity
 public class RecruitmentJob {
     @Id

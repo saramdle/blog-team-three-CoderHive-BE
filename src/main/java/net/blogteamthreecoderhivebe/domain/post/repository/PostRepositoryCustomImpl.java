@@ -57,7 +57,11 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
     }
 
     @Override
-    public Page<Post> getAllPost(PostCategory postCategory, List<Long> regions, List<Long> jobs, PostStatus postStatus, Pageable pageable) {
+    public Page<Post> getAllPost(PostCategory postCategory,
+                                 List<Long> regions,
+                                 List<Long> jobs,
+                                 PostStatus postStatus,
+                                 Pageable pageable) {
         List<Post> Posts = queryFactory
                 .select(post)
                 .from(post)
@@ -94,8 +98,6 @@ public class PostRepositoryCustomImpl implements PostRepositoryCustom {
     private BooleanExpression postStatusEq(PostStatus postStatus) {
         return postStatus != null ? post.postStatus.eq(postStatus): null;
     }
-
-
 }
 
 

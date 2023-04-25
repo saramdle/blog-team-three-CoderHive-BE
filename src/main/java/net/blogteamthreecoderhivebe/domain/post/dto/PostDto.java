@@ -24,7 +24,6 @@ public record PostDto(
         JobDto jobDto,
         List<String> skills,
         int likes
-
 ) {
     public static PostDto from(Post post) {
         return PostDto.builder()

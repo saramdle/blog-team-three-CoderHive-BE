@@ -23,18 +23,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class MemberService {
+    private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final MemberSkillRepository memberSkillRepository;
-    private final PostRepository postRepository;
     private final RecruitmentSkillRepository recruitmentSkillRepository;
 
     public MemberDto searchMember(Long memberId) {
-        return memberRepository.findById(memberId).map(MemberDto::from)
+        return memberRepository.findById(memberId)
+                .map(MemberDto::from)
                 .orElseThrow(() -> new EntityNotFoundException("멤버가 없습니다 - memberId: " + memberId));
     }
 
@@ -88,8 +88,7 @@ public class MemberService {
                                 MemberRole memberRole,
                                 String profileImageUrl,
                                 String introduction,
-                                Job job
-                                ) {
+                                Job job) {
         return MemberDto.from(memberRepository.save(
                 Member.builder()
                         .nickname(nickname)
@@ -106,12 +105,10 @@ public class MemberService {
 
     /**
      * 이메일로 사용자 찾기
-     *
      */
     public Optional<MemberDto> searchMemberByEmail(String email) {
         return memberRepository.findByEmail(email).map(MemberDto::from);
     }
-
 
     @Transactional
     public MemberDto saveMember(String email) {

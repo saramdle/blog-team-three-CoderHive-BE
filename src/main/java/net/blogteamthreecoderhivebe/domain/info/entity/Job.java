@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Builder
-@ToString
 @Getter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
@@ -17,5 +17,4 @@ public class Job{
 
     private String main;
     private String detail;
-
 }
