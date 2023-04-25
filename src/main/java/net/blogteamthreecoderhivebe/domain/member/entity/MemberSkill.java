@@ -10,9 +10,9 @@ import net.blogteamthreecoderhivebe.domain.info.entity.Skill;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class MemberTechnology {
+public class MemberSkill {
     @Id
-    @Column(name = "member_technology_id")
+    @Column(name = "member_skill_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -21,6 +21,6 @@ public class MemberTechnology {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "technology_id")
+    @JoinColumn(name = "skill_id")
     private Skill skill;
 }

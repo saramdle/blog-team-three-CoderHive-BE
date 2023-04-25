@@ -11,7 +11,7 @@ import net.blogteamthreecoderhivebe.domain.member.dto.MemberDto;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberWithPostDto;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import net.blogteamthreecoderhivebe.domain.member.repository.MemberRepository;
-import net.blogteamthreecoderhivebe.domain.member.repository.MemberTechnologyRepository;
+import net.blogteamthreecoderhivebe.domain.member.repository.MemberSkillRepository;
 import net.blogteamthreecoderhivebe.domain.post.dto.PostDto;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
@@ -29,7 +29,7 @@ import java.util.Optional;
 @Service
 public class MemberService {
     private final MemberRepository memberRepository;
-    private final MemberTechnologyRepository memberTechnologyRepository;
+    private final MemberSkillRepository memberSkillRepository;
     private final PostRepository postRepository;
     private final SkillRequirementRepository skillRequirementRepository;
 
@@ -42,7 +42,7 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("멤버가 없습니다 - memberId: " + memberId));
 
-        List<String> skills = memberTechnologyRepository.searchTechnology(memberId);
+        List<String> skills = memberSkillRepository.searchSkill(memberId);
 
         MemberDto memberDto = MemberDto.from(member, skills);
 
