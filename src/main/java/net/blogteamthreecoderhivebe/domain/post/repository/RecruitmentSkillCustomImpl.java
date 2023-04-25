@@ -6,19 +6,19 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 
 import static net.blogteamthreecoderhivebe.domain.info.entity.QSkill.skill;
-import static net.blogteamthreecoderhivebe.domain.post.entity.QSkillRequirement.skillRequirement;
+import static net.blogteamthreecoderhivebe.domain.post.entity.QRecruitmentSkill.recruitmentSkill;
 
 @RequiredArgsConstructor
-public class SkillRequirementCustomImpl implements SkillRequirementCustom {
+public class RecruitmentSkillCustomImpl implements RecruitmentSkillCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public List<String> searchTechnology(Long postId) {
+    public List<String> searchSkill(Long postId) {
         return queryFactory
                 .select(skill.detail)
-                .from(skillRequirement)
-                .join(skillRequirement.skill, skill)
-                .where(skillRequirement.post.id.eq(postId))
+                .from(recruitmentSkill)
+                .join(recruitmentSkill.skill, skill)
+                .where(recruitmentSkill.post.id.eq(postId))
                 .fetch();
     }
 }

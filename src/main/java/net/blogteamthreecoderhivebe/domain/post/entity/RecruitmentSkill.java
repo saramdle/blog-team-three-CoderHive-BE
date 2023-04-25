@@ -11,9 +11,9 @@ import net.blogteamthreecoderhivebe.domain.info.entity.Skill;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class SkillRequirement {
+public class RecruitmentSkill {
     @Id
-    @Column(name = "skill_requirement_id")
+    @Column(name = "recruitment_skill_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
