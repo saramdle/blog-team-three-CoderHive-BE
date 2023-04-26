@@ -1,8 +1,8 @@
 package net.blogteamthreecoderhivebe.global.auth.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import net.blogteamthreecoderhivebe.domain.member.service.MemberService;
+import net.blogteamthreecoderhivebe.domain.member.entity.Member;
+import net.blogteamthreecoderhivebe.domain.member.repository.MemberRepository;
 import net.blogteamthreecoderhivebe.global.auth.dto.MemberPrincipal;
 import net.blogteamthreecoderhivebe.global.auth.dto.SocialLoginDto;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -17,7 +17,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Service
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
-    private final MemberService memberService;
+    private final MemberRepository memberRepository;
 
     @Override
     public MemberPrincipal loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -26,23 +26,21 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         //System.out.println("oAuth2User : " + oAuth2User);
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId(); // google, naver, kakao
+        String nameAttributeKey = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
         Map<String, Object> attributes = oAuth2User.getAttributes();
         //System.out.println("registrationId : " + registrationId);
         //System.out.println("attributes : " + attributes);
 
-        SocialLoginDto socialLoginDto = SocialLoginDto.of(registrationId, attributes);
+        SocialLoginDto socialLoginDto = SocialLoginDto.of(registrationId, nameAttributeKey, attributes);
         //System.out.println("socialLoginDto : " + socialLoginDto);
 
-        String email = socialLoginDto.email();
+        Member member = save(socialLoginDto);
+        return new MemberPrincipal(socialLoginDto);
+    }
 
-        if (email.isEmpty())
-            throw new EntityNotFoundException("멤버가 없습니다 - email:" + email);
-        else {
-            return memberService.searchMemberByEmail(email)
-                    .map(MemberPrincipal::from)
-                    .orElseGet(() ->
-                            MemberPrincipal.from(memberService.saveMember(email))
-                    );
-        }
+    private Member save(SocialLoginDto socialLoginDto) {
+        Member member = memberRepository.findByEmail(socialLoginDto.email())
+                .orElse(socialLoginDto.toEntity());
+        return memberRepository.save(member);
     }
 }
