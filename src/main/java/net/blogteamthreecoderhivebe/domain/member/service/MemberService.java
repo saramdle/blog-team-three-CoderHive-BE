@@ -118,4 +118,11 @@ public class MemberService {
                         .build())
         );
     }
+
+    /**
+     * 신규 회원인지 확인
+     */
+    public Boolean isNewMember(String email) {
+        return memberRepository.findByEmail(email).isEmpty();
+    }
 }
