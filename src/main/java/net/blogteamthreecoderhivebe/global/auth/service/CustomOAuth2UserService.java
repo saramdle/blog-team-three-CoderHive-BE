@@ -1,7 +1,6 @@
 package net.blogteamthreecoderhivebe.global.auth.service;
 
 import lombok.RequiredArgsConstructor;
-import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import net.blogteamthreecoderhivebe.domain.member.repository.MemberRepository;
 import net.blogteamthreecoderhivebe.global.auth.dto.MemberPrincipal;
 import net.blogteamthreecoderhivebe.global.auth.dto.SocialLoginDto;
@@ -34,13 +33,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         SocialLoginDto socialLoginDto = SocialLoginDto.of(registrationId, nameAttributeKey, attributes);
         //System.out.println("socialLoginDto : " + socialLoginDto);
 
-        Member member = save(socialLoginDto);
         return new MemberPrincipal(socialLoginDto);
-    }
-
-    private Member save(SocialLoginDto socialLoginDto) {
-        Member member = memberRepository.findByEmail(socialLoginDto.email())
-                .orElse(socialLoginDto.toEntity());
-        return memberRepository.save(member);
     }
 }

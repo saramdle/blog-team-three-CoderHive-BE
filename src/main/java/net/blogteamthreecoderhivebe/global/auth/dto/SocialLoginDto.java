@@ -1,7 +1,6 @@
 package net.blogteamthreecoderhivebe.global.auth.dto;
 
 import lombok.Builder;
-import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 
 import java.util.Map;
 
@@ -51,12 +50,6 @@ public record SocialLoginDto( // String nickname,
                 .email(googleResponse.email())
                 .attributes(attributes)
                 .nameAttributeKey(nameAttributeKey)
-                .build();
-    }
-
-    public Member toEntity() {
-        return Member.builder()
-                .email(email)
                 .build();
     }
 }
