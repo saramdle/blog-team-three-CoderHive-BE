@@ -21,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -32,15 +31,18 @@ public class MemberService {
     private final MemberSkillRepository memberSkillRepository;
     private final RecruitmentSkillRepository recruitmentSkillRepository;
 
-    public MemberDto searchMember(Long memberId) {
+    private Member searchMember(Long memberId) {
         return memberRepository.findById(memberId)
-                .map(MemberDto::from)
                 .orElseThrow(() -> new EntityNotFoundException("멤버가 없습니다 - memberId: " + memberId));
     }
 
+    private Member searchMember(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("멤버가 없습니다 - email:" + email));
+    }
+
     public MemberWithPostDto searchMemberInfoAll(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("멤버가 없습니다 - memberId: " + memberId));
+        Member member = searchMember(memberId);
 
         List<String> skills = memberSkillRepository.searchSkill(memberId);
 
@@ -101,13 +103,6 @@ public class MemberService {
                         .job(job)
                         .build())
         );
-    }
-
-    /**
-     * 이메일로 사용자 찾기
-     */
-    public Optional<MemberDto> searchMemberByEmail(String email) {
-        return memberRepository.findByEmail(email).map(MemberDto::from);
     }
 
     @Transactional
