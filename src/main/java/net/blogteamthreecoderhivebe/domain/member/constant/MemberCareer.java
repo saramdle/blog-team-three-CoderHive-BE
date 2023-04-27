@@ -13,6 +13,8 @@ public enum MemberCareer {
     SENIOR("5~10년차"),
     PRINCIPAL("10년차 이상");
 
+    private static final String NOT_FOUND_CAREER = "[%s] 경력을 찾을 수 없습니다.";
+
     @Getter
     private final String description;
 
@@ -26,17 +28,24 @@ public enum MemberCareer {
                 .collect(Collectors.toList());
     }
 
-    public static MemberCareer of(String source) {
-        if (source == null) {
-            throw new IllegalArgumentException();
-        }
-
-        for (MemberCareer mc : MemberCareer.values()) {
-            if (mc.description.equals(source)) {
-                return mc;
-            }
-        }
-
-        throw new IllegalArgumentException("일치하는 경력 목록이 없습니다.");
+    public static MemberCareer find(String description) {
+        return Arrays.stream(values())
+                .filter(career -> career.description.equals(description))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(String.format(NOT_FOUND_CAREER, description)));
     }
+
+//    public static MemberCareer of(String source) {
+//        if (source == null) {
+//            throw new IllegalArgumentException();
+//        }
+//
+//        for (MemberCareer mc : MemberCareer.values()) {
+//            if (mc.description.equals(source)) {
+//                return mc;
+//            }
+//        }
+//
+//        throw new IllegalArgumentException("일치하는 경력 목록이 없습니다.");
+//    }
 }
