@@ -1,4 +1,4 @@
-package net.blogteamthreecoderhivebe.domain.post.repository;
+package net.blogteamthreecoderhivebe.domain.post.repository.querydsl;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

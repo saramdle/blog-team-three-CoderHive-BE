@@ -1,6 +1,7 @@
 package net.blogteamthreecoderhivebe.domain.post.repository;
 
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
+import net.blogteamthreecoderhivebe.domain.post.repository.querydsl.PostRepositoryCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package net.blogteamthreecoderhivebe.domain.member.repository;
+package net.blogteamthreecoderhivebe.domain.member.repository.querydsl;
 
 import java.util.List;
 

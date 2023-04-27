@@ -1,4 +1,4 @@
-package net.blogteamthreecoderhivebe.domain.post.repository;
+package net.blogteamthreecoderhivebe.domain.post.repository.querydsl;
 
 import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
