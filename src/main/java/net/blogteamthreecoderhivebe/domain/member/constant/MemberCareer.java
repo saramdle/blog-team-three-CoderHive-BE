@@ -4,8 +4,8 @@ import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Getter
 public enum MemberCareer {
     NON("미지정"),
     ASSOCIATE("1~3년차"),
@@ -15,7 +15,6 @@ public enum MemberCareer {
 
     private static final String NOT_FOUND_CAREER = "[%s] 경력을 찾을 수 없습니다.";
 
-    @Getter
     private final String description;
 
     MemberCareer(String description) {
@@ -25,7 +24,7 @@ public enum MemberCareer {
     public static List<String> toList() {
         return Arrays.stream(MemberCareer.values())
                 .map(MemberCareer::getDescription)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public static MemberCareer find(String description) {

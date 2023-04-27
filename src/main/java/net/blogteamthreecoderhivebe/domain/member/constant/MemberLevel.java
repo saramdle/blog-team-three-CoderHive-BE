@@ -4,8 +4,8 @@ import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Getter
 public enum MemberLevel {
     NEWBIE("초심자"),
     BEGINNER("초보"),
@@ -15,7 +15,6 @@ public enum MemberLevel {
 
     private static final String NOT_FOUND_LEVEL = "[%s] 레벨을 찾을 수 없습니다.";
 
-    @Getter
     private final String description;
 
     MemberLevel(String description) {
@@ -25,7 +24,7 @@ public enum MemberLevel {
     public static List<String> toList() {
         return Arrays.stream(MemberLevel.values())
                 .map(MemberLevel::getDescription)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public static MemberLevel find(String description) {
