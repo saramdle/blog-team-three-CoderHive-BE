@@ -19,6 +19,6 @@ public class MemberPrincipal extends DefaultOAuth2User {
                 socialLoginDto.attributes(),
                 socialLoginDto.nameAttributeKey()
         );
-        this.email = email;
+        this.email = socialLoginDto.email();
     }
 }
