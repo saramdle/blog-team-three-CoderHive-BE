@@ -33,18 +33,4 @@ public enum MemberCareer {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format(NOT_FOUND_CAREER, description)));
     }
-
-//    public static MemberCareer of(String source) {
-//        if (source == null) {
-//            throw new IllegalArgumentException();
-//        }
-//
-//        for (MemberCareer mc : MemberCareer.values()) {
-//            if (mc.description.equals(source)) {
-//                return mc;
-//            }
-//        }
-//
-//        throw new IllegalArgumentException("일치하는 경력 목록이 없습니다.");
-//    }
 }

@@ -33,18 +33,4 @@ public enum MemberLevel {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException(String.format(NOT_FOUND_LEVEL, description)));
     }
-
-//    public static MemberLevel of(String source) {
-//        if (source == null) {
-//            throw new IllegalArgumentException();
-//        }
-//
-//        for (MemberLevel ml : MemberLevel.values()) {
-//            if (ml.description.equals(source)) {
-//                return ml;
-//            }
-//        }
-//
-//        throw new IllegalArgumentException("일치하는 경력 목록이 없습니다.");
-//    }
 }
