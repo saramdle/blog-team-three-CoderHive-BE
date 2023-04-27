@@ -3,14 +3,15 @@ package net.blogteamthreecoderhivebe.domain.member.controller;
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.heart.service.HeartService;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberWithPostDto;
+import net.blogteamthreecoderhivebe.domain.member.dto.request.SignUpRequest;
 import net.blogteamthreecoderhivebe.domain.member.dto.response.MemberInfoWithPostResponse;
 import net.blogteamthreecoderhivebe.domain.member.dto.response.MyInfoWithPostResponse;
 import net.blogteamthreecoderhivebe.domain.member.service.MemberService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -19,6 +20,18 @@ import java.util.List;
 public class MemberController {
     private final MemberService memberService;
     private final HeartService heartService;
+
+    @PostMapping
+    public ResponseEntity<String> signUp(@RequestBody SignUpRequest signUpRequest) {
+        Long memberId = memberService.save(signUpRequest);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/members/{id}")
+                .buildAndExpand(memberId)
+                .toUri();
+
+        return ResponseEntity.created(location).body("회원 가입 성공");
+    }
 
     @GetMapping("/my")
     public MyInfoWithPostResponse searchMyInfo(@RequestParam Long memberId) {

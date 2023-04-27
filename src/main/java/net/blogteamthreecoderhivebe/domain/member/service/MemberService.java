@@ -3,12 +3,13 @@ package net.blogteamthreecoderhivebe.domain.member.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.info.entity.Job;
+import net.blogteamthreecoderhivebe.domain.info.repository.JobRepository;
 import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberCareer;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberLevel;
-import net.blogteamthreecoderhivebe.domain.member.constant.MemberRole;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberDto;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberWithPostDto;
+import net.blogteamthreecoderhivebe.domain.member.dto.request.SignUpRequest;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import net.blogteamthreecoderhivebe.domain.member.repository.MemberRepository;
 import net.blogteamthreecoderhivebe.domain.member.repository.MemberSkillRepository;
@@ -22,10 +23,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 
+import static net.blogteamthreecoderhivebe.domain.member.constant.MemberRole.USER;
+
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class MemberService {
+    private final JobRepository jobRepository;
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final MemberSkillRepository memberSkillRepository;
@@ -74,44 +78,24 @@ public class MemberService {
     }
 
     /**
-     * 소셜 로그인을 이용한 사용자 회원가입
-     * - Google
-     * - Kakao
-     * - Naver
+     * 회원 가입
      */
-
-    /**
-     * 사용자 등록
-     */
-    public MemberDto saveMember(String nickname,
-                                String email,
-                                MemberLevel level,
-                                MemberCareer career,
-                                MemberRole memberRole,
-                                String profileImageUrl,
-                                String introduction,
-                                Job job) {
-        return MemberDto.from(memberRepository.save(
-                Member.builder()
-                        .nickname(nickname)
-                        .email(email)
-                        .level(level)
-                        .career(career)
-                        .memberRole(memberRole)
-                        .profileImageUrl(profileImageUrl)
-                        .introduction(introduction)
-                        .job(job)
-                        .build())
-        );
-    }
-
     @Transactional
-    public MemberDto saveMember(String email) {
-        return MemberDto.from(memberRepository.save(
-                Member.builder()
-                        .email(email)
-                        .build())
-        );
+    public Long save(SignUpRequest signUpRequest) {
+        Job job = jobRepository.findById(signUpRequest.jobId()).orElseThrow();
+        MemberCareer memberCareer = MemberCareer.find(signUpRequest.career());
+        MemberLevel memberLevel = MemberLevel.find(signUpRequest.level());
+
+        Member member = Member.builder()
+                .email(signUpRequest.email())
+                .nickname(signUpRequest.nickname())
+                .job(job)
+                .career(memberCareer)
+                .level(memberLevel)
+                .memberRole(USER)
+                .build();
+
+        return memberRepository.save(member).getId();
     }
 
     /**
