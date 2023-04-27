@@ -24,7 +24,7 @@ import static net.blogteamthreecoderhivebe.domain.post.entity.QPost.post;
 import static net.blogteamthreecoderhivebe.domain.post.entity.QRecruitmentJob.recruitmentJob;
 
 @RequiredArgsConstructor
-public class PostRepositoryCustomImpl implements PostRepositoryCustom {
+public class PostCustomImpl implements PostCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override

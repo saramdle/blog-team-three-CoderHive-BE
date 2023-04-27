@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Map;
 
-public interface PostRepositoryCustom {
+public interface PostCustom {
     Map<ApplicationResult, List<Post>> memberApplyPost(Long memberId);
 
     Page<Post> getAllPost(PostCategory postCategory, List<Long> regions, List<Long> jobs, PostStatus status, Pageable pageable);

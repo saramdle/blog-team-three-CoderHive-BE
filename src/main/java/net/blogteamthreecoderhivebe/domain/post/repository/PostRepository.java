@@ -1,11 +1,11 @@
 package net.blogteamthreecoderhivebe.domain.post.repository;
 
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
-import net.blogteamthreecoderhivebe.domain.post.repository.querydsl.PostRepositoryCustom;
+import net.blogteamthreecoderhivebe.domain.post.repository.querydsl.PostCustom;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface PostRepository extends PostRepositoryCustom, JpaRepository<Post, Long> {
+public interface PostRepository extends PostCustom, JpaRepository<Post, Long> {
    List<Post> findAllByMember_Id(Long memberId);
 }

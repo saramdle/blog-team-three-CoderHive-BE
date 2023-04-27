@@ -1,9 +1,10 @@
-package net.blogteamthreecoderhivebe.domain.post.repository;
+package net.blogteamthreecoderhivebe.domain.post.repository.querydsl;
 
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostStatus;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
+import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import java.util.List;
 @DisplayName("Post 레포지토리 확인")
 @Transactional
 @SpringBootTest
-public class PostRepositoryCustomImplTest {
+public class PostCustomImplTest {
     @Autowired
     private PostRepository postRepository;
 
