@@ -1,6 +1,7 @@
 package net.blogteamthreecoderhivebe.global.config;
 
 import lombok.RequiredArgsConstructor;
+import net.blogteamthreecoderhivebe.global.auth.handler.OAuth2SuccessHandler;
 import net.blogteamthreecoderhivebe.global.auth.service.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 @Configuration
 public class SpringSecurityConfig {
+    private final OAuth2SuccessHandler successHandler;
     private final CustomOAuth2UserService oauth2UserService;
 
     @Bean
@@ -27,6 +29,7 @@ public class SpringSecurityConfig {
                         //.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
                 .and()
                     .oauth2Login()
+                        .successHandler(successHandler)
                     .userInfoEndpoint()
                         .userService(oauth2UserService);
 
