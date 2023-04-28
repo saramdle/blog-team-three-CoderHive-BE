@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @RequiredArgsConstructor
 @Configuration
@@ -15,23 +14,21 @@ public class SpringSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.
-                csrf().disable()
-                .authorizeHttpRequests(request -> request
-                        .requestMatchers("/members/**").permitAll()
-                        .anyRequest().permitAll()//authenticated()
-                )
-                .oauth2Login(oauth2 -> oauth2
-                        //.authorizationEndpoint(authorization  -> authorization
-                        //        .baseUri("/"))
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(oauth2UserService)
-                        )
-                )
-                .logout(logout -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
-                        .logoutSuccessUrl("/login/oauth2/mainpage")
-                );
+        http
+                .csrf().disable()
+                .authorizeHttpRequests()
+                    .requestMatchers("/", "/members/**").permitAll()
+                    .anyRequest().permitAll()//authenticated()
+                .and()
+                    .logout()
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        //.logoutSuccessUrl("/login/oauth2/mainpage")
+                        //.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
+                .and()
+                    .oauth2Login()
+                    .userInfoEndpoint()
+                        .userService(oauth2UserService);
 
         return http.build();
     }
