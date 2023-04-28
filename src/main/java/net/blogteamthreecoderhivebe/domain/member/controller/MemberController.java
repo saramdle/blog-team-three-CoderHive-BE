@@ -7,7 +7,9 @@ import net.blogteamthreecoderhivebe.domain.member.dto.request.SignUpRequest;
 import net.blogteamthreecoderhivebe.domain.member.dto.response.MemberInfoWithPostResponse;
 import net.blogteamthreecoderhivebe.domain.member.dto.response.MyInfoWithPostResponse;
 import net.blogteamthreecoderhivebe.domain.member.service.MemberService;
+import net.blogteamthreecoderhivebe.global.auth.dto.MemberPrincipal;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -22,11 +24,12 @@ public class MemberController {
     private final HeartService heartService;
 
     @PostMapping
-    public ResponseEntity<String> signUp(@RequestBody SignUpRequest signUpRequest) {
-        Long memberId = memberService.save(signUpRequest);
+    public ResponseEntity<String> signUp(@RequestBody SignUpRequest signUpRequest,
+                                         @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        Long memberId = memberService.save(signUpRequest, memberPrincipal.getEmail());
 
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/members/{id}")
+                .path("/{id}")
                 .buildAndExpand(memberId)
                 .toUri();
 

@@ -81,13 +81,13 @@ public class MemberService {
      * 회원 가입
      */
     @Transactional
-    public Long save(SignUpRequest signUpRequest) {
+    public Long save(SignUpRequest signUpRequest, String email) {
         Job job = jobRepository.findById(signUpRequest.jobId()).orElseThrow();
         MemberCareer memberCareer = MemberCareer.find(signUpRequest.career());
         MemberLevel memberLevel = MemberLevel.find(signUpRequest.level());
 
         Member member = Member.builder()
-                .email(signUpRequest.email())
+                .email(email)
                 .nickname(signUpRequest.nickname())
                 .job(job)
                 .career(memberCareer)
