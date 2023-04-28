@@ -3,12 +3,13 @@ package net.blogteamthreecoderhivebe.domain.member.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.info.entity.Job;
+import net.blogteamthreecoderhivebe.domain.info.repository.JobRepository;
 import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberCareer;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberLevel;
-import net.blogteamthreecoderhivebe.domain.member.constant.MemberRole;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberDto;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberWithPostDto;
+import net.blogteamthreecoderhivebe.domain.member.dto.request.SignUpRequest;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import net.blogteamthreecoderhivebe.domain.member.repository.MemberRepository;
 import net.blogteamthreecoderhivebe.domain.member.repository.MemberSkillRepository;
@@ -21,26 +22,31 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+
+import static net.blogteamthreecoderhivebe.domain.member.constant.MemberRole.USER;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class MemberService {
+    private final JobRepository jobRepository;
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final MemberSkillRepository memberSkillRepository;
     private final RecruitmentSkillRepository recruitmentSkillRepository;
 
-    public MemberDto searchMember(Long memberId) {
+    private Member searchMember(Long memberId) {
         return memberRepository.findById(memberId)
-                .map(MemberDto::from)
                 .orElseThrow(() -> new EntityNotFoundException("멤버가 없습니다 - memberId: " + memberId));
     }
 
+    private Member searchMember(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("멤버가 없습니다 - email:" + email));
+    }
+
     public MemberWithPostDto searchMemberInfoAll(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("멤버가 없습니다 - memberId: " + memberId));
+        Member member = searchMember(memberId);
 
         List<String> skills = memberSkillRepository.searchSkill(memberId);
 
@@ -72,50 +78,30 @@ public class MemberService {
     }
 
     /**
-     * 소셜 로그인을 이용한 사용자 회원가입
-     * - Google
-     * - Kakao
-     * - Naver
+     * 회원 가입
      */
-
-    /**
-     * 사용자 등록
-     */
-    public MemberDto saveMember(String nickname,
-                                String email,
-                                MemberLevel level,
-                                MemberCareer career,
-                                MemberRole memberRole,
-                                String profileImageUrl,
-                                String introduction,
-                                Job job) {
-        return MemberDto.from(memberRepository.save(
-                Member.builder()
-                        .nickname(nickname)
-                        .email(email)
-                        .level(level)
-                        .career(career)
-                        .memberRole(memberRole)
-                        .profileImageUrl(profileImageUrl)
-                        .introduction(introduction)
-                        .job(job)
-                        .build())
-        );
-    }
-
-    /**
-     * 이메일로 사용자 찾기
-     */
-    public Optional<MemberDto> searchMemberByEmail(String email) {
-        return memberRepository.findByEmail(email).map(MemberDto::from);
-    }
-
     @Transactional
-    public MemberDto saveMember(String email) {
-        return MemberDto.from(memberRepository.save(
-                Member.builder()
-                        .email(email)
-                        .build())
-        );
+    public Long save(SignUpRequest signUpRequest, String email) {
+        Job job = jobRepository.findById(signUpRequest.jobId()).orElseThrow();
+        MemberCareer memberCareer = MemberCareer.find(signUpRequest.career());
+        MemberLevel memberLevel = MemberLevel.find(signUpRequest.level());
+
+        Member member = Member.builder()
+                .email(email)
+                .nickname(signUpRequest.nickname())
+                .job(job)
+                .career(memberCareer)
+                .level(memberLevel)
+                .memberRole(USER)
+                .build();
+
+        return memberRepository.save(member).getId();
+    }
+
+    /**
+     * 신규 회원인지 확인
+     */
+    public boolean isNewMember(String email) {
+        return memberRepository.findByEmail(email).isEmpty();
     }
 }

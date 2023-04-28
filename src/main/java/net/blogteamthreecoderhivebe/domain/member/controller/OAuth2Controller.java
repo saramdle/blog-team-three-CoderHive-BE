@@ -1,32 +1,25 @@
 package net.blogteamthreecoderhivebe.domain.member.controller;
 
 import lombok.RequiredArgsConstructor;
-import net.blogteamthreecoderhivebe.domain.member.dto.MemberDto;
 import net.blogteamthreecoderhivebe.domain.member.service.MemberService;
 import net.blogteamthreecoderhivebe.global.auth.dto.MemberPrincipal;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.Optional;
-
 @RequiredArgsConstructor
-@RequestMapping("")
 @RestController
 public class OAuth2Controller {
-    final MemberService memberService;
+    private final MemberService memberService;
 
-    @GetMapping("/")
-    public RedirectView oauth2LoginUser(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
-        //System.out.println("member : " + memberPrincipal);
-        String memberEmail = memberPrincipal.email();
-        Optional<MemberDto> memberDto = memberService.searchMemberByEmail(memberEmail);
+    @GetMapping
+    public RedirectView oAuth2Login(@AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        String email = memberPrincipal.getEmail();
 
-        if (memberDto.get().nickname() == null) {
+        if (memberService.isNewMember(email)) { // 신규 회원일 경우 회원가입 페이지로 이동
             return new RedirectView("http://localhost:3000/register");
-        } else {
+        } else { // 기존 회원일 경우 홈으로 이동
             return new RedirectView("http://localhost:3000");
         }
     }

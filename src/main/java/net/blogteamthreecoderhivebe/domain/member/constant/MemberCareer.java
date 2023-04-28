@@ -4,8 +4,8 @@ import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
+@Getter
 public enum MemberCareer {
     NON("미지정"),
     ASSOCIATE("1~3년차"),
@@ -13,7 +13,8 @@ public enum MemberCareer {
     SENIOR("5~10년차"),
     PRINCIPAL("10년차 이상");
 
-    @Getter
+    private static final String NOT_FOUND_CAREER = "[%s] 경력을 찾을 수 없습니다.";
+
     private final String description;
 
     MemberCareer(String description) {
@@ -23,20 +24,13 @@ public enum MemberCareer {
     public static List<String> toList() {
         return Arrays.stream(MemberCareer.values())
                 .map(MemberCareer::getDescription)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    public static MemberCareer of(String source) {
-        if (source == null) {
-            throw new IllegalArgumentException();
-        }
-
-        for (MemberCareer mc : MemberCareer.values()) {
-            if (mc.description.equals(source)) {
-                return mc;
-            }
-        }
-
-        throw new IllegalArgumentException("일치하는 경력 목록이 없습니다.");
+    public static MemberCareer find(String description) {
+        return Arrays.stream(values())
+                .filter(career -> career.description.equals(description))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(String.format(NOT_FOUND_CAREER, description)));
     }
 }
