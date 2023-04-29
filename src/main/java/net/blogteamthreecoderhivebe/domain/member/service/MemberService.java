@@ -89,4 +89,12 @@ public class MemberService {
     public boolean isNewMember(String email) {
         return memberRepository.findByEmail(email).isEmpty();
     }
+
+    /**
+     * 사용자의 ROLE 확인
+     */
+    public SignUpResponse validMember(String email) {
+        return SignUpResponse.from(memberRepository.findByEmail(email).orElseThrow());
+    }
+
 }

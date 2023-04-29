@@ -26,9 +26,7 @@ public class MemberController {
      * 회원 가입 - 추가 정보 등록
      * need   > SignUpRequest, MemberPrincipal
      * return > SignInResponse
-     * TODO 1) Dto 생성 / SignUpRequest, SignUpDto, SignInResponse
-     * TODO 2) 사용자 정보 유효성 검사 / email, nickname, jobId, career, level
-     * TODO 3) 사용자 정보 저장
+     * TODO 1) 사용자 정보 유효성 검사 / email, nickname, jobId, career, level
      */
     @PostMapping
     //public SingUpResponse signUp(@RequestBody @Valid SignUpRequest signUpRequest,
@@ -46,11 +44,26 @@ public class MemberController {
     }
 
     /**
-     * 유효한 회원인지 확인 기능
-     * need   > email
+     * 유효한 회원인지 확인 기능 - ROLE_USER
+     * need   > email, MemberPrincipal
      * return > SignUpResponse
-     * TODO 1)
+     * TODO
+     * 1) email과 principal-email 검증
+     * 2)
      */
+    @GetMapping("/{email}/valid")
+    public SignUpResponse validationMember(@PathVariable String email,
+                                           @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
+        // principal 검증
+        if (memberPrincipal == null) {
+            // TODO 1) 로그인 안되어 있음
+        }
+        // email과 principal-email 검증
+        if (!email.equals(memberPrincipal.getEmail())) {
+            // TODO 2) "유효성 검사할 이메일"과 "로그인한 이메일" 같지 않음
+        }
+        return memberService.validMember(email);
+    }
 
 
     @GetMapping("/my")
