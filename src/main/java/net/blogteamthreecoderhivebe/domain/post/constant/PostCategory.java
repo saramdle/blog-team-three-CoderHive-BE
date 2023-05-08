@@ -2,6 +2,7 @@ package net.blogteamthreecoderhivebe.domain.post.constant;
 
 import lombok.Getter;
 
+@Getter
 public enum PostCategory {
     PROJECT("project"),
     STUDY("study");
@@ -9,8 +10,10 @@ public enum PostCategory {
     @Getter
     private final String description;
 
-    PostCategory(String description) {
-        this.description = description;
+    private final String key;
+
+    PostCategory(String key) {
+        this.key = key;
     }
 }
 
