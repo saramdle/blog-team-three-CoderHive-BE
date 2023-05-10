@@ -1,6 +1,9 @@
 package net.blogteamthreecoderhivebe.domain.post.service;
 
 import lombok.RequiredArgsConstructor;
+import net.blogteamthreecoderhivebe.domain.info.service.JobService;
+import net.blogteamthreecoderhivebe.domain.info.service.LocationService;
+import net.blogteamthreecoderhivebe.domain.member.service.MemberService;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostStatus;
 import net.blogteamthreecoderhivebe.domain.post.dto.PostWithApplyNumberDto;
@@ -16,12 +19,38 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static net.blogteamthreecoderhivebe.domain.post.dto.request.PostRequestDto.SaveRequest;
+import static net.blogteamthreecoderhivebe.domain.post.dto.response.PostResponseDto.SaveResponse;
+
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class PostService {
+    private final JobService jobService;
+    private final MemberService memberService;
     private final PostRepository postRepository;
+    private final LocationService locationService;
     private final RecruitmentSkillRepository recruitmentSkillRepository;
+
+    /**
+     * 게시글 등록
+     */
+    @Transactional
+    public SaveResponse save(SaveRequest request, String memberEmail) {
+        Post post = Post.builder()
+                .member(memberService.searchMember(memberEmail))
+                .job(jobService.findOne(request.myJobId()))
+                .location(locationService.findOne(request.locationId()))
+                .postCategory(PostCategory.find(request.category()))
+                .title(request.title())
+                .content(request.content())
+                .thumbImageUrl(request.thumbImageUrl())
+                .platforms(request.platforms())
+                .build();
+
+        Long postId = postRepository.save(post).getId();
+        return new SaveResponse(postId);
+    }
 
     public Page<PostWithApplyNumberDto> searchPost(PostCategory postCategory,
                                                    List<Long> regions,
