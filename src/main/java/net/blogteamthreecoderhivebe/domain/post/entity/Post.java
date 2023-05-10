@@ -13,7 +13,6 @@ import net.blogteamthreecoderhivebe.global.common.AuditingFields;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
 @Getter
 @EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -38,11 +37,9 @@ public class Post extends AuditingFields {
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @Builder.Default
     @OneToMany(mappedBy = "post")
     private List<Heart> hearts = new ArrayList<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "post")
     private List<RecruitmentJob> recruitmentJobs = new ArrayList<>();
 
@@ -60,4 +57,17 @@ public class Post extends AuditingFields {
     private String thumbImageUrl;
 
     private String platforms; // use only Enum (constant) > platform
+
+    @Builder
+    public Post(Member member, Job job, Location location, PostCategory postCategory,
+                String title, String content, String thumbImageUrl, String platforms) {
+        this.member = member;
+        this.job = job;
+        this.location = location;
+        this.postCategory = postCategory;
+        this.title = title;
+        this.content = content;
+        this.thumbImageUrl = thumbImageUrl;
+        this.platforms = platforms;
+    }
 }
