@@ -12,11 +12,10 @@ import net.blogteamthreecoderhivebe.global.common.AuditingFields;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Builder
 @Getter
-@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true, exclude = {"member", "recruitmentJobs", "hearts", "location", "job"})
 @Table(indexes = @Index(columnList = "modifiedAt DESC"))
@@ -61,16 +60,4 @@ public class Post extends AuditingFields {
     private String thumbImageUrl;
 
     private String platforms; // use only Enum (constant) > platform
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Post that)) return false;
-        return this.getId() != null && this.getId().equals(that.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.getId());
-    }
 }
