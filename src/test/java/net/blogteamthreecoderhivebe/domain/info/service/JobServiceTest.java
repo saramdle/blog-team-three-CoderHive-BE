@@ -34,5 +34,4 @@ class JobServiceTest {
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessageContaining("직무를 찾을 수 없습니다.");
     }
-
 }

@@ -7,11 +7,10 @@ import net.blogteamthreecoderhivebe.domain.info.repository.JobRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 @Service
 public class JobService {
-
     private static final String NOT_FOUND_JOB = "ID[%s] 직무를 찾을 수 없습니다.";
 
     private final JobRepository jobRepository;

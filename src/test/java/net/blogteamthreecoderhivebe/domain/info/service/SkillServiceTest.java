@@ -16,7 +16,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 @SpringBootTest
 class SkillServiceTest {
-    @Autowired SkillService service;
+    @Autowired
+    SkillService service;
 
     @DisplayName("기술 조회 성공")
     @CsvSource(value = {"1", "2", "3", "4", "5"})
