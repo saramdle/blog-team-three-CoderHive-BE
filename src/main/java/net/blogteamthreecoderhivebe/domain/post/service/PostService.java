@@ -30,6 +30,8 @@ public class PostService {
     private final MemberService memberService;
     private final PostRepository postRepository;
     private final LocationService locationService;
+    private final RecruitmentJobService recruitmentJobService;
+    private final RecruitmentSkillService recruitmentSkillService;
     private final RecruitmentSkillRepository recruitmentSkillRepository;
 
     /**
@@ -49,6 +51,9 @@ public class PostService {
                 .build();
 
         Long postId = postRepository.save(post).getId();
+        recruitmentSkillService.save(request.skillIds(), post);
+        recruitmentJobService.save(request.recruitmentJobs(), post);
+
         return new SaveResponse(postId);
     }
 
