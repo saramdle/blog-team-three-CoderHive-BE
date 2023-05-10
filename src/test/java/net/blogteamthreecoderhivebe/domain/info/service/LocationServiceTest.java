@@ -16,7 +16,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 @SpringBootTest
 class LocationServiceTest {
-
     @Autowired
     LocationService service;
 
