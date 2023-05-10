@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    include: oauth
+    active: test
+
+  jpa:
+    defer-datasource-initialization: true # Hibernate 초기화전 이전에 sql 스크립트 실행
+
+logging:
+  level:
+    org.hibernate:
+      SQL: debug
