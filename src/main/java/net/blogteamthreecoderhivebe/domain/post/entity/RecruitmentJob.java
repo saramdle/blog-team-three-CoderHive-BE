@@ -4,11 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 
-@Builder
 @Getter
 @ToString(exclude = {"post", "job"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Entity
 public class RecruitmentJob {
     @Id
@@ -28,7 +26,18 @@ public class RecruitmentJob {
 
     private int passNumber;
 
-    public void addPost(Post post) {
+    @Builder
+    public RecruitmentJob(Post post, Job job, int number, int passNumber) {
+        setPost(post);
+        this.job = job;
+        this.number = number;
+        this.passNumber = passNumber;
+    }
+
+    /**
+     * 연관관계 편의 메서드
+     */
+    private void setPost(Post post) {
         this.post = post;
         post.getRecruitmentJobs().add(this);
     }

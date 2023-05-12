@@ -16,9 +16,9 @@ import java.util.Objects;
 
 @Builder
 @Getter
-@ToString(callSuper = true, exclude = {"member", "recruitmentJobs", "hearts", "location", "job"})
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString(callSuper = true, exclude = {"member", "recruitmentJobs", "hearts", "location", "job"})
 @Table(indexes = @Index(columnList = "modifiedAt DESC"))
 @Entity
 public class Post extends AuditingFields {

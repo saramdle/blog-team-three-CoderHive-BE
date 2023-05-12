@@ -1,14 +1,15 @@
 package net.blogteamthreecoderhivebe.domain.post.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import net.blogteamthreecoderhivebe.domain.info.entity.Skill;
 
-@Builder
 @Getter
 @ToString(exclude = {"skill", "post"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 @Entity
 public class RecruitmentSkill {
     @Id
@@ -23,4 +24,13 @@ public class RecruitmentSkill {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    private RecruitmentSkill(Skill skill, Post post) {
+        this.skill = skill;
+        this.post = post;
+    }
+
+    public static RecruitmentSkill of(Skill skill, Post post) {
+        return new RecruitmentSkill(skill, post);
+    }
 }

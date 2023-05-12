@@ -40,7 +40,7 @@ public class MemberService {
                 .orElseThrow(() -> new EntityNotFoundException("멤버가 없습니다 - memberId: " + memberId));
     }
 
-    private Member searchMember(String email) {
+    public Member searchMember(String email) {
         return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("멤버가 없습니다 - email:" + email));
     }
