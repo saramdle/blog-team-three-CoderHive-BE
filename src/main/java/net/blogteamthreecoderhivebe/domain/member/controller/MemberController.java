@@ -1,5 +1,6 @@
 package net.blogteamthreecoderhivebe.domain.member.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.heart.service.HeartService;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberWithPostDto;
@@ -29,16 +30,11 @@ public class MemberController {
      * TODO 1) 사용자 정보 유효성 검사 / email, nickname, jobId, career, level
      */
     @PostMapping
-    //public SingUpResponse signUp(@RequestBody @Valid SignUpRequest signUpRequest,
-    public SignUpResponse signUp(@RequestBody SignUpRequest signUpRequest,
+    public SignUpResponse signUp(@RequestBody @Valid SignUpRequest signUpRequest,
                                  @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
 //        Long memberId = memberService.signUp(SignUpDto.of(signUpRequest, memberPrincipal.getEmail()));
         SignUpResponse signUpResponse = memberService.signUp(SignUpDto.of(signUpRequest, memberPrincipal.getEmail()));
 
-//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-//                .path("/{id}")
-//                .buildAndExpand(memberId)
-//                .toUri();
         return signUpResponse;
         //return ResponseEntity.created(location).body("회원 가입 성공");
     }
