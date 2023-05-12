@@ -87,7 +87,7 @@ public class MemberService {
         Member member = memberRepository.findByEmail(signUpDto.email())
                 .orElseThrow(() -> new EntityNotFoundException(String.format(NOT_FOUND_MEMBER, signUpDto.email())));
         //Member의 Role - Guest인지 확인
-        if (!member.getMemberRole().equals(MemberRole.GUEST)) {
+        if (!member.isGuest()) {
             new EntityNotFoundException(String.format(NOT_MATCH_MEMBER_GUEST, signUpDto.email()));
         }
         //signUpDto + member -> member로 변환 - DB에 업데이트하기 위함
