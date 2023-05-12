@@ -7,7 +7,6 @@ import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberCareer;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberLevel;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberRole;
-import net.blogteamthreecoderhivebe.domain.member.dto.SignUpDto;
 import net.blogteamthreecoderhivebe.global.common.AuditingFields;
 
 import java.util.ArrayList;
@@ -58,12 +57,12 @@ public class Member extends AuditingFields {
     // TODO : Member update 메소드 생성
     // expected 1) 회원가입 기능
     // expected 2) 프로필 수정 기능
-    public void update(SignUpDto signUpDto, Job job) {
-        this.nickname = signUpDto.nickname();
+    public void update(String nickname, MemberLevel level, MemberCareer career, Job job) {
+        this.nickname = nickname;
         this.job = job;
         this.memberRole = USER;
-        this.level = signUpDto.memberLevel();
-        this.career = signUpDto.memberCareer();
+        this.level = level;
+        this.career = career;
     }
 
     public boolean isGuest() {

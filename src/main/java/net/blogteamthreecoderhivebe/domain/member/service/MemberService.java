@@ -90,7 +90,7 @@ public class MemberService {
         }
         //signUpDto + member -> member로 변환 - DB에 업데이트하기 위함
         Job job = jobRepository.findById(signUpDto.jobId()).orElseThrow();
-        member.update(signUpDto, job);
+        member.update(signUpDto.nickname(), signUpDto.memberLevel(), signUpDto.memberCareer(), job);
 
         //return SignUpResponse.from(memberRepository.save(signUpDto.toMemberWithJob(signUpDto, job)));
         return SignUpResponse.from(memberRepository.save(member));
