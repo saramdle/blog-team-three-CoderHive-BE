@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static net.blogteamthreecoderhivebe.domain.member.constant.MemberRole.USER;
+
 @Builder
 @Getter
 @ToString(callSuper = true, exclude = {"job", "hearts"})
@@ -58,6 +60,7 @@ public class Member extends AuditingFields {
     public void update(SignUpDto signUpDto, Job job) {
         this.nickname = signUpDto.nickname();
         this.job = job;
+        this.memberRole = USER;
         this.level = signUpDto.memberLevel();
         this.career = signUpDto.memberCareer();
     }
