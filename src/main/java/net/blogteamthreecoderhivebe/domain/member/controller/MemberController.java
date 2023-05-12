@@ -47,9 +47,7 @@ public class MemberController {
      * 유효한 회원인지 확인 기능 - ROLE_USER
      * need   > email, MemberPrincipal
      * return > SignUpResponse
-     * TODO
-     * 1) email과 principal-email 검증
-     * 2)
+     * TODO 1) email과 principal-email 검증
      */
     @GetMapping("/{email}/valid")
     public SignUpResponse validationMember(@PathVariable String email,
