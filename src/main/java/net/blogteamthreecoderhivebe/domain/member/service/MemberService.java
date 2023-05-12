@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 import net.blogteamthreecoderhivebe.domain.info.repository.JobRepository;
 import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
-import net.blogteamthreecoderhivebe.domain.member.constant.MemberRole;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberDto;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberWithPostDto;
 import net.blogteamthreecoderhivebe.domain.member.dto.SignUpDto;
@@ -84,8 +83,7 @@ public class MemberService {
     @Transactional
     public SignUpResponse signUp(SignUpDto signUpDto) {
         //Member 유무 체크
-        Member member = memberRepository.findByEmail(signUpDto.email())
-                .orElseThrow(() -> new EntityNotFoundException(String.format(NOT_FOUND_MEMBER, signUpDto.email())));
+        Member member = searchMember(signUpDto.email());
         //Member의 Role - Guest인지 확인
         if (!member.isGuest()) {
             new EntityNotFoundException(String.format(NOT_MATCH_MEMBER_GUEST, signUpDto.email()));
@@ -109,7 +107,7 @@ public class MemberService {
      * 사용자의 ROLE 확인
      */
     public SignUpResponse validMember(String email) {
-        return SignUpResponse.from(memberRepository.findByEmail(email).orElseThrow());
+        return SignUpResponse.from(searchMember(email));
     }
 
 }
