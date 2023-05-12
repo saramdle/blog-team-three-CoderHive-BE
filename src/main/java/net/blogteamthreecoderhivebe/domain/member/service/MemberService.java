@@ -92,8 +92,7 @@ public class MemberService {
         Job job = jobRepository.findById(signUpDto.jobId()).orElseThrow();
         member.update(signUpDto.nickname(), signUpDto.memberLevel(), signUpDto.memberCareer(), job);
 
-        //return SignUpResponse.from(memberRepository.save(signUpDto.toMemberWithJob(signUpDto, job)));
-        return SignUpResponse.from(memberRepository.save(member));
+        return SignUpResponse.from(member);
     }
 
     /**
