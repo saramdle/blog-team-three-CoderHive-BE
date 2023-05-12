@@ -13,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 import static net.blogteamthreecoderhivebe.domain.member.constant.MemberCareer.NON;
 import static net.blogteamthreecoderhivebe.domain.member.constant.MemberLevel.BEGINNER;
 import static net.blogteamthreecoderhivebe.domain.member.constant.MemberRole.GUEST;
@@ -70,8 +68,7 @@ class MemberServiceTest {
         memberService.signUp(signUpDto);
 
         //DB에 업데이트 됐는지 확인
-        Optional<Member> oMember = memberRepository.findByEmail(guestMember.getEmail());
-        Member savedMember = oMember.get();
+        Member savedMember = memberRepository.findByEmail(guestMember.getEmail()).get();
         Job job = jobRepository.findById(signUpDto.jobId()).orElseThrow();
 
         assertThat(savedMember.getEmail()).isEqualTo(signUpDto.email());
