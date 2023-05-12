@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static net.blogteamthreecoderhivebe.domain.member.constant.MemberRole.GUEST;
 import static net.blogteamthreecoderhivebe.domain.member.constant.MemberRole.USER;
 
 @Builder
@@ -63,6 +64,10 @@ public class Member extends AuditingFields {
         this.memberRole = USER;
         this.level = signUpDto.memberLevel();
         this.career = signUpDto.memberCareer();
+    }
+
+    public boolean isGuest() {
+        return memberRole == GUEST;
     }
 
     @Override
