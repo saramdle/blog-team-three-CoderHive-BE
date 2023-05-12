@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(callSuper = false, of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(callSuper = true, exclude = {"member", "job", "location", "hearts", "recruitmentJobs"})
 @Table(indexes = @Index(columnList = "modifiedAt DESC"))
