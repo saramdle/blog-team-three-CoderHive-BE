@@ -21,7 +21,7 @@ public record SignUpDto(
         return SignUpDto.builder()
                 .email(email)
                 .nickname(signUpRequest.nickname())
-                .jobId(signUpRequest.jobId())
+                .jobId(Long.parseLong(signUpRequest.jobId()))
                 .memberLevel(MemberLevel.find(signUpRequest.level()))
                 .memberCareer(MemberCareer.find(signUpRequest.career()))
                 .build();
