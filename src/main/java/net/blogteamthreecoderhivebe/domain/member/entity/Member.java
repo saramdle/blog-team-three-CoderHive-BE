@@ -7,6 +7,7 @@ import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberCareer;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberLevel;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberRole;
+import net.blogteamthreecoderhivebe.domain.member.dto.SignUpDto;
 import net.blogteamthreecoderhivebe.global.common.AuditingFields;
 
 import java.util.ArrayList;
@@ -50,6 +51,16 @@ public class Member extends AuditingFields {
     @Builder.Default
     @OneToMany(mappedBy = "member")
     private List<Heart> hearts = new ArrayList<>();
+
+    // TODO : Member update 메소드 생성
+    // expected 1) 회원가입 기능
+    // expected 2) 프로필 수정 기능
+    public void update(SignUpDto signUpDto, Job job) {
+        this.nickname = signUpDto.nickname();
+        this.job = job;
+        this.level = signUpDto.memberLevel();
+        this.career = signUpDto.memberCareer();
+    }
 
     @Override
     public boolean equals(Object o) {
