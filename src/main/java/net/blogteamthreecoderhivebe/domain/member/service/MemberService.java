@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 import net.blogteamthreecoderhivebe.domain.info.repository.JobRepository;
 import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
+import net.blogteamthreecoderhivebe.domain.member.constant.MemberRole;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberDto;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberWithPostDto;
 import net.blogteamthreecoderhivebe.domain.member.dto.SignUpDto;
@@ -26,6 +27,9 @@ import java.util.Map;
 @Transactional(readOnly = true)
 @Service
 public class MemberService {
+    private static final String NOT_FOUND_MEMBER = "EMAIL[%s] 유저를 찾을 수 없습니다.";
+    private static final String NOT_MATCH_MEMBER_GUEST = "EMAIL[%s] 유저의 Role이 Guest가 아닙니다.";
+
     private final JobRepository jobRepository;
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
@@ -79,8 +83,19 @@ public class MemberService {
      */
     @Transactional
     public SignUpResponse signUp(SignUpDto signUpDto) {
+        //Member 유무 체크
+        Member member = memberRepository.findByEmail(signUpDto.email())
+                .orElseThrow(() -> new EntityNotFoundException(String.format(NOT_FOUND_MEMBER, signUpDto.email())));
+        //Member의 Role - Guest인지 확인
+        if (!member.getMemberRole().equals(MemberRole.GUEST)) {
+            new EntityNotFoundException(String.format(NOT_MATCH_MEMBER_GUEST, signUpDto.email()));
+        }
+        //signUpDto + member -> member로 변환 - DB에 업데이트하기 위함
         Job job = jobRepository.findById(signUpDto.jobId()).orElseThrow();
-        return SignUpResponse.from(memberRepository.save(signUpDto.toMemberWithJob(signUpDto, job)));
+        member.update(signUpDto, job);
+
+        //return SignUpResponse.from(memberRepository.save(signUpDto.toMemberWithJob(signUpDto, job)));
+        return SignUpResponse.from(memberRepository.save(member));
     }
 
     /**
