@@ -25,18 +25,12 @@ public class MemberController {
 
     /**
      * 회원 가입 - 추가 정보 등록
-     * need   > SignUpRequest, MemberPrincipal
-     * return > SignInResponse
-     * TODO 1) 사용자 정보 유효성 검사 / email, nickname, jobId, career, level
      */
     @PostMapping
     public SignUpResponse signUp(@RequestBody @Valid SignUpRequest signUpRequest,
                                  @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
-//        Long memberId = memberService.signUp(SignUpDto.of(signUpRequest, memberPrincipal.getEmail()));
         SignUpResponse signUpResponse = memberService.signUp(SignUpDto.of(signUpRequest, memberPrincipal.getEmail()));
-
         return signUpResponse;
-        //return ResponseEntity.created(location).body("회원 가입 성공");
     }
 
     /**
