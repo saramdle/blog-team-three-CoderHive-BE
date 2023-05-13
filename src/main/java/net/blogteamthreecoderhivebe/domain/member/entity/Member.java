@@ -65,8 +65,8 @@ public class Member extends AuditingFields {
         this.career = career;
     }
 
-    public boolean isGuest() {
-        return memberRole == GUEST;
+    public boolean isNotGuest() {
+        return memberRole != GUEST;
     }
 
     @Override
