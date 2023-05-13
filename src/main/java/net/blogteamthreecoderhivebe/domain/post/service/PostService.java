@@ -7,6 +7,8 @@ import net.blogteamthreecoderhivebe.domain.member.service.MemberService;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostStatus;
 import net.blogteamthreecoderhivebe.domain.post.dto.PostWithApplyNumberDto;
+import net.blogteamthreecoderhivebe.domain.post.dto.request.PostRequestDto;
+import net.blogteamthreecoderhivebe.domain.post.dto.response.PostResponseDto;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
 import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
@@ -18,9 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
-import static net.blogteamthreecoderhivebe.domain.post.dto.request.PostRequestDto.SaveRequest;
-import static net.blogteamthreecoderhivebe.domain.post.dto.response.PostResponseDto.SaveResponse;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -38,23 +37,23 @@ public class PostService {
      * 게시글 등록
      */
     @Transactional
-    public SaveResponse save(SaveRequest request, String memberEmail) {
+    public PostResponseDto.Save save(PostRequestDto.Save dto, String memberEmail) {
         Post post = Post.builder()
                 .member(memberService.searchMember(memberEmail))
-                .job(jobService.findOne(request.myJobId()))
-                .location(locationService.findOne(request.locationId()))
-                .postCategory(PostCategory.find(request.category()))
-                .title(request.title())
-                .content(request.content())
-                .thumbImageUrl(request.thumbImageUrl())
-                .platforms(request.platforms())
+                .job(jobService.findOne(dto.myJobId()))
+                .location(locationService.findOne(dto.locationId()))
+                .postCategory(PostCategory.find(dto.category()))
+                .title(dto.title())
+                .content(dto.content())
+                .thumbImageUrl(dto.thumbImageUrl())
+                .platforms(dto.platforms())
                 .build();
 
         Long postId = postRepository.save(post).getId();
-        recruitmentSkillService.save(request.skillIds(), post);
-        recruitmentJobService.save(request.recruitmentJobs(), post);
+        recruitmentSkillService.save(dto.skillIds(), post);
+        recruitmentJobService.save(dto.recruitmentJobs(), post);
 
-        return new SaveResponse(postId);
+        return new PostResponseDto.Save(postId);
     }
 
     public Page<PostWithApplyNumberDto> searchPost(PostCategory postCategory,

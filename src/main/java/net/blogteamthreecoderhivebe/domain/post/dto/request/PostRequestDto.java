@@ -3,7 +3,7 @@ package net.blogteamthreecoderhivebe.domain.post.dto.request;
 import java.util.List;
 
 public class PostRequestDto {
-    public record SaveRequest(
+    public record Save(
             String category,
             String title,
             Long locationId,
