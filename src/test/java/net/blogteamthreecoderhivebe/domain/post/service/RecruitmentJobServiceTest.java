@@ -4,6 +4,7 @@ import net.blogteamthreecoderhivebe.domain.info.repository.JobRepository;
 import net.blogteamthreecoderhivebe.domain.info.repository.LocationRepository;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import net.blogteamthreecoderhivebe.domain.member.repository.MemberRepository;
+import net.blogteamthreecoderhivebe.domain.post.dto.request.RecruitmentJobRequestDto;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
 import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
@@ -18,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static net.blogteamthreecoderhivebe.domain.post.dto.request.RecruitmentJobRequestDto.SaveRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
@@ -49,13 +49,13 @@ class RecruitmentJobServiceTest {
     @Test
     void save() {
         // given
-        List<SaveRequest> saveRequests = new ArrayList<>();
-        saveRequests.add(new SaveRequest(1L, 1));
-        saveRequests.add(new SaveRequest(2L, 2));
-        saveRequests.add(new SaveRequest(3L, 3));
+        List<RecruitmentJobRequestDto.Save> dtos = new ArrayList<>();
+        dtos.add(new RecruitmentJobRequestDto.Save(1L, 1));
+        dtos.add(new RecruitmentJobRequestDto.Save(2L, 2));
+        dtos.add(new RecruitmentJobRequestDto.Save(3L, 3));
 
         // when
-        recruitmentJobService.save(saveRequests, post);
+        recruitmentJobService.save(dtos, post);
 
         // then
         List<RecruitmentJob> findRecruitmentJobs = recruitmentJobRepository.findAll();
