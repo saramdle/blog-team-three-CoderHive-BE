@@ -29,8 +29,7 @@ public class MemberController {
     @PostMapping
     public SignUpResponse signUp(@RequestBody @Valid SignUpRequest signUpRequest,
                                  @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
-        SignUpResponse signUpResponse = memberService.signUp(SignUpDto.of(signUpRequest, memberPrincipal.getEmail()));
-        return signUpResponse;
+        return memberService.signUp(SignUpDto.of(signUpRequest, memberPrincipal.getEmail()));
     }
 
     /**
