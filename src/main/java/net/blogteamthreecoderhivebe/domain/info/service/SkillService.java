@@ -7,6 +7,8 @@ import net.blogteamthreecoderhivebe.domain.info.repository.SkillRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
@@ -18,5 +20,11 @@ public class SkillService {
     public Skill findOne(Long skillId) {
         return skillRepository.findById(skillId)
                 .orElseThrow(() -> new EntityNotFoundException(String.format(NOT_FOUND_SKILL, skillId)));
+    }
+
+    public List<Skill> findSkills(List<Long> skillIds) {
+        return skillIds.stream()
+                .map(this::findOne)
+                .toList();
     }
 }

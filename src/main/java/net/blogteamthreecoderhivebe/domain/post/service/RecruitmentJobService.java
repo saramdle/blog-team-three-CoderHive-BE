@@ -19,13 +19,16 @@ public class RecruitmentJobService {
     private final RecruitmentJobRepository recruitmentJobRepository;
 
     public void save(List<RecruitmentJobRequestDto.Save> dtos, Post post) {
-        for (RecruitmentJobRequestDto.Save dto : dtos) {
-            RecruitmentJob recruitmentJob = RecruitmentJob.builder()
-                    .post(post)
-                    .job(jobService.findOne(dto.jobId()))
-                    .number(dto.number())
-                    .build();
-            recruitmentJobRepository.save(recruitmentJob);
-        }
+        dtos.stream()
+                .map(dto -> makeRecruitmentJob(dto, post))
+                .forEach(recruitmentJobRepository::save);
+    }
+
+    private RecruitmentJob makeRecruitmentJob(RecruitmentJobRequestDto.Save dto, Post post) {
+        return RecruitmentJob.builder()
+                .post(post)
+                .job(jobService.findOne(dto.jobId()))
+                .number(dto.number())
+                .build();
     }
 }

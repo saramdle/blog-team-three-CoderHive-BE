@@ -1,6 +1,7 @@
 package net.blogteamthreecoderhivebe.domain.post.service;
 
 import lombok.RequiredArgsConstructor;
+import net.blogteamthreecoderhivebe.domain.info.entity.Skill;
 import net.blogteamthreecoderhivebe.domain.info.service.SkillService;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentSkill;
@@ -18,9 +19,13 @@ public class RecruitmentSkillService {
     private final RecruitmentSkillRepository recruitmentSkillRepository;
 
     public void save(List<Long> skillIds, Post post) {
-        for (Long skillId : skillIds) {
-            RecruitmentSkill recruitmentSkill = RecruitmentSkill.of(skillService.findOne(skillId), post);
-            recruitmentSkillRepository.save(recruitmentSkill);
-        }
+        List<Skill> skills = skillService.findSkills(skillIds);
+        skills.stream()
+                .map(skill -> makeRecruitmentSkill(skill, post))
+                .forEach(recruitmentSkillRepository::save);
+    }
+
+    private static RecruitmentSkill makeRecruitmentSkill(Skill skill, Post post) {
+        return RecruitmentSkill.of(skill, post);
     }
 }
