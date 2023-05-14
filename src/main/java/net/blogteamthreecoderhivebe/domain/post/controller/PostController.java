@@ -18,7 +18,7 @@ public class PostController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public PostResponseDto.Save register(@RequestBody PostRequestDto.Save dto,
-                                 @AuthenticationPrincipal MemberPrincipal principal) {
+                                         @AuthenticationPrincipal MemberPrincipal principal) {
         return postService.save(dto, principal.getEmail());
     }
 }
