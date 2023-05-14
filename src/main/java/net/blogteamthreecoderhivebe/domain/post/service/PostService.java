@@ -38,22 +38,12 @@ public class PostService {
      */
     @Transactional
     public PostResponseDto.Save save(PostRequestDto.Save dto, String memberEmail) {
-        Post post = Post.builder()
-                .member(memberService.searchMember(memberEmail))
-                .job(jobService.findOne(dto.myJobId()))
-                .location(locationService.findOne(dto.locationId()))
-                .postCategory(PostCategory.find(dto.category()))
-                .title(dto.title())
-                .content(dto.content())
-                .thumbImageUrl(dto.thumbImageUrl())
-                .platforms(dto.platforms())
-                .build();
+        Post post = postRepository.save(makePost(dto, memberEmail));
 
-        Long postId = postRepository.save(post).getId();
         recruitmentSkillService.save(dto.skillIds(), post);
         recruitmentJobService.save(dto.recruitmentJobs(), post);
 
-        return new PostResponseDto.Save(postId);
+        return new PostResponseDto.Save(post.getId());
     }
 
     public Page<PostWithApplyNumberDto> searchPost(PostCategory postCategory,
@@ -75,5 +65,18 @@ public class PostService {
                 }).toList();
 
         return new PageImpl<>(postWithApplyNumberDtos, postInfos.getPageable(), postInfos.getTotalElements());
+    }
+
+    private Post makePost(PostRequestDto.Save dto, String memberEmail) {
+        return Post.builder()
+                .member(memberService.searchMember(memberEmail))
+                .job(jobService.findOne(dto.myJobId()))
+                .location(locationService.findOne(dto.locationId()))
+                .postCategory(PostCategory.find(dto.category()))
+                .title(dto.title())
+                .content(dto.content())
+                .thumbImageUrl(dto.thumbImageUrl())
+                .platforms(dto.platforms())
+                .build();
     }
 }
