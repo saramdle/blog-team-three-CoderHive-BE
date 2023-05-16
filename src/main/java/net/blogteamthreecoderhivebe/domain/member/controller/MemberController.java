@@ -1,6 +1,5 @@
 package net.blogteamthreecoderhivebe.domain.member.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.heart.service.HeartService;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberWithPostDto;
@@ -12,6 +11,7 @@ import net.blogteamthreecoderhivebe.domain.member.dto.response.SignUpResponse;
 import net.blogteamthreecoderhivebe.domain.member.service.MemberService;
 import net.blogteamthreecoderhivebe.global.auth.dto.MemberPrincipal;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,7 +27,7 @@ public class MemberController {
      * 회원 가입 - 추가 정보 등록
      */
     @PostMapping
-    public SignUpResponse signUp(@RequestBody @Valid SignUpRequest signUpRequest,
+    public SignUpResponse signUp(@RequestBody @Validated SignUpRequest signUpRequest,
                                  @AuthenticationPrincipal MemberPrincipal memberPrincipal) {
         return memberService.signUp(SignUpDto.of(signUpRequest, memberPrincipal.getEmail()));
     }
