@@ -3,7 +3,7 @@ package net.blogteamthreecoderhivebe.domain.member.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.info.entity.Job;
-import net.blogteamthreecoderhivebe.domain.info.repository.JobRepository;
+import net.blogteamthreecoderhivebe.domain.info.service.JobService;
 import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberDto;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberWithPostDto;
@@ -29,7 +29,8 @@ public class MemberService {
     private static final String NOT_FOUND_MEMBER = "EMAIL[%s] 유저를 찾을 수 없습니다.";
     private static final String NOT_MATCH_MEMBER_GUEST = "EMAIL[%s] 유저의 Role이 Guest가 아닙니다.";
 
-    private final JobRepository jobRepository;
+    private final JobService jobService;
+
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final MemberSkillRepository memberSkillRepository;
@@ -89,7 +90,7 @@ public class MemberService {
             new EntityNotFoundException(String.format(NOT_MATCH_MEMBER_GUEST, signUpDto.email()));
         }
         //signUpDto + member -> member로 변환 - DB에 업데이트하기 위함
-        Job job = jobRepository.findById(signUpDto.jobId()).orElseThrow();
+        Job job = jobService.findOne(signUpDto.jobId());
         member.update(signUpDto.nickname(), signUpDto.memberLevel(), signUpDto.memberCareer(), job);
 
         return SignUpResponse.from(member);
