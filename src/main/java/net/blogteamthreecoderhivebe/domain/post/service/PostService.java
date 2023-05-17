@@ -1,6 +1,7 @@
 package net.blogteamthreecoderhivebe.domain.post.service;
 
 import lombok.RequiredArgsConstructor;
+import net.blogteamthreecoderhivebe.domain.heart.service.HeartService;
 import net.blogteamthreecoderhivebe.domain.info.service.JobService;
 import net.blogteamthreecoderhivebe.domain.info.service.LocationService;
 import net.blogteamthreecoderhivebe.domain.member.service.MemberService;
@@ -8,6 +9,7 @@ import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.dto.PostWithApplyNumberDto;
 import net.blogteamthreecoderhivebe.domain.post.dto.request.PostRequestDto;
 import net.blogteamthreecoderhivebe.domain.post.dto.response.PostResponseDto;
+import net.blogteamthreecoderhivebe.domain.post.dto.response.PostWithApplyNumberResponse;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
 import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
@@ -22,10 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 @Service
 public class PostService {
     private final JobService jobService;
+    private final HeartService heartService;
     private final MemberService memberService;
     private final PostRepository postRepository;
     private final LocationService locationService;
@@ -46,11 +48,11 @@ public class PostService {
         return new PostResponseDto.Save(post.getId());
     }
 
-    public Page<PostWithApplyNumberDto> searchPost(PostCategory postCategory,
-                                                   List<Long> regions,
-                                                   List<Long> jobs,
-                                                   PostStatus postStatus,
-                                                   Pageable pageable) {
+    /**
+     * 게시글 전체 조회
+     */
+    @Transactional(readOnly = true)
+    public Page<PostWithApplyNumberResponse> searchPosts(Long memberId, PostSearchCond searchCond, Pageable pageable) {
         Page<Post> postInfos = postRepository.getAllPost(searchCond, pageable);
         List<PostWithApplyNumberDto> postWithApplyNumberDtos = postInfos.stream()
                 .map(p -> {
@@ -64,7 +66,11 @@ public class PostService {
                     return PostWithApplyNumberDto.from(p, skills, number, passNumber);
                 }).toList();
 
-        return new PageImpl<>(postWithApplyNumberDtos, postInfos.getPageable(), postInfos.getTotalElements());
+        // 회원이 좋아요 누른 게시글 목록 조회
+        List<Long> heartPostIds = heartService.searchHeartPostIds(memberId);
+
+        return new PageImpl<>(postWithApplyNumberDtos, postInfos.getPageable(), postInfos.getTotalElements())
+                .map(postWithApplyNumberDto -> PostWithApplyNumberResponse.from(postWithApplyNumberDto, heartPostIds));
     }
 
     private Post makePost(PostRequestDto.Save dto, String memberEmail) {
