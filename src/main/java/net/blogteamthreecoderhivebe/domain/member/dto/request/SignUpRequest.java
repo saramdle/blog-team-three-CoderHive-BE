@@ -16,11 +16,11 @@ public record SignUpRequest(
         String jobId,
 
         @NotBlank(message = "레벨은 필수 입력값입니다.", groups = NotEmptyGroup.class)
-        @Pattern(regexp = "^[가-힣a-zA-Z0-9-_~]{1,20}$", message = "레벨은 정해진 description을 만족해야 합니다.", groups = PatternCheckGroup.class)
+        @Pattern(regexp = "^[가-힣]{1,10}$", message = "레벨은 정해진 description을 만족해야 합니다.", groups = PatternCheckGroup.class)
         String level,
 
         @NotBlank(message = "경력은 필수 입력값입니다.", groups = NotEmptyGroup.class)
-        @Pattern(regexp = "^[가-힣a-zA-Z0-9-_~]{1,20}$", message = "경력은 정해진 description을 만족해야 합니다.", groups = PatternCheckGroup.class)
+        @Pattern(regexp = "^[가-힣0-9~ ]{1,10}$", message = "경력은 정해진 description을 만족해야 합니다.", groups = PatternCheckGroup.class)
         String career
 ) {
 }
