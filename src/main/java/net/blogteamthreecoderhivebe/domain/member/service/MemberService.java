@@ -30,7 +30,6 @@ public class MemberService {
     private static final String NOT_MATCH_MEMBER_GUEST = "EMAIL[%s] 유저의 Role이 Guest가 아닙니다.";
 
     private final JobService jobService;
-
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final MemberSkillRepository memberSkillRepository;
