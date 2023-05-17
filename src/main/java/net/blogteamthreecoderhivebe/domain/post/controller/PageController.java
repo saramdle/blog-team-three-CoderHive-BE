@@ -2,16 +2,12 @@ package net.blogteamthreecoderhivebe.domain.post.controller;
 
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.heart.service.HeartService;
-import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
-import net.blogteamthreecoderhivebe.domain.post.constant.PostStatus;
 import net.blogteamthreecoderhivebe.domain.post.dto.response.PostWithApplyNumberResponse;
+import net.blogteamthreecoderhivebe.domain.post.repository.querydsl.PostSearchCond;
 import net.blogteamthreecoderhivebe.domain.post.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -23,16 +19,11 @@ public class PageController {
     private final HeartService heartService;
 
     @GetMapping
-    public Page<PostWithApplyNumberResponse> searchPostList(
-            @RequestParam Long memberId,
-            @RequestParam(required = false) PostCategory postCategory,
-            @RequestParam(required = false) List<Long> regions,
-            @RequestParam(required = false) List<Long> jobs,
-            @RequestParam(required = false) PostStatus postStatus,
-            Pageable pageable
-    ) {
+    public Page<PostWithApplyNumberResponse> searchPosts(@RequestParam Long memberId,
+                                                         @ModelAttribute PostSearchCond searchCond,
+                                                         Pageable pageable) {
         List<Long> likePosts = heartService.searchHeartPostIds(memberId);
-        return postService.searchPost(postCategory, regions, jobs, postStatus, pageable).map(
+        return postService.searchPost(searchCond, pageable).map(
                 p -> PostWithApplyNumberResponse.from(p, likePosts)
         );
     }

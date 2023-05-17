@@ -5,7 +5,6 @@ import net.blogteamthreecoderhivebe.domain.info.service.JobService;
 import net.blogteamthreecoderhivebe.domain.info.service.LocationService;
 import net.blogteamthreecoderhivebe.domain.member.service.MemberService;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
-import net.blogteamthreecoderhivebe.domain.post.constant.PostStatus;
 import net.blogteamthreecoderhivebe.domain.post.dto.PostWithApplyNumberDto;
 import net.blogteamthreecoderhivebe.domain.post.dto.request.PostRequestDto;
 import net.blogteamthreecoderhivebe.domain.post.dto.response.PostResponseDto;
@@ -13,6 +12,7 @@ import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
 import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
 import net.blogteamthreecoderhivebe.domain.post.repository.RecruitmentSkillRepository;
+import net.blogteamthreecoderhivebe.domain.post.repository.querydsl.PostSearchCond;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -51,7 +51,7 @@ public class PostService {
                                                    List<Long> jobs,
                                                    PostStatus postStatus,
                                                    Pageable pageable) {
-        Page<Post> postInfos = postRepository.getAllPost(postCategory, regions, jobs, postStatus, pageable);
+        Page<Post> postInfos = postRepository.getAllPost(searchCond, pageable);
         List<PostWithApplyNumberDto> postWithApplyNumberDtos = postInfos.stream()
                 .map(p -> {
                     int number = 0;
