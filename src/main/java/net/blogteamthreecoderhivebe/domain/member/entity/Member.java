@@ -69,6 +69,10 @@ public class Member extends AuditingFields {
         return memberRole != GUEST;
     }
 
+    public boolean isUser() {
+        return memberRole == USER;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
