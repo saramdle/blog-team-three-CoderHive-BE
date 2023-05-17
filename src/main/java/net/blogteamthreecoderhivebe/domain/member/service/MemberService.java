@@ -86,7 +86,7 @@ public class MemberService {
         Member member = searchMember(signUpDto.email());
         //Member의 Role - Guest인지 확인
         if (member.isNotGuest()) {
-            new EntityNotFoundException(String.format(NOT_MATCH_MEMBER_GUEST, signUpDto.email()));
+            throw new EntityNotFoundException(String.format(NOT_MATCH_MEMBER_GUEST, signUpDto.email()));
         }
         //signUpDto + member -> member로 변환 - DB에 업데이트하기 위함
         Job job = jobService.findOne(signUpDto.jobId());
