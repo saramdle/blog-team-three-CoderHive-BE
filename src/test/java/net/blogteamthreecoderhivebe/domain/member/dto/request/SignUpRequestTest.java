@@ -10,7 +10,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Set;
 
@@ -19,7 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DisplayName("회원가입 입력 검증(Validation) 테스트")
 class SignUpRequestTest {
     private static Validator validator;
-    private MockMvc mockMvc;
 
     @BeforeAll
     public static void init() {
