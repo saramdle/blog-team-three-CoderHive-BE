@@ -12,15 +12,15 @@ public record SignUpRequest(
         String nickname,
 
         @NotBlank(message = "직무는 필수 입력값입니다.", groups = NotEmptyGroup.class)
-        @Pattern(regexp = "^[0-9]{1,10}$", message = "직무는 1 이상의 1~10자리 숫자여야 합니다.", groups = PatternCheckGroup.class)
+        @Pattern(regexp = "[0-9]{1,10}$", message = "직무는 1 이상의 1~10자리 숫자여야 합니다.", groups = PatternCheckGroup.class)
         String jobId,
 
         @NotBlank(message = "레벨은 필수 입력값입니다.", groups = NotEmptyGroup.class)
-        @Pattern(regexp = "^[가-힣]{1,10}$", message = "레벨은 정해진 description을 만족해야 합니다.", groups = PatternCheckGroup.class)
+        @Pattern(regexp = "[가-힣]{1,10}$", message = "레벨은 정해진 description을 만족해야 합니다.", groups = PatternCheckGroup.class)
         String level,
 
         @NotBlank(message = "경력은 필수 입력값입니다.", groups = NotEmptyGroup.class)
-        @Pattern(regexp = "^[가-힣0-9~ ]{1,10}$", message = "경력은 정해진 description을 만족해야 합니다.", groups = PatternCheckGroup.class)
+        @Pattern(regexp = "[가-힣0-9~ ]{1,10}$", message = "경력은 정해진 description을 만족해야 합니다.", groups = PatternCheckGroup.class)
         String career
 ) {
 }
