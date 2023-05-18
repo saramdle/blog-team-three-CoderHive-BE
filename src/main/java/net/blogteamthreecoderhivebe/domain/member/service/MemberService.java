@@ -82,16 +82,13 @@ public class MemberService {
      */
     @Transactional
     public SignUpResponse signUp(SignUpDto signUpDto) {
-        //Member 유무 체크
         Member member = searchMember(signUpDto.email());
-        //Member의 Role - Guest인지 확인
         if (member.isNotGuest()) {
             throw new EntityNotFoundException(String.format(NOT_MATCH_MEMBER_GUEST, signUpDto.email()));
         }
-        //signUpDto + member -> member로 변환 - DB에 업데이트하기 위함
         Job job = jobService.findOne(signUpDto.jobId());
-        member.update(signUpDto.nickname(), signUpDto.memberLevel(), signUpDto.memberCareer(), job);
 
+        member.update(signUpDto.nickname(), signUpDto.memberLevel(), signUpDto.memberCareer(), job);
         return SignUpResponse.from(member);
     }
 
