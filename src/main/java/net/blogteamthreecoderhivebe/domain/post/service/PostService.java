@@ -14,7 +14,6 @@ import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
 import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
 import net.blogteamthreecoderhivebe.domain.post.repository.RecruitmentSkillRepository;
-import net.blogteamthreecoderhivebe.domain.post.repository.querydsl.PostSearchCond;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -52,8 +51,11 @@ public class PostService {
      * 게시글 전체 조회
      */
     @Transactional(readOnly = true)
-    public Page<PostWithApplyNumberResponse> searchPosts(Long memberId, PostSearchCond searchCond, Pageable pageable) {
-        Page<Post> postInfos = postRepository.getAllPost(searchCond, pageable);
+    public Page<PostWithApplyNumberResponse> searchPosts(Long memberId, PostRequestDto.SearchCond searchCond, Pageable pageable) {
+        Page<Post> postInfos = postRepository.getAllPost(
+                searchCond.postCategory(), searchCond.postStatus(), searchCond.locations(), searchCond.jobs(), pageable
+        );
+
         List<PostWithApplyNumberDto> postWithApplyNumberDtos = postInfos.stream()
                 .map(p -> {
                     int number = 0;

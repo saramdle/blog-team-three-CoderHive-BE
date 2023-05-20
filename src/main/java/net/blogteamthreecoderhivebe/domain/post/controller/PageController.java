@@ -1,8 +1,8 @@
 package net.blogteamthreecoderhivebe.domain.post.controller;
 
 import lombok.RequiredArgsConstructor;
+import net.blogteamthreecoderhivebe.domain.post.dto.request.PostRequestDto;
 import net.blogteamthreecoderhivebe.domain.post.dto.response.PostWithApplyNumberResponse;
-import net.blogteamthreecoderhivebe.domain.post.repository.querydsl.PostSearchCond;
 import net.blogteamthreecoderhivebe.domain.post.service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,7 +16,7 @@ public class PageController {
 
     @GetMapping
     public Page<PostWithApplyNumberResponse> searchPosts(@RequestParam Long memberId,
-                                                         @ModelAttribute PostSearchCond searchCond,
+                                                         @ModelAttribute PostRequestDto.SearchCond searchCond,
                                                          Pageable pageable) {
         return postService.searchPosts(memberId, searchCond, pageable);
     }

@@ -57,12 +57,7 @@ public class PostCustomImpl implements PostCustom {
     }
 
     @Override
-    public Page<Post> getAllPost(PostSearchCond searchCond, Pageable pageable) {
-        PostCategory category = searchCond.postCategory();
-        List<Long> locations = searchCond.locationIds();
-        List<Long> jobs = searchCond.jobIds();
-        PostStatus status = searchCond.postStatus();
-
+    public Page<Post> getAllPost(PostCategory category, PostStatus status, List<Long> locations, List<Long> jobs, Pageable pageable) {
         List<Post> posts = queryFactory
                 .select(post)
                 .from(post)

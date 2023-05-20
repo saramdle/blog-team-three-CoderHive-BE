@@ -27,8 +27,10 @@ public class PostCustomImplTest {
         PageRequest page = PageRequest.of(0, 20);
         Page<Post> allPost = postRepository.getAllPost(
                 PostCategory.PROJECT,
+                PostStatus.HIRING,
                 List.of((long) 1, (long) 2, (long) 3),
-                List.of((long) 1), PostStatus.HIRING, page
+                List.of((long) 1),
+                page
         );
         for (Post post : allPost) {
             System.out.println(post.getLocation().getRegion());
