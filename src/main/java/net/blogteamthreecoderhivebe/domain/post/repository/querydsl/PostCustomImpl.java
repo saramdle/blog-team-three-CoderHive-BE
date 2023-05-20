@@ -63,13 +63,13 @@ public class PostCustomImpl implements PostCustom {
         List<Long> jobs = searchCond.jobIds();
         PostStatus status = searchCond.postStatus();
 
-        List<Post> Posts = queryFactory
+        List<Post> posts = queryFactory
                 .select(post)
                 .from(post)
                 .join(post.recruitmentJobs, recruitmentJob)
                 .join(post.location, location).fetchJoin()
                 .where(
-                        postCategoryEq(category), regionIn(locations), jobsIn(jobs), postStatusEq(status)
+                        eqPostCategory(category), inLocations(locations), inJobs(jobs), eqPostStatus(status)
                 )
                 .groupBy(post.id)
                 .offset(pageable.getOffset())
@@ -81,23 +81,23 @@ public class PostCustomImpl implements PostCustom {
                 .select(post.count())
                 .from(post);
 
-        return PageableExecutionUtils.getPage(Posts, pageable, countQuery::fetchOne);
+        return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
     }
 
-    private BooleanExpression postCategoryEq(PostCategory postCategory) {
+    private BooleanExpression eqPostCategory(PostCategory postCategory) {
         return postCategory != null ? post.postCategory.eq(postCategory): null;
     }
 
-    private BooleanExpression regionIn(List<Long> regions) {
-        return regions != null ? post.location.id.in(regions): null;
+    private BooleanExpression eqPostStatus(PostStatus postStatus) {
+        return postStatus != null ? post.postStatus.eq(postStatus) : null;
     }
 
-    private BooleanExpression jobsIn(List<Long> jobs) {
+    private BooleanExpression inLocations(List<Long> locations) {
+        return locations != null ? post.location.id.in(locations) : null;
+    }
+
+    private BooleanExpression inJobs(List<Long> jobs) {
         return jobs != null ? recruitmentJob.job.id.in(jobs) : null;
-    }
-
-    private BooleanExpression postStatusEq(PostStatus postStatus) {
-        return postStatus != null ? post.postStatus.eq(postStatus): null;
     }
 }
 
