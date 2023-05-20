@@ -13,5 +13,5 @@ import java.util.Map;
 public interface PostCustom {
     Map<ApplicationResult, List<Post>> memberApplyPost(Long memberId);
 
-    Page<Post> getAllPost(PostCategory category, PostStatus status, List<Long> locations, List<Long> jobs, Pageable pageable);
+    Page<Post> findPosts(PostCategory category, PostStatus status, List<Long> locations, List<Long> jobs, Pageable pageable);
 }

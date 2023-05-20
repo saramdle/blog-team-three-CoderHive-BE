@@ -25,7 +25,7 @@ public class PostCustomImplTest {
     @Test
     void postPageTest() {
         PageRequest page = PageRequest.of(0, 20);
-        Page<Post> allPost = postRepository.getAllPost(
+        Page<Post> allPost = postRepository.findPosts(
                 PostCategory.PROJECT,
                 PostStatus.HIRING,
                 List.of((long) 1, (long) 2, (long) 3),

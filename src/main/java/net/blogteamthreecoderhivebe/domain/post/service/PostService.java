@@ -52,7 +52,7 @@ public class PostService {
      */
     @Transactional(readOnly = true)
     public Page<PostWithApplyNumberResponse> searchPosts(Long memberId, PostRequestDto.SearchCond searchCond, Pageable pageable) {
-        Page<Post> postInfos = postRepository.getAllPost(
+        Page<Post> postInfos = postRepository.findPosts(
                 searchCond.postCategory(), searchCond.postStatus(), searchCond.locations(), searchCond.jobs(), pageable
         );
 
