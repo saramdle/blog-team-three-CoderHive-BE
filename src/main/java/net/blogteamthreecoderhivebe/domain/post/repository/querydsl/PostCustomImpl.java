@@ -72,11 +72,16 @@ public class PostCustomImpl implements PostCustom {
                 .orderBy(post.modifiedAt.desc()) // 가장 최근 글이 맨 앞에 오도록 정렬
                 .fetch();
 
-        JPAQuery<Long> countQuery = queryFactory
+        return PageableExecutionUtils.getPage(posts, pageable, countQuery()::fetchOne);
+    }
+
+    /**
+     * 총 검색 결과 개수
+     */
+    private JPAQuery<Long> countQuery() {
+        return queryFactory
                 .select(post.count())
                 .from(post);
-
-        return PageableExecutionUtils.getPage(posts, pageable, countQuery::fetchOne);
     }
 
     /**
