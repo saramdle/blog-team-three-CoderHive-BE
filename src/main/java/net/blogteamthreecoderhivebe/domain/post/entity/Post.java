@@ -61,6 +61,10 @@ public class Post extends AuditingFields {
     @Builder
     public Post(Member member, Job job, Location location, PostCategory postCategory,
                 String title, String content, String thumbImageUrl, String platforms) {
+//        Assert.notNull(member, "member must not be null");
+//        Assert.notNull(job, "job must not be null");
+//        Assert.notNull(location, "location must not be null");
+
         this.member = member;
         this.job = job;
         this.location = location;
