@@ -64,7 +64,10 @@ public class PostCustomImpl implements PostCustom {
                 .join(post.recruitmentJobs, recruitmentJob)
                 .join(post.location, location).fetchJoin()
                 .where(
-                        eqPostCategory(category), inLocations(locations), inJobs(jobs), eqPostStatus(status)
+                        eqPostCategory(category),
+                        eqPostStatus(status),
+                        inLocations(locations),
+                        inJobs(jobs)
                 )
                 .groupBy(post.id)
                 .offset(pageable.getOffset()) // 어디서부터 보여줄 건지
