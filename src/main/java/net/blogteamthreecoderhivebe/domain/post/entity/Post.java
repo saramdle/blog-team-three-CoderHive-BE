@@ -37,10 +37,10 @@ public class Post extends AuditingFields {
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Heart> hearts = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecruitmentJob> recruitmentJobs = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
