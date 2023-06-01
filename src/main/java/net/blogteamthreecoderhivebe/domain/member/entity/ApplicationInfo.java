@@ -22,7 +22,7 @@ public class ApplicationInfo {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "post_job_id")
+    @JoinColumn(name = "recruitment_job_id")
     private RecruitmentJob recruitmentJob;
 
     @Enumerated(EnumType.STRING)

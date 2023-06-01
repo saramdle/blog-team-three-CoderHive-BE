@@ -3,13 +3,12 @@ package net.blogteamthreecoderhivebe.domain.member.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.info.entity.Job;
-import net.blogteamthreecoderhivebe.domain.info.repository.JobRepository;
+import net.blogteamthreecoderhivebe.domain.info.service.JobService;
 import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
-import net.blogteamthreecoderhivebe.domain.member.constant.MemberCareer;
-import net.blogteamthreecoderhivebe.domain.member.constant.MemberLevel;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberDto;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberWithPostDto;
-import net.blogteamthreecoderhivebe.domain.member.dto.request.SignUpRequest;
+import net.blogteamthreecoderhivebe.domain.member.dto.SignUpDto;
+import net.blogteamthreecoderhivebe.domain.member.dto.response.SignUpResponse;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import net.blogteamthreecoderhivebe.domain.member.repository.MemberRepository;
 import net.blogteamthreecoderhivebe.domain.member.repository.MemberSkillRepository;
@@ -23,13 +22,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 
-import static net.blogteamthreecoderhivebe.domain.member.constant.MemberRole.USER;
-
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
 public class MemberService {
-    private final JobRepository jobRepository;
+    private static final String NOT_FOUND_MEMBER = "EMAIL[%s] 유저를 찾을 수 없습니다.";
+    private static final String NOT_MATCH_MEMBER_GUEST = "EMAIL[%s] 유저의 Role이 Guest가 아닙니다.";
+
+    private final JobService jobService;
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final MemberSkillRepository memberSkillRepository;
@@ -81,21 +81,15 @@ public class MemberService {
      * 회원 가입
      */
     @Transactional
-    public Long save(SignUpRequest signUpRequest, String email) {
-        Job job = jobRepository.findById(signUpRequest.jobId()).orElseThrow();
-        MemberCareer memberCareer = MemberCareer.find(signUpRequest.career());
-        MemberLevel memberLevel = MemberLevel.find(signUpRequest.level());
+    public SignUpResponse signUp(SignUpDto signUpDto) {
+        Member member = searchMember(signUpDto.email());
+        if (member.isNotGuest()) {
+            throw new EntityNotFoundException(String.format(NOT_MATCH_MEMBER_GUEST, signUpDto.email()));
+        }
+        Job job = jobService.findOne(signUpDto.jobId());
 
-        Member member = Member.builder()
-                .email(email)
-                .nickname(signUpRequest.nickname())
-                .job(job)
-                .career(memberCareer)
-                .level(memberLevel)
-                .memberRole(USER)
-                .build();
-
-        return memberRepository.save(member).getId();
+        member.update(signUpDto.nickname(), signUpDto.memberLevel(), signUpDto.memberCareer(), job);
+        return SignUpResponse.from(member);
     }
 
     /**
@@ -104,4 +98,12 @@ public class MemberService {
     public boolean isNewMember(String email) {
         return memberRepository.findByEmail(email).isEmpty();
     }
+
+    /**
+     * 사용자의 ROLE 확인
+     */
+    public SignUpResponse validMember(String email) {
+        return SignUpResponse.from(searchMember(email));
+    }
+
 }

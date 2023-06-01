@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static net.blogteamthreecoderhivebe.domain.member.constant.MemberRole.GUEST;
+import static net.blogteamthreecoderhivebe.domain.member.constant.MemberRole.USER;
+
 @Builder
 @Getter
 @ToString(callSuper = true, exclude = {"job", "hearts"})
@@ -50,6 +53,25 @@ public class Member extends AuditingFields {
     @Builder.Default
     @OneToMany(mappedBy = "member")
     private List<Heart> hearts = new ArrayList<>();
+
+    // TODO : Member update 메소드 생성
+    // expected 1) 회원가입 기능
+    // expected 2) 프로필 수정 기능
+    public void update(String nickname, MemberLevel level, MemberCareer career, Job job) {
+        this.nickname = nickname;
+        this.job = job;
+        this.memberRole = USER;
+        this.level = level;
+        this.career = career;
+    }
+
+    public boolean isNotGuest() {
+        return memberRole != GUEST;
+    }
+
+    public boolean isUser() {
+        return memberRole == USER;
+    }
 
     @Override
     public boolean equals(Object o) {
