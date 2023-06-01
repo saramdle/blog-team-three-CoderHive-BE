@@ -18,7 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static net.blogteamthreecoderhivebe.domain.info.entity.QLocation.location;
 import static net.blogteamthreecoderhivebe.domain.member.entity.QApplicationInfo.applicationInfo;
 import static net.blogteamthreecoderhivebe.domain.post.entity.QPost.post;
 import static net.blogteamthreecoderhivebe.domain.post.entity.QRecruitmentJob.recruitmentJob;
@@ -59,10 +58,8 @@ public class PostCustomImpl implements PostCustom {
     @Override
     public Page<Post> findPosts(PostCategory category, PostStatus status, List<Long> locations, List<Long> jobs, Pageable pageable) {
         List<Post> posts = queryFactory
-                .select(post)
-                .from(post)
-                .join(post.recruitmentJobs, recruitmentJob)
-                .join(post.location, location).fetchJoin()
+                .selectFrom(post)
+                .leftJoin(post.recruitmentJobs, recruitmentJob)
                 .where(
                         eqPostCategory(category),
                         eqPostStatus(status),
