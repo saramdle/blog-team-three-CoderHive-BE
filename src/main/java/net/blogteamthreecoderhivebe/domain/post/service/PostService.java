@@ -13,7 +13,6 @@ import net.blogteamthreecoderhivebe.domain.post.dto.response.PostWithApplyNumber
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
 import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
-import net.blogteamthreecoderhivebe.domain.post.repository.RecruitmentSkillRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -32,7 +31,6 @@ public class PostService {
     private final LocationService locationService;
     private final RecruitmentJobService recruitmentJobService;
     private final RecruitmentSkillService recruitmentSkillService;
-    private final RecruitmentSkillRepository recruitmentSkillRepository;
 
     /**
      * 게시글 등록
@@ -64,7 +62,7 @@ public class PostService {
                         number += postJob.getNumber();
                         passNumber += postJob.getPassNumber();
                     }
-                    List<String> skills = recruitmentSkillRepository.searchSkill(p.getId()); // TODO: 성능 문제 발생 할 수 있기 때문에 query 를 한방에 주는 방식으로 refactor 해야함
+                    List<String> skills = recruitmentSkillService.findRecruitSkillDetails(p.getId()); // TODO: 성능 문제 발생 할 수 있기 때문에 query 를 한방에 주는 방식으로 refactor 해야함
                     return PostWithApplyNumberDto.from(p, skills, number, passNumber);
                 }).toList();
 

@@ -28,4 +28,11 @@ public class RecruitmentSkillService {
     private static RecruitmentSkill makeRecruitmentSkill(Skill skill, Post post) {
         return RecruitmentSkill.of(skill, post);
     }
+
+    @Transactional(readOnly = true)
+    public List<String> findRecruitSkillDetails(Long postId) {
+        return recruitmentSkillRepository.findSkills(postId).stream()
+                .map(Skill::getDetail)
+                .toList();
+    }
 }
