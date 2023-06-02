@@ -56,7 +56,12 @@ public class PostCustomImpl implements PostCustom {
     }
 
     @Override
-    public Page<Post> findPosts(PostCategory category, PostStatus status, List<Long> locations, List<Long> jobs, Pageable pageable) {
+    public Page<Post> findPosts(PostCategory category,
+                                PostStatus status,
+                                List<Long> locations,
+                                List<Long> jobs,
+                                Pageable pageable) {
+
         List<Post> posts = queryFactory
                 .selectFrom(post)
                 .leftJoin(post.recruitmentJobs, recruitmentJob)
