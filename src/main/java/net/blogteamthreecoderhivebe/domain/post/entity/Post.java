@@ -59,7 +59,7 @@ public class Post extends AuditingFields {
     private String platforms; // use only Enum (constant) > platform
 
     @Builder
-    public Post(Member member, Job job, Location location, PostCategory postCategory,
+    public Post(Member member, Job job, Location location, PostCategory postCategory, PostStatus postStatus,
                 String title, String content, String thumbImageUrl, String platforms) {
 //        Assert.notNull(member, "member must not be null");
 //        Assert.notNull(job, "job must not be null");
@@ -69,6 +69,7 @@ public class Post extends AuditingFields {
         this.job = job;
         this.location = location;
         this.postCategory = postCategory;
+        this.postStatus = postStatus;
         this.title = title;
         this.content = content;
         this.thumbImageUrl = thumbImageUrl;
