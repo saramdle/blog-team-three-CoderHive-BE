@@ -27,8 +27,7 @@ public class RecruitmentJob {
     private int passNumber;
 
     @Builder
-    public RecruitmentJob(Post post, Job job, int number, int passNumber) {
-        setPost(post);
+    public RecruitmentJob(Job job, int number, int passNumber) {
         this.job = job;
         this.number = number;
         this.passNumber = passNumber;
@@ -37,8 +36,7 @@ public class RecruitmentJob {
     /**
      * 연관관계 편의 메서드
      */
-    private void setPost(Post post) {
+    public void changePost(Post post) {
         this.post = post;
-        post.getRecruitmentJobs().add(this);
     }
 }

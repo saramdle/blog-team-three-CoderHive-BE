@@ -18,12 +18,12 @@ public class RecruitmentJobService {
 
     public void save(List<RecruitmentJobRequestDto.Save> dtos, Post post) {
         dtos.stream()
-                .forEach(dto -> makeRecruitmentJob(dto, post));
+                .map(this::make)
+                .forEach(post::addRecruitJob);
     }
 
-    private RecruitmentJob makeRecruitmentJob(RecruitmentJobRequestDto.Save dto, Post post) {
+    private RecruitmentJob make(RecruitmentJobRequestDto.Save dto) {
         return RecruitmentJob.builder()
-                .post(post)
                 .job(jobService.findOne(dto.jobId()))
                 .number(dto.number())
                 .build();

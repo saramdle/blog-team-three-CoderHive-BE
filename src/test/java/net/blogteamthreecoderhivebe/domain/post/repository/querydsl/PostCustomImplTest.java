@@ -112,14 +112,10 @@ class PostCustomImplTest {
         Post post1 = Post.builder().build();
         Post post2 = Post.builder().build();
 
-        RecruitmentJob recruitmentJob1 = RecruitmentJob.builder()
-                .post(post1)
-                .job(jobService.findOne(1L))
-                .build();
-        RecruitmentJob recruitmentJob2 = RecruitmentJob.builder()
-                .post(post2)
-                .job(jobService.findOne(2L))
-                .build();
+        RecruitmentJob recruitmentJob1 = RecruitmentJob.builder().job(jobService.findOne(1L)).build();
+        RecruitmentJob recruitmentJob2 = RecruitmentJob.builder().job(jobService.findOne(2L)).build();
+        post1.addRecruitJob(recruitmentJob1);
+        post2.addRecruitJob(recruitmentJob2);
 
         postRepository.save(post1);
         postRepository.save(post2);

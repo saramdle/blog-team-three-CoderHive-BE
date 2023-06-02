@@ -82,6 +82,11 @@ public class Post extends AuditingFields {
     /**
      * 연관관계 편의 메서드
      */
+    public void addRecruitJob(RecruitmentJob recruitmentJob) {
+        recruitmentJob.changePost(this);
+        recruitmentJobs.add(recruitmentJob);
+    }
+    
     public void addRecruitSkill(RecruitmentSkill recruitmentSkill) {
         recruitmentSkill.changePost(this);
         recruitmentSkills.add(recruitmentSkill);
