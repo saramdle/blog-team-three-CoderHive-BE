@@ -43,6 +43,9 @@ public class Post extends AuditingFields {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecruitmentJob> recruitmentJobs = new ArrayList<>();
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RecruitmentSkill> recruitmentSkills = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     private PostCategory postCategory;
 
@@ -74,5 +77,13 @@ public class Post extends AuditingFields {
         this.content = content;
         this.thumbImageUrl = thumbImageUrl;
         this.platforms = platforms;
+    }
+
+    /**
+     * 연관관계 편의 메서드
+     */
+    public void addRecruitSkill(RecruitmentSkill recruitmentSkill) {
+        recruitmentSkill.changePost(this);
+        recruitmentSkills.add(recruitmentSkill);
     }
 }

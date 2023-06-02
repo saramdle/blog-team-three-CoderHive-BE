@@ -19,14 +19,9 @@ public class RecruitmentSkillService {
     private final RecruitmentSkillRepository recruitmentSkillRepository;
 
     public void save(List<Long> skillIds, Post post) {
-        List<Skill> skills = skillService.findSkills(skillIds);
-        skills.stream()
-                .map(skill -> makeRecruitmentSkill(skill, post))
-                .forEach(recruitmentSkillRepository::save);
-    }
-
-    private static RecruitmentSkill makeRecruitmentSkill(Skill skill, Post post) {
-        return RecruitmentSkill.of(skill, post);
+        skillService.findSkills(skillIds).stream()
+                .map(RecruitmentSkill::from)
+                .forEach(post::addRecruitSkill);
     }
 
     @Transactional(readOnly = true)
