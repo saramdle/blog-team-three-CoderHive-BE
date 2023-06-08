@@ -6,13 +6,13 @@ import net.blogteamthreecoderhivebe.domain.info.service.JobService;
 import net.blogteamthreecoderhivebe.domain.info.service.LocationService;
 import net.blogteamthreecoderhivebe.domain.member.service.MemberService;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
-import net.blogteamthreecoderhivebe.domain.post.dto.PostWithApplyNumberDto;
 import net.blogteamthreecoderhivebe.domain.post.dto.request.PostRequestDto;
 import net.blogteamthreecoderhivebe.domain.post.dto.response.PostResponseDto;
-import net.blogteamthreecoderhivebe.domain.post.dto.response.PostWithApplyNumberResponse;
+import net.blogteamthreecoderhivebe.domain.post.dto.response.PostSearchResponse;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
 import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
+import net.blogteamthreecoderhivebe.domain.post.service.vo.RecruitJobResult;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -49,28 +49,34 @@ public class PostService {
      * 게시글 전체 조회
      */
     @Transactional(readOnly = true)
-    public Page<PostWithApplyNumberResponse> searchPosts(Long memberId, PostRequestDto.SearchCond searchCond, Pageable pageable) {
-        Page<Post> postInfos = postRepository.findPosts(
+    public Page<PostSearchResponse> searchPosts(Long memberId, PostRequestDto.SearchCond searchCond, Pageable pageable) {
+        Page<Post> posts = postRepository.findPosts(
                 searchCond.postCategory(), searchCond.postStatus(), searchCond.locations(), searchCond.jobs(), pageable
         );
 
-        List<PostWithApplyNumberDto> postWithApplyNumberDtos = postInfos.stream()
-                .map(p -> {
-                    int number = 0;
-                    int passNumber = 0;
-                    for (RecruitmentJob postJob : p.getRecruitmentJobs()) {
-                        number += postJob.getNumber();
-                        passNumber += postJob.getPassNumber();
-                    }
-                    List<String> skills = recruitmentSkillService.findRecruitSkillDetails(p.getId()); // TODO: 성능 문제 발생 할 수 있기 때문에 query 를 한방에 주는 방식으로 refactor 해야함
-                    return PostWithApplyNumberDto.from(p, skills, number, passNumber);
-                }).toList();
+        List<PostSearchResponse> postSearchResponses = posts.stream()
+                .map(post -> {
+                            boolean isMemberHeartPost = isMemberHeartPost(post, memberId);
+                            RecruitJobResult recruitJobResult = makeRecruitResult(post);
+                            return PostSearchResponse.from(post, isMemberHeartPost, recruitJobResult);
+                        }
+                ).toList();
 
-        // 회원이 좋아요 누른 게시글 목록 조회
-        List<Long> heartPostIds = heartService.searchHeartPostIds(memberId);
+        return new PageImpl<>(postSearchResponses, posts.getPageable(), posts.getTotalElements());
+    }
 
-        return new PageImpl<>(postWithApplyNumberDtos, postInfos.getPageable(), postInfos.getTotalElements())
-                .map(postWithApplyNumberDto -> PostWithApplyNumberResponse.from(postWithApplyNumberDto, heartPostIds));
+    private boolean isMemberHeartPost(Post post, Long memberId) {
+        return post.getHeartMemberIds().contains(memberId);
+    }
+
+    private RecruitJobResult makeRecruitResult(Post post) {
+        int totalNumber = 0;
+        int totalPassNumber = 0;
+        for (RecruitmentJob recruitmentJob : post.getRecruitmentJobs()) {
+            totalNumber += recruitmentJob.getNumber();
+            totalNumber += recruitmentJob.getPassNumber();
+        }
+        return new RecruitJobResult(totalNumber, totalPassNumber);
     }
 
     private Post makePost(PostRequestDto.Save dto, String memberEmail) {

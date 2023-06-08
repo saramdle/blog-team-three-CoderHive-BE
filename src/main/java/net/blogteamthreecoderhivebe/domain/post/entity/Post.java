@@ -5,6 +5,7 @@ import lombok.*;
 import net.blogteamthreecoderhivebe.domain.heart.entity.Heart;
 import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 import net.blogteamthreecoderhivebe.domain.info.entity.Location;
+import net.blogteamthreecoderhivebe.domain.info.entity.Skill;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostStatus;
@@ -90,5 +91,32 @@ public class Post extends AuditingFields {
     public void addRecruitSkill(RecruitmentSkill recruitmentSkill) {
         recruitmentSkill.changePost(this);
         recruitmentSkills.add(recruitmentSkill);
+    }
+
+    /**
+     * 게시글의 총 좋아요 개수
+     */
+    public int getTotalHearts() {
+        return hearts.size();
+    }
+
+    /**
+     * 게시글의 사용 기술 목록
+     */
+    public List<String> getSkillDetails() {
+        return recruitmentSkills.stream()
+                .map(RecruitmentSkill::getSkill)
+                .map(Skill::getDetail)
+                .toList();
+    }
+
+    /**
+     * 게시글을 좋아요한 회원 id 목록
+     */
+    public List<Long> getHeartMemberIds() {
+        return hearts.stream()
+                .map(Heart::getMember)
+                .map(Member::getId)
+                .toList();
     }
 }
