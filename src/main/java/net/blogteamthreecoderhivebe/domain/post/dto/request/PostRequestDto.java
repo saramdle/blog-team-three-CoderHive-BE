@@ -1,8 +1,11 @@
 package net.blogteamthreecoderhivebe.domain.post.dto.request;
 
+import lombok.Builder;
+
 import java.util.List;
 
 public class PostRequestDto {
+    @Builder
     public record Save(
             String category,
             String title,
