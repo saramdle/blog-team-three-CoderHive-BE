@@ -1,14 +1,13 @@
 package net.blogteamthreecoderhivebe.domain.post.controller;
 
 import lombok.RequiredArgsConstructor;
+import net.blogteamthreecoderhivebe.domain.post.dto.request.PostRequestDto;
+import net.blogteamthreecoderhivebe.domain.post.dto.response.PostResponseDto;
 import net.blogteamthreecoderhivebe.domain.post.service.PostService;
 import net.blogteamthreecoderhivebe.global.auth.dto.MemberPrincipal;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import static net.blogteamthreecoderhivebe.domain.post.dto.request.PostRequestDto.SaveRequest;
-import static net.blogteamthreecoderhivebe.domain.post.dto.response.PostResponseDto.SaveResponse;
 
 @RequiredArgsConstructor
 @RequestMapping("/posts")
@@ -18,8 +17,8 @@ public class PostController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public SaveResponse register(@RequestBody SaveRequest request,
-                                 @AuthenticationPrincipal MemberPrincipal principal) {
-        return postService.save(request, principal.getEmail());
+    public PostResponseDto.Save register(@RequestBody PostRequestDto.Save dto,
+                                         @AuthenticationPrincipal MemberPrincipal principal) {
+        return postService.save(dto, principal.getEmail());
     }
 }

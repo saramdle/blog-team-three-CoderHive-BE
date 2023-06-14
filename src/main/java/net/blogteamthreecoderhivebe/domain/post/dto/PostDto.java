@@ -60,7 +60,6 @@ public record PostDto(
 
     public Post toEntity() {
         return Post.builder()
-                .id(id)
                 .member(memberDto.toEntity())
                 .location(locationDto.toEntity())
                 .title(title)
@@ -68,7 +67,6 @@ public record PostDto(
                 .thumbImageUrl(thumbImageUrl)
                 .postCategory(postCategory)
                 .platforms(platforms)
-                .postStatus(postStatus)
                 .job(jobDto.toEntity())
                 .build();
     }

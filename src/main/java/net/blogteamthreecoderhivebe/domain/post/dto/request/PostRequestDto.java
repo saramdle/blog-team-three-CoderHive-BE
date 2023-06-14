@@ -1,13 +1,16 @@
 package net.blogteamthreecoderhivebe.domain.post.dto.request;
 
+import lombok.Builder;
+
 import java.util.List;
 
 public class PostRequestDto {
-    public record SaveRequest(
+    @Builder
+    public record Save(
             String category,
             String title,
             Long locationId,
-            List<RecruitmentJobRequestDto.SaveRequest> recruitmentJobs,
+            List<RecruitmentJobRequestDto.Save> recruitmentJobs,
             Long myJobId,
             List<Long> skillIds,
             String thumbImageUrl,

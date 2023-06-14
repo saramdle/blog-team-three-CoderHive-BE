@@ -12,13 +12,11 @@ import net.blogteamthreecoderhivebe.global.common.AuditingFields;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-@Builder
 @Getter
-@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false, of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true, exclude = {"member", "recruitmentJobs", "hearts", "location", "job"})
+@ToString(callSuper = true, exclude = {"member", "job", "location", "hearts", "recruitmentJobs"})
 @Table(indexes = @Index(columnList = "modifiedAt DESC"))
 @Entity
 public class Post extends AuditingFields {
@@ -39,12 +37,10 @@ public class Post extends AuditingFields {
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Heart> hearts = new ArrayList<>();
 
-    @Builder.Default
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RecruitmentJob> recruitmentJobs = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
@@ -62,15 +58,21 @@ public class Post extends AuditingFields {
 
     private String platforms; // use only Enum (constant) > platform
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Post that)) return false;
-        return this.getId() != null && this.getId().equals(that.getId());
-    }
+    @Builder
+    public Post(Member member, Job job, Location location, PostCategory postCategory, PostStatus postStatus,
+                String title, String content, String thumbImageUrl, String platforms) {
+//        Assert.notNull(member, "member must not be null");
+//        Assert.notNull(job, "job must not be null");
+//        Assert.notNull(location, "location must not be null");
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(this.getId());
+        this.member = member;
+        this.job = job;
+        this.location = location;
+        this.postCategory = postCategory;
+        this.postStatus = postStatus;
+        this.title = title;
+        this.content = content;
+        this.thumbImageUrl = thumbImageUrl;
+        this.platforms = platforms;
     }
 }
