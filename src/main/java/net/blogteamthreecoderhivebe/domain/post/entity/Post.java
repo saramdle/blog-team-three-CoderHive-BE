@@ -12,6 +12,7 @@ import net.blogteamthreecoderhivebe.domain.post.constant.PostStatus;
 import net.blogteamthreecoderhivebe.global.common.AuditingFields;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Getter
@@ -118,5 +119,12 @@ public class Post extends AuditingFields {
                 .map(Heart::getMember)
                 .map(Member::getId)
                 .toList();
+    }
+
+    /**
+     * 출시 플랫폼 목록
+     */
+    public List<String> getPlatformList() {
+        return Arrays.stream(platforms.split("&")).toList();
     }
 }
