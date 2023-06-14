@@ -41,13 +41,18 @@ class ApplicationInfoRepositoryTest {
         );
     }
 
-    @DisplayName("member id로 지원한 공고 확인")
+    @DisplayName("memberId로 지원 정보 목록을 조회한다.")
     @Test
-    public void searchApplyPost() {
-        List<ApplicationInfo> byMemberId = applicationInfoRepository.findByMember_Id(1L);
-        for (ApplicationInfo applicationInfo : byMemberId) {
-            System.out.println(applicationInfo);
-        }
+    void findApplyInfosByMemberId() {
+        // given
+        ApplicationInfo applicationInfo = ApplicationInfo.of(member, recruitmentJob);
+        applicationInfoRepository.save(applicationInfo);
+
+        // when
+        List<ApplicationInfo> applicationInfos = applicationInfoRepository.findByMember_Id(member.getId());
+
+        // then
+        assertThat(applicationInfos).hasSize(1);
     }
 
     @DisplayName("회원이 해당 모집 직무에 지원한 이력이 없으면 지원 결과가 빈값이다.")
