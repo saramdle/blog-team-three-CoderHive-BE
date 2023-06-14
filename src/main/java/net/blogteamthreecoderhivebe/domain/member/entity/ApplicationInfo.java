@@ -32,7 +32,7 @@ public class ApplicationInfo {
     private ApplicationInfo(Member member, RecruitmentJob recruitmentJob) {
         this.member = member;
         this.recruitmentJob = recruitmentJob;
-        this.applicationResult = ApplicationResult.NON;
+        this.applicationResult = ApplicationResult.APPLY;
     }
 
     public static ApplicationInfo of(Member member, RecruitmentJob recruitmentJob) {
