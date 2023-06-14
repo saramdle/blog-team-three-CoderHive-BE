@@ -45,13 +45,13 @@ public class PostCustomImpl implements PostCustom {
         List<Post> nonPost = new ArrayList<>();
         for (Tuple tuple : result) {
             System.out.println(tuple.get(applicationInfo.applicationResult));
-            if (tuple.get(applicationInfo.applicationResult) == ApplicationResult.NON) {
+            if (tuple.get(applicationInfo.applicationResult) == ApplicationResult.APPLY) {
                 nonPost.add(tuple.get(post));
             } else if (tuple.get(applicationInfo.applicationResult) == ApplicationResult.PASS) {
                 passPost.add(tuple.get(post));
             }
         }
-        posts.put(ApplicationResult.NON, nonPost);
+        posts.put(ApplicationResult.APPLY, nonPost);
         posts.put(ApplicationResult.PASS, passPost);
         return posts;
     }
