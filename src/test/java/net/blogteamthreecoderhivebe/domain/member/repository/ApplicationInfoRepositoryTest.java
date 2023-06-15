@@ -3,10 +3,13 @@ package net.blogteamthreecoderhivebe.domain.member.repository;
 import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
 import net.blogteamthreecoderhivebe.domain.member.entity.ApplicationInfo;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
+import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
+import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
 import net.blogteamthreecoderhivebe.domain.post.repository.RecruitmentJobRepository;
 import net.blogteamthreecoderhivebe.global.config.TestJpaConfig;
 import net.blogteamthreecoderhivebe.global.config.TestQueryDslConfig;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,6 +27,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 class ApplicationInfoRepositoryTest {
 
     @Autowired ApplicationInfoRepository applicationInfoRepository;
+
+    @Autowired PostRepository postRepository;
     @Autowired MemberRepository memberRepository;
     @Autowired RecruitmentJobRepository recruitmentJobRepository;
 
@@ -75,5 +80,26 @@ class ApplicationInfoRepositoryTest {
         // then
         assertThat(applyResult).isPresent();
         assertThat(applyResult).contains(ApplicationResult.APPLY);
+    }
+
+    @DisplayName("모집직무에 합격해 게시글에 참여하는 모든 회원을 조회한다.")
+    @Test
+    void findPassMembers() {
+        // given
+        Post post = Post.builder().build();
+        post.addRecruitJob(recruitmentJob);
+        postRepository.save(post);
+
+        ApplicationInfo applicationInfo = ApplicationInfo.of(member, recruitmentJob);
+        applicationInfoRepository.save(applicationInfo);
+
+        applicationInfo.modifyResultToPass(); // 합격 처리
+
+        // when
+        List<Member> passMembers = applicationInfoRepository.findPassMembers(post);
+
+        // then
+        Assertions.assertThat(passMembers).hasSize(1);
+        Assertions.assertThat(passMembers).containsExactly(member);
     }
 }
