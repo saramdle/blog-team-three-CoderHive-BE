@@ -1,7 +1,6 @@
 package net.blogteamthreecoderhivebe.domain.post.service;
 
 import lombok.RequiredArgsConstructor;
-import net.blogteamthreecoderhivebe.domain.heart.service.HeartService;
 import net.blogteamthreecoderhivebe.domain.info.service.JobService;
 import net.blogteamthreecoderhivebe.domain.info.service.LocationService;
 import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
@@ -33,10 +32,10 @@ public class PostService {
 
     public static final String NOT_FOUND_POST = "ID[%s] 해당 게시글을 찾을 수 없습니다.";
 
-    private final JobService jobService;
-    private final HeartService heartService;
-    private final MemberService memberService;
     private final PostRepository postRepository;
+
+    private final JobService jobService;
+    private final MemberService memberService;
     private final LocationService locationService;
     private final RecruitmentJobService recruitmentJobService;
     private final ApplicationInfoService applicationInfoService;
