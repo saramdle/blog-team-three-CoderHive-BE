@@ -31,4 +31,11 @@ public class PostController {
                                            Pageable pageable) {
         return postService.searchPosts(memberId, searchCond, pageable);
     }
+
+    @RequestMapping("/{postId}")
+    @GetMapping
+    public PostResponseDto.Detail detail(@PathVariable Long postId,
+                                         @AuthenticationPrincipal MemberPrincipal principal) {
+        return postService.findPost(postId, principal.getEmail());
+    }
 }
