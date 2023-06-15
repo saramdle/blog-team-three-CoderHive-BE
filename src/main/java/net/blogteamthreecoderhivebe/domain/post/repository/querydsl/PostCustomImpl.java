@@ -18,10 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static net.blogteamthreecoderhivebe.domain.info.entity.QLocation.location;
 import static net.blogteamthreecoderhivebe.domain.member.entity.QApplicationInfo.applicationInfo;
 import static net.blogteamthreecoderhivebe.domain.post.entity.QPost.post;
 import static net.blogteamthreecoderhivebe.domain.post.entity.QRecruitmentJob.recruitmentJob;
+import static net.blogteamthreecoderhivebe.domain.post.entity.QRecruitmentSkill.recruitmentSkill;
 
 @RequiredArgsConstructor
 public class PostCustomImpl implements PostCustom {
@@ -57,46 +57,66 @@ public class PostCustomImpl implements PostCustom {
     }
 
     @Override
-    public Page<Post> getAllPost(PostCategory postCategory,
-                                 List<Long> regions,
-                                 List<Long> jobs,
-                                 PostStatus postStatus,
-                                 Pageable pageable) {
-        List<Post> Posts = queryFactory
-                .select(post)
-                .from(post)
-                .join(post.recruitmentJobs, recruitmentJob)
-                .join(post.location, location).fetchJoin()
+    public Page<Post> findPosts(PostCategory category,
+                                PostStatus status,
+                                List<Long> locations,
+                                List<Long> jobs,
+                                Pageable pageable) {
+
+        List<Post> posts = queryFactory
+                .selectFrom(post)
+                .leftJoin(post.recruitmentJobs, recruitmentJob)
+                .leftJoin(post.recruitmentSkills, recruitmentSkill)
                 .where(
-                        postCategoryEq(postCategory), regionIn(regions), jobsIn(jobs), postStatusEq(postStatus)
+                        eqPostCategory(category),
+                        eqPostStatus(status),
+                        inLocations(locations),
+                        inJobs(jobs)
                 )
                 .groupBy(post.id)
-                .offset(pageable.getOffset())
-                .limit(pageable.getPageSize())
-                .orderBy(post.modifiedAt.desc())
+                .offset(pageable.getOffset()) // 어디서부터 보여줄 건지
+                .limit(pageable.getPageSize()) // 한 페이지에 보여줄 개수
+                .orderBy(post.modifiedAt.desc()) // 가장 최근 글이 맨 앞에 오도록 정렬
                 .fetch();
 
-        JPAQuery<Long> countQuery = queryFactory
-                .select(post.count())
-                .from(post);
-
-        return PageableExecutionUtils.getPage(Posts, pageable, countQuery::fetchOne);
+        return PageableExecutionUtils.getPage(posts, pageable, countQuery()::fetchOne);
     }
 
-    private BooleanExpression postCategoryEq(PostCategory postCategory) {
+    /**
+     * 총 검색 결과 개수
+     */
+    private JPAQuery<Long> countQuery() {
+        return queryFactory
+                .select(post.count())
+                .from(post);
+    }
+
+    /**
+     * 카테고리 검색 조건
+     */
+    private BooleanExpression eqPostCategory(PostCategory postCategory) {
         return postCategory != null ? post.postCategory.eq(postCategory): null;
     }
 
-    private BooleanExpression regionIn(List<Long> regions) {
-        return regions != null ? post.location.id.in(regions): null;
+    /**
+     * 모집상태 검색 조건
+     */
+    private BooleanExpression eqPostStatus(PostStatus postStatus) {
+        return postStatus != null ? post.postStatus.eq(postStatus) : null;
     }
 
-    private BooleanExpression jobsIn(List<Long> jobs) {
+    /**
+     * 지역 검색 조건
+     */
+    private BooleanExpression inLocations(List<Long> locations) {
+        return locations != null ? post.location.id.in(locations) : null;
+    }
+
+    /**
+     * 직무 검색 조건
+     */
+    private BooleanExpression inJobs(List<Long> jobs) {
         return jobs != null ? recruitmentJob.job.id.in(jobs) : null;
-    }
-
-    private BooleanExpression postStatusEq(PostStatus postStatus) {
-        return postStatus != null ? post.postStatus.eq(postStatus): null;
     }
 }
 

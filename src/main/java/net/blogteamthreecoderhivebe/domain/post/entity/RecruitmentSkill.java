@@ -25,12 +25,18 @@ public class RecruitmentSkill {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    private RecruitmentSkill(Skill skill, Post post) {
+    private RecruitmentSkill(Skill skill) {
         this.skill = skill;
-        this.post = post;
     }
 
-    public static RecruitmentSkill of(Skill skill, Post post) {
-        return new RecruitmentSkill(skill, post);
+    public static RecruitmentSkill from(Skill skill) {
+        return new RecruitmentSkill(skill);
+    }
+
+    /**
+     * 연관관계 편의 메서드
+     */
+    public void changePost(Post post) {
+        this.post = post;
     }
 }

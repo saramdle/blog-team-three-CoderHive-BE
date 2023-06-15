@@ -15,7 +15,7 @@ import net.blogteamthreecoderhivebe.domain.member.repository.MemberSkillReposito
 import net.blogteamthreecoderhivebe.domain.post.dto.PostDto;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
-import net.blogteamthreecoderhivebe.domain.post.repository.RecruitmentSkillRepository;
+import net.blogteamthreecoderhivebe.domain.post.service.RecruitmentSkillService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +33,7 @@ public class MemberService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final MemberSkillRepository memberSkillRepository;
-    private final RecruitmentSkillRepository recruitmentSkillRepository;
+    private final RecruitmentSkillService recruitmentSkillService;
 
     private Member searchMember(Long memberId) {
         return memberRepository.findById(memberId)
@@ -54,7 +54,7 @@ public class MemberService {
 
         List<PostDto> memberHostPostDtos = postRepository.findAllByMember_Id(memberId).stream()
                 .map(post -> {
-                    List<String> postSkills = recruitmentSkillRepository.searchSkill(post.getId());
+                    List<String> postSkills = recruitmentSkillService.findRecruitSkillDetails(post.getId());
                     return PostDto.from(post, postSkills);
                 })
                 .toList();
@@ -62,14 +62,14 @@ public class MemberService {
 
         List<PostDto> appliedPostDtos = applyPostsMap.get(ApplicationResult.NON).stream()
                 .map(p -> {
-                    List<String> postSkills = recruitmentSkillRepository.searchSkill(p.getId());
+                    List<String> postSkills = recruitmentSkillService.findRecruitSkillDetails(p.getId());
                     return PostDto.from(p, postSkills);
                 })
                 .toList();
 
         List<PostDto> participatedDtos = applyPostsMap.get(ApplicationResult.PASS).stream()
                 .map(p -> {
-                    List<String> postSkills = recruitmentSkillRepository.searchSkill(p.getId());
+                    List<String> postSkills = recruitmentSkillService.findRecruitSkillDetails(p.getId());
                     return PostDto.from(p, postSkills);
                 })
                 .toList();
