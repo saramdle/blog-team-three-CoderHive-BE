@@ -38,4 +38,11 @@ public class ApplicationInfo {
     public static ApplicationInfo of(Member member, RecruitmentJob recruitmentJob) {
         return new ApplicationInfo(member, recruitmentJob);
     }
+
+    /**
+     * 지원 결과 합격 처리
+     */
+    public void modifyResultToPass() {
+        this.applicationResult = ApplicationResult.PASS;
+    }
 }
