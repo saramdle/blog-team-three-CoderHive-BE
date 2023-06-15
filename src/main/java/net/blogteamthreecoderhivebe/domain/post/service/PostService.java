@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.heart.service.HeartService;
 import net.blogteamthreecoderhivebe.domain.info.service.JobService;
 import net.blogteamthreecoderhivebe.domain.info.service.LocationService;
+import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
+import net.blogteamthreecoderhivebe.domain.member.entity.Member;
+import net.blogteamthreecoderhivebe.domain.member.service.ApplicationInfoService;
 import net.blogteamthreecoderhivebe.domain.member.service.MemberService;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.dto.request.PostRequestDto;
@@ -21,15 +24,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static net.blogteamthreecoderhivebe.domain.member.dto.response.MemberResponseDto.MemberInfoOnPostDetail;
+import static net.blogteamthreecoderhivebe.domain.post.dto.response.RecruitJobResponseDto.RecruitInfoOnPostDetail;
+
 @RequiredArgsConstructor
 @Service
 public class PostService {
+
+    public static final String NOT_FOUND_POST = "ID[%s] 해당 게시글을 찾을 수 없습니다.";
+
     private final JobService jobService;
     private final HeartService heartService;
     private final MemberService memberService;
     private final PostRepository postRepository;
     private final LocationService locationService;
     private final RecruitmentJobService recruitmentJobService;
+    private final ApplicationInfoService applicationInfoService;
     private final RecruitmentSkillService recruitmentSkillService;
 
     /**
@@ -63,6 +73,38 @@ public class PostService {
                 ).toList();
 
         return new PageImpl<>(postSearchResponses, posts.getPageable(), posts.getTotalElements());
+    }
+
+    /**
+     * 게시글 상세 조회
+     */
+    @Transactional(readOnly = true)
+    public PostResponseDto.Detail findPost(Long postId, String email) {
+        Member loginMember = memberService.searchMember(email); // 현재 로그인된 회원
+        Post post = findOne(postId);
+
+        // 모집 정보
+        List<RecruitmentJob> recruitmentJobs = post.getRecruitmentJobs();
+        List<RecruitInfoOnPostDetail> recruitInfoOnPostDetails = recruitmentJobs.stream()
+                .map(recruitmentJob -> {
+                            ApplicationResult result = applicationInfoService.getApplyResult(loginMember, recruitmentJob);
+                            return RecruitInfoOnPostDetail.from(recruitmentJob, result);
+                        }
+                ).toList();
+
+        // 작성자 -> leader
+        MemberInfoOnPostDetail leader = MemberInfoOnPostDetail.from(post.getMember());
+        // 참가자 -> participants
+        List<MemberInfoOnPostDetail> participants = applicationInfoService.findPassMembers(post).stream()
+                .map(MemberInfoOnPostDetail::from)
+                .toList();
+
+        return PostResponseDto.Detail.from(post, recruitInfoOnPostDetails, leader, participants);
+    }
+
+    private Post findOne(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new IllegalArgumentException(String.format(NOT_FOUND_POST, postId)));
     }
 
     private boolean isMemberHeartPost(Post post, Long memberId) {
