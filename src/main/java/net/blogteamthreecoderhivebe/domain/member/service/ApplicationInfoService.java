@@ -5,6 +5,7 @@ import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
 import net.blogteamthreecoderhivebe.domain.member.entity.ApplicationInfo;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import net.blogteamthreecoderhivebe.domain.member.repository.ApplicationInfoRepository;
+import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,5 +34,12 @@ public class ApplicationInfoService {
         Optional<ApplicationResult> applyResult = applicationInfoRepository.findApplyResult(member, recruitmentJob);
         // 지원 이력이 없을 경우 미신청
         return applyResult.orElse(ApplicationResult.NONE);
+    }
+
+    /**
+     * 합격 회원(참여자) 조회
+     */
+    public List<Member> findPassMembers(Post post) {
+        return applicationInfoRepository.findPassMembers(post);
     }
 }
