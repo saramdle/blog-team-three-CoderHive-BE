@@ -14,7 +14,7 @@ import net.blogteamthreecoderhivebe.domain.post.entity.RecruitJob;
 @Entity
 public class ApplyInfo {
     @Id
-    @Column(name = "application_info_id")
+    @Column(name = "apply_info_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
