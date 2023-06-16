@@ -5,7 +5,7 @@ import net.blogteamthreecoderhivebe.domain.info.service.LocationService;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostStatus;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
-import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
+import net.blogteamthreecoderhivebe.domain.post.entity.RecruitJob;
 import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -112,10 +112,10 @@ class PostCustomImplTest {
         Post post1 = Post.builder().build();
         Post post2 = Post.builder().build();
 
-        RecruitmentJob recruitmentJob1 = RecruitmentJob.builder().job(jobService.findOne(1L)).build();
-        RecruitmentJob recruitmentJob2 = RecruitmentJob.builder().job(jobService.findOne(2L)).build();
-        post1.addRecruitJob(recruitmentJob1);
-        post2.addRecruitJob(recruitmentJob2);
+        RecruitJob recruitJob1 = RecruitJob.builder().job(jobService.findOne(1L)).build();
+        RecruitJob recruitJob2 = RecruitJob.builder().job(jobService.findOne(2L)).build();
+        post1.addRecruitJob(recruitJob1);
+        post2.addRecruitJob(recruitJob2);
 
         postRepository.save(post1);
         postRepository.save(post2);

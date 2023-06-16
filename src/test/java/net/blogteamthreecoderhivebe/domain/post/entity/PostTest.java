@@ -11,7 +11,7 @@ class PostTest {
     void builderDefaultTest() {
         Post post = Post.builder().build();
         assertThat(post.getHearts()).isNotNull();
-        assertThat(post.getRecruitmentJobs()).isNotNull();
+        assertThat(post.getRecruitJobs()).isNotNull();
     }
 
     @Test

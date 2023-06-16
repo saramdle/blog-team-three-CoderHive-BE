@@ -3,7 +3,7 @@ package net.blogteamthreecoderhivebe.domain.post.service;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import net.blogteamthreecoderhivebe.domain.member.repository.MemberRepository;
 import net.blogteamthreecoderhivebe.domain.post.dto.request.PostRequestDto;
-import net.blogteamthreecoderhivebe.domain.post.dto.request.RecruitmentJobRequestDto;
+import net.blogteamthreecoderhivebe.domain.post.dto.request.RecruitJobRequestDto;
 import net.blogteamthreecoderhivebe.domain.post.dto.response.PostResponseDto;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
@@ -45,7 +45,7 @@ class PostServiceTest {
                 .category("project")
                 .locationId(1L)
                 .skillIds(List.of(1L, 2L))
-                .recruitmentJobs(List.of(new RecruitmentJobRequestDto.Save(1L, 1)))
+                .recruitmentJobs(List.of(new RecruitJobRequestDto.Save(1L, 1)))
                 .myJobId(1L)
                 .build();
 

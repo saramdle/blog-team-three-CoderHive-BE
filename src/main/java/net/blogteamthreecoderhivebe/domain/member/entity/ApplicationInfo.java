@@ -6,10 +6,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
-import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
+import net.blogteamthreecoderhivebe.domain.post.entity.RecruitJob;
 
 @Getter
-@ToString(exclude = {"member", "recruitmentJob"})
+@ToString(exclude = {"member", "recruitJob"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class ApplicationInfo {
@@ -23,20 +23,20 @@ public class ApplicationInfo {
     private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recruitment_job_id")
-    private RecruitmentJob recruitmentJob;
+    @JoinColumn(name = "recruit_job_id")
+    private RecruitJob recruitJob;
 
     @Enumerated(EnumType.STRING)
     private ApplicationResult applicationResult;
 
-    private ApplicationInfo(Member member, RecruitmentJob recruitmentJob) {
+    private ApplicationInfo(Member member, RecruitJob recruitJob) {
         this.member = member;
-        this.recruitmentJob = recruitmentJob;
+        this.recruitJob = recruitJob;
         this.applicationResult = ApplicationResult.APPLY;
     }
 
-    public static ApplicationInfo of(Member member, RecruitmentJob recruitmentJob) {
-        return new ApplicationInfo(member, recruitmentJob);
+    public static ApplicationInfo of(Member member, RecruitJob recruitJob) {
+        return new ApplicationInfo(member, recruitJob);
     }
 
     /**

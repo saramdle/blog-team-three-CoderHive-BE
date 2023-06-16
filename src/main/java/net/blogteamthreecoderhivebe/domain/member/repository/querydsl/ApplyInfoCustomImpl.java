@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
-import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
+import net.blogteamthreecoderhivebe.domain.post.entity.RecruitJob;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,10 +20,10 @@ public class ApplyInfoCustomImpl implements ApplyInfoCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Optional<ApplicationResult> findApplyResult(Member member, RecruitmentJob recruitmentJob) {
+    public Optional<ApplicationResult> findApplyResult(Member member, RecruitJob recruitJob) {
         ApplicationResult applicationResult = queryFactory.select(applicationInfo.applicationResult)
                 .from(applicationInfo)
-                .where(eqMember(member), eqRecruitJob(recruitmentJob))
+                .where(eqMember(member), eqRecruitJob(recruitJob))
                 .fetchOne();
         return Optional.ofNullable(applicationResult);
     }
@@ -33,11 +33,11 @@ public class ApplyInfoCustomImpl implements ApplyInfoCustom {
      */
     @Override
     public List<Member> findPassMembers(Post post) {
-        List<RecruitmentJob> recruitmentJobs = post.getRecruitmentJobs();
+        List<RecruitJob> recruitJobs = post.getRecruitJobs();
 
         return queryFactory.select(applicationInfo.member)
                 .from(applicationInfo)
-                .where(inRecruitJobs(recruitmentJobs), eqApplyResult(PASS))
+                .where(inRecruitJobs(recruitJobs), eqApplyResult(PASS))
                 .fetch();
     }
 
@@ -45,19 +45,19 @@ public class ApplyInfoCustomImpl implements ApplyInfoCustom {
         return applicationInfo.applicationResult.eq(applyResult);
     }
 
-    private static BooleanExpression inRecruitJobs(List<RecruitmentJob> recruitJobs) {
+    private static BooleanExpression inRecruitJobs(List<RecruitJob> recruitJobs) {
         List<Long> recruitJobIds = recruitJobs.stream()
-                .map(RecruitmentJob::getId)
+                .map(RecruitJob::getId)
                 .toList();
 
-        return applicationInfo.recruitmentJob.id.in(recruitJobIds);
+        return applicationInfo.recruitJob.id.in(recruitJobIds);
     }
 
     private static BooleanExpression eqMember(Member member) {
         return applicationInfo.member.eq(member);
     }
 
-    private static BooleanExpression eqRecruitJob(RecruitmentJob recruitmentJob) {
-        return applicationInfo.recruitmentJob.eq(recruitmentJob);
+    private static BooleanExpression eqRecruitJob(RecruitJob recruitJob) {
+        return applicationInfo.recruitJob.eq(recruitJob);
     }
 }

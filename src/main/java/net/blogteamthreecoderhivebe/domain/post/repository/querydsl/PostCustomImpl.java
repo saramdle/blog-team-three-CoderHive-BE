@@ -20,7 +20,7 @@ import java.util.Map;
 
 import static net.blogteamthreecoderhivebe.domain.member.entity.QApplicationInfo.applicationInfo;
 import static net.blogteamthreecoderhivebe.domain.post.entity.QPost.post;
-import static net.blogteamthreecoderhivebe.domain.post.entity.QRecruitmentJob.recruitmentJob;
+import static net.blogteamthreecoderhivebe.domain.post.entity.QRecruitJob.recruitJob;
 import static net.blogteamthreecoderhivebe.domain.post.entity.QRecruitmentSkill.recruitmentSkill;
 
 @RequiredArgsConstructor
@@ -32,8 +32,8 @@ public class PostCustomImpl implements PostCustom {
         List<Tuple> result = queryFactory
                 .select(post, applicationInfo)
                 .from(applicationInfo)
-                .join(applicationInfo.recruitmentJob, recruitmentJob)
-                .join(recruitmentJob.post, post)
+                .join(applicationInfo.recruitJob, recruitJob)
+                .join(recruitJob.post, post)
                 .where(
                         applicationInfo.member.id.eq(memberId)
                 )
@@ -65,7 +65,7 @@ public class PostCustomImpl implements PostCustom {
 
         List<Post> posts = queryFactory
                 .selectFrom(post)
-                .leftJoin(post.recruitmentJobs, recruitmentJob)
+                .leftJoin(post.recruitJobs, recruitJob)
                 .leftJoin(post.recruitmentSkills, recruitmentSkill)
                 .where(
                         eqPostCategory(category),
@@ -116,7 +116,7 @@ public class PostCustomImpl implements PostCustom {
      * 직무 검색 조건
      */
     private BooleanExpression inJobs(List<Long> jobs) {
-        return jobs != null ? recruitmentJob.job.id.in(jobs) : null;
+        return jobs != null ? recruitJob.job.id.in(jobs) : null;
     }
 }
 

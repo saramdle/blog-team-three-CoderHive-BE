@@ -8,9 +8,9 @@ import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 @ToString(exclude = {"post", "job"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class RecruitmentJob {
+public class RecruitJob {
     @Id
-    @Column(name = "recruitment_job_id")
+    @Column(name = "recruit_job_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -27,7 +27,7 @@ public class RecruitmentJob {
     private int passNumber;
 
     @Builder
-    public RecruitmentJob(Job job, int number, int passNumber) {
+    public RecruitJob(Job job, int number, int passNumber) {
         this.job = job;
         this.number = number;
         this.passNumber = passNumber;

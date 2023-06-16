@@ -12,7 +12,7 @@ public class PostRequestDto {
             String category,
             String title,
             Long locationId,
-            List<RecruitmentJobRequestDto.Save> recruitmentJobs,
+            List<RecruitJobRequestDto.Save> recruitmentJobs,
             Long myJobId,
             List<Long> skillIds,
             String thumbImageUrl,

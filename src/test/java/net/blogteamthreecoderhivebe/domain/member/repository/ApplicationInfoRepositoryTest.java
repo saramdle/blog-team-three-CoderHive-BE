@@ -4,9 +4,9 @@ import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
 import net.blogteamthreecoderhivebe.domain.member.entity.ApplicationInfo;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
-import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
+import net.blogteamthreecoderhivebe.domain.post.entity.RecruitJob;
 import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
-import net.blogteamthreecoderhivebe.domain.post.repository.RecruitmentJobRepository;
+import net.blogteamthreecoderhivebe.domain.post.repository.RecruitJobRepository;
 import net.blogteamthreecoderhivebe.global.config.TestJpaConfig;
 import net.blogteamthreecoderhivebe.global.config.TestQueryDslConfig;
 import org.assertj.core.api.Assertions;
@@ -30,10 +30,10 @@ class ApplicationInfoRepositoryTest {
 
     @Autowired PostRepository postRepository;
     @Autowired MemberRepository memberRepository;
-    @Autowired RecruitmentJobRepository recruitmentJobRepository;
+    @Autowired RecruitJobRepository recruitJobRepository;
 
     Member member;
-    RecruitmentJob recruitmentJob;
+    RecruitJob recruitJob;
 
     @BeforeEach
     void setUp() {
@@ -41,8 +41,8 @@ class ApplicationInfoRepositoryTest {
                 Member.builder().email("test@test.com").build()
         );
 
-        recruitmentJob = recruitmentJobRepository.save(
-                RecruitmentJob.builder().build()
+        recruitJob = recruitJobRepository.save(
+                RecruitJob.builder().build()
         );
     }
 
@@ -50,7 +50,7 @@ class ApplicationInfoRepositoryTest {
     @Test
     void findApplyInfosByMemberId() {
         // given
-        ApplicationInfo applicationInfo = ApplicationInfo.of(member, recruitmentJob);
+        ApplicationInfo applicationInfo = ApplicationInfo.of(member, recruitJob);
         applicationInfoRepository.save(applicationInfo);
 
         // when
@@ -63,7 +63,7 @@ class ApplicationInfoRepositoryTest {
     @DisplayName("회원이 해당 모집 직무에 지원한 이력이 없으면 지원 결과가 빈값이다.")
     @Test
     void findApplyResultEmpty() {
-        Optional<ApplicationResult> applyResult = applicationInfoRepository.findApplyResult(member, recruitmentJob);
+        Optional<ApplicationResult> applyResult = applicationInfoRepository.findApplyResult(member, recruitJob);
         assertThat(applyResult).isEmpty();
     }
 
@@ -71,11 +71,11 @@ class ApplicationInfoRepositoryTest {
     @Test
     void findApplyResult() {
         // given
-        ApplicationInfo applicationInfo = ApplicationInfo.of(member, recruitmentJob);
+        ApplicationInfo applicationInfo = ApplicationInfo.of(member, recruitJob);
         applicationInfoRepository.save(applicationInfo);
 
         // when
-        Optional<ApplicationResult> applyResult = applicationInfoRepository.findApplyResult(member, recruitmentJob);
+        Optional<ApplicationResult> applyResult = applicationInfoRepository.findApplyResult(member, recruitJob);
 
         // then
         assertThat(applyResult).isPresent();
@@ -87,10 +87,10 @@ class ApplicationInfoRepositoryTest {
     void findPassMembers() {
         // given
         Post post = Post.builder().build();
-        post.addRecruitJob(recruitmentJob);
+        post.addRecruitJob(recruitJob);
         postRepository.save(post);
 
-        ApplicationInfo applicationInfo = ApplicationInfo.of(member, recruitmentJob);
+        ApplicationInfo applicationInfo = ApplicationInfo.of(member, recruitJob);
         applicationInfoRepository.save(applicationInfo);
 
         applicationInfo.modifyResultToPass(); // 합격 처리
