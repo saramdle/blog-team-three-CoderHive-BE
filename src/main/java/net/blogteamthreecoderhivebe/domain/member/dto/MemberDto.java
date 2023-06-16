@@ -50,18 +50,4 @@ public record MemberDto(
                 .skills(skills)
                 .build();
     }
-
-    public Member toEntity() {
-        return Member.builder()
-                .id(id)
-                .job(jobDto.toEntity())
-                .email(email)
-                .level(level)
-                .career(career)
-                .memberRole(memberRole)
-                .nickname(nickname)
-                .profileImageUrl(profileImageUrl)
-                .introduction(introduction)
-                .build();
-    }
 }

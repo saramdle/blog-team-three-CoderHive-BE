@@ -12,11 +12,4 @@ public record SkillDto(Long id, String detail) {
                 .detail(entity.getDetail())
                 .build();
     }
-
-    public Skill toEntity() {
-        return Skill.builder()
-                .id(id)
-                .detail(detail)
-                .build();
-    }
 }

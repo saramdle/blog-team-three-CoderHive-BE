@@ -1,12 +1,11 @@
 package net.blogteamthreecoderhivebe.domain.info.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Builder
 @Getter
-@ToString
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Skill {

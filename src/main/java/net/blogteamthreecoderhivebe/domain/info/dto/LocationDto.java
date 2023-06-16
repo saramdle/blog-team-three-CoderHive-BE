@@ -11,11 +11,4 @@ public record LocationDto(Long id, String region) {
                 .region(Entity.getRegion())
                 .build();
     }
-
-    public Location toEntity() {
-        return Location.builder()
-                .id(id)
-                .region(region)
-                .build();
-    }
 }

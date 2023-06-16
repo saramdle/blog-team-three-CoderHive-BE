@@ -57,17 +57,4 @@ public record PostDto(
                 .likes(post.getHearts().size())
                 .build();
     }
-
-    public Post toEntity() {
-        return Post.builder()
-                .member(memberDto.toEntity())
-                .location(locationDto.toEntity())
-                .title(title)
-                .content(content)
-                .thumbImageUrl(thumbImageUrl)
-                .postCategory(postCategory)
-                .platforms(platforms)
-                .job(jobDto.toEntity())
-                .build();
-    }
 }

@@ -13,12 +13,4 @@ public record JobDto(Long id, String main, String detail) {
                 .detail(entity.getDetail())
                 .build();
     }
-
-    public Job toEntity() {
-        return Job.builder()
-                .id(id)
-                .main(main)
-                .detail(detail)
-                .build();
-    }
 }

@@ -11,11 +11,4 @@ public record JobResponse(String main, String detail) {
                 .detail(dto.detail())
                 .build();
     }
-
-    public JobDto toDto() {
-        return JobDto.builder()
-                .main(main)
-                .detail(detail)
-                .build();
-    }
 }
