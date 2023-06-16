@@ -5,7 +5,7 @@ import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
-import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
+import net.blogteamthreecoderhivebe.domain.member.constant.ApplyResult;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostStatus;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
@@ -18,41 +18,42 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static net.blogteamthreecoderhivebe.domain.member.entity.QApplicationInfo.applicationInfo;
+import static net.blogteamthreecoderhivebe.domain.member.entity.QApplyInfo.applyInfo;
 import static net.blogteamthreecoderhivebe.domain.post.entity.QPost.post;
 import static net.blogteamthreecoderhivebe.domain.post.entity.QRecruitJob.recruitJob;
 import static net.blogteamthreecoderhivebe.domain.post.entity.QRecruitSkill.recruitSkill;
 
 @RequiredArgsConstructor
 public class PostCustomImpl implements PostCustom {
+
     private final JPAQueryFactory queryFactory;
 
     @Override
-    public Map<ApplicationResult, List<Post>> memberApplyPost(Long memberId) {
+    public Map<ApplyResult, List<Post>> memberApplyPost(Long memberId) {
         List<Tuple> result = queryFactory
-                .select(post, applicationInfo)
-                .from(applicationInfo)
-                .join(applicationInfo.recruitJob, recruitJob)
+                .select(post, applyInfo)
+                .from(applyInfo)
+                .join(applyInfo.recruitJob, recruitJob)
                 .join(recruitJob.post, post)
                 .where(
-                        applicationInfo.member.id.eq(memberId)
+                        applyInfo.member.id.eq(memberId)
                 )
                 .fetch();
 
-        Map<ApplicationResult, List<Post>> posts = new HashMap<>();
+        Map<ApplyResult, List<Post>> posts = new HashMap<>();
 
         List<Post> passPost = new ArrayList<>();
         List<Post> nonPost = new ArrayList<>();
         for (Tuple tuple : result) {
-            System.out.println(tuple.get(applicationInfo.applicationResult));
-            if (tuple.get(applicationInfo.applicationResult) == ApplicationResult.APPLY) {
+            System.out.println(tuple.get(applyInfo.applyResult));
+            if (tuple.get(applyInfo.applyResult) == ApplyResult.APPLY) {
                 nonPost.add(tuple.get(post));
-            } else if (tuple.get(applicationInfo.applicationResult) == ApplicationResult.PASS) {
+            } else if (tuple.get(applyInfo.applyResult) == ApplyResult.PASS) {
                 passPost.add(tuple.get(post));
             }
         }
-        posts.put(ApplicationResult.APPLY, nonPost);
-        posts.put(ApplicationResult.PASS, passPost);
+        posts.put(ApplyResult.APPLY, nonPost);
+        posts.put(ApplyResult.PASS, passPost);
         return posts;
     }
 

@@ -5,14 +5,14 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
+import net.blogteamthreecoderhivebe.domain.member.constant.ApplyResult;
 import net.blogteamthreecoderhivebe.domain.post.entity.RecruitJob;
 
 @Getter
 @ToString(exclude = {"member", "recruitJob"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class ApplicationInfo {
+public class ApplyInfo {
     @Id
     @Column(name = "application_info_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,22 +27,22 @@ public class ApplicationInfo {
     private RecruitJob recruitJob;
 
     @Enumerated(EnumType.STRING)
-    private ApplicationResult applicationResult;
+    private ApplyResult applyResult;
 
-    private ApplicationInfo(Member member, RecruitJob recruitJob) {
+    private ApplyInfo(Member member, RecruitJob recruitJob) {
         this.member = member;
         this.recruitJob = recruitJob;
-        this.applicationResult = ApplicationResult.APPLY;
+        this.applyResult = ApplyResult.APPLY;
     }
 
-    public static ApplicationInfo of(Member member, RecruitJob recruitJob) {
-        return new ApplicationInfo(member, recruitJob);
+    public static ApplyInfo of(Member member, RecruitJob recruitJob) {
+        return new ApplyInfo(member, recruitJob);
     }
 
     /**
      * 지원 결과 합격 처리
      */
     public void modifyResultToPass() {
-        this.applicationResult = ApplicationResult.PASS;
+        this.applyResult = ApplyResult.PASS;
     }
 }

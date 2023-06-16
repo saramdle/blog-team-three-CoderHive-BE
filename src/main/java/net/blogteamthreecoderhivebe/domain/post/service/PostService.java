@@ -3,9 +3,9 @@ package net.blogteamthreecoderhivebe.domain.post.service;
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.info.service.JobService;
 import net.blogteamthreecoderhivebe.domain.info.service.LocationService;
-import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
+import net.blogteamthreecoderhivebe.domain.member.constant.ApplyResult;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
-import net.blogteamthreecoderhivebe.domain.member.service.ApplicationInfoService;
+import net.blogteamthreecoderhivebe.domain.member.service.ApplyInfoService;
 import net.blogteamthreecoderhivebe.domain.member.service.MemberService;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.dto.request.PostRequestDto;
@@ -37,8 +37,8 @@ public class PostService {
     private final JobService jobService;
     private final MemberService memberService;
     private final LocationService locationService;
+    private final ApplyInfoService applyInfoService;
     private final RecruitJobService recruitJobService;
-    private final ApplicationInfoService applicationInfoService;
     private final RecruitSkillService recruitSkillService;
 
     /**
@@ -86,7 +86,7 @@ public class PostService {
         List<RecruitJob> recruitJobs = post.getRecruitJobs();
         List<RecruitInfoOnPostDetail> recruitInfoOnPostDetails = recruitJobs.stream()
                 .map(recruitmentJob -> {
-                            ApplicationResult result = applicationInfoService.getApplyResult(loginMember, recruitmentJob);
+                            ApplyResult result = applyInfoService.getApplyResult(loginMember, recruitmentJob);
                             return RecruitInfoOnPostDetail.from(recruitmentJob, result);
                         }
                 ).toList();
@@ -94,7 +94,7 @@ public class PostService {
         // 작성자 -> leader
         MemberInfoOnPostDetail leader = MemberInfoOnPostDetail.from(post.getMember());
         // 참가자 -> participants
-        List<MemberInfoOnPostDetail> participants = applicationInfoService.findPassMembers(post).stream()
+        List<MemberInfoOnPostDetail> participants = applyInfoService.findPassMembers(post).stream()
                 .map(MemberInfoOnPostDetail::from)
                 .toList();
 

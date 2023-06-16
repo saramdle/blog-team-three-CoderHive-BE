@@ -3,7 +3,7 @@ package net.blogteamthreecoderhivebe.domain.member.constant;
 import lombok.Getter;
 
 @Getter
-public enum ApplicationResult {
+public enum ApplyResult {
     NONE("미신청"),
     APPLY("신청"),
     PASS("합격"),
@@ -11,7 +11,7 @@ public enum ApplicationResult {
 
     private final String description;
 
-    ApplicationResult(String description) {
+    ApplyResult(String description) {
         this.description = description;
     }
 }
