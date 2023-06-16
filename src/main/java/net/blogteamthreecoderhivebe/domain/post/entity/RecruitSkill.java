@@ -13,7 +13,7 @@ import net.blogteamthreecoderhivebe.domain.info.entity.Skill;
 @Entity
 public class RecruitSkill {
     @Id
-    @Column(name = "recruitment_skill_id")
+    @Column(name = "recruit_skill_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
