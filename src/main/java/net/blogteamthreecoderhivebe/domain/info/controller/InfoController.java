@@ -12,9 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RequestMapping("info")
+@RequestMapping("/info")
 @RestController
 public class InfoController {
+
     private final InfoService infoService;
 
     @GetMapping("/locations")
@@ -28,8 +29,8 @@ public class InfoController {
     }
 
     @GetMapping("/skills")
-    public TechnologyResponse searchTop4Skills(@RequestParam(required = false, defaultValue = "") final String keyword) {
-        return TechnologyResponse.from(infoService.searchTop4Skills(keyword));
+    public SkillResponse searchTop4Skills(@RequestParam(required = false, defaultValue = "") final String keyword) {
+        return SkillResponse.from(infoService.searchTop4Skills(keyword));
     }
 
     @GetMapping("/careers")
