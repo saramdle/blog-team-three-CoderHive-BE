@@ -1,4 +1,4 @@
-package net.blogteamthreecoderhivebe.domain.post.repository.querydsl;
+package net.blogteamthreecoderhivebe.domain.post.repository;
 
 import net.blogteamthreecoderhivebe.domain.info.service.JobService;
 import net.blogteamthreecoderhivebe.domain.info.service.LocationService;
@@ -6,7 +6,6 @@ import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostStatus;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 import net.blogteamthreecoderhivebe.domain.post.entity.RecruitJob;
-import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +21,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
 @SpringBootTest
-class PostCustomImplTest {
+class PostRepositoryTest {
+
     @Autowired PostRepository postRepository;
-    @Autowired LocationService locationService;
+
     @Autowired JobService jobService;
+    @Autowired LocationService locationService;
 
     final Pageable pageable = PageRequest.of(0, 10);
 

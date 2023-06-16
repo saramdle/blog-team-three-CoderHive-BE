@@ -1,11 +1,9 @@
-package net.blogteamthreecoderhivebe.domain.post.repository.querydsl;
+package net.blogteamthreecoderhivebe.domain.post.repository;
 
 import jakarta.transaction.Transactional;
 import net.blogteamthreecoderhivebe.domain.info.entity.Skill;
 import net.blogteamthreecoderhivebe.domain.info.service.SkillService;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
-import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
-import net.blogteamthreecoderhivebe.domain.post.repository.RecruitSkillRepository;
 import net.blogteamthreecoderhivebe.domain.post.service.RecruitSkillService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
 @SpringBootTest
-class RecruitSkillCustomImplTest {
+class RecruitSkillRepositoryTest {
 
     @Autowired RecruitSkillRepository recruitSkillRepository;
 
