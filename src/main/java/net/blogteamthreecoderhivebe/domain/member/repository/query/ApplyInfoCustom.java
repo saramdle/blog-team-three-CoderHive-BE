@@ -1,4 +1,4 @@
-package net.blogteamthreecoderhivebe.domain.member.repository.querydsl;
+package net.blogteamthreecoderhivebe.domain.member.repository.query;
 
 import net.blogteamthreecoderhivebe.domain.member.constant.ApplyResult;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;

@@ -1,4 +1,4 @@
-package net.blogteamthreecoderhivebe.domain.post.repository.querydsl;
+package net.blogteamthreecoderhivebe.domain.post.repository.query;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
