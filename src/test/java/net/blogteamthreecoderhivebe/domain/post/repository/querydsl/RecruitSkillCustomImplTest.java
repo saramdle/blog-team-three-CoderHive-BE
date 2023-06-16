@@ -5,8 +5,8 @@ import net.blogteamthreecoderhivebe.domain.info.entity.Skill;
 import net.blogteamthreecoderhivebe.domain.info.service.SkillService;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
-import net.blogteamthreecoderhivebe.domain.post.repository.RecruitmentSkillRepository;
-import net.blogteamthreecoderhivebe.domain.post.service.RecruitmentSkillService;
+import net.blogteamthreecoderhivebe.domain.post.repository.RecruitSkillRepository;
+import net.blogteamthreecoderhivebe.domain.post.service.RecruitSkillService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +18,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
 @SpringBootTest
-class RecruitmentSkillCustomImplTest {
+class RecruitSkillCustomImplTest {
+
+    @Autowired RecruitSkillRepository recruitSkillRepository;
+
     @Autowired PostRepository postRepository;
-    @Autowired RecruitmentSkillRepository recruitmentSkillRepository;
     @Autowired SkillService skillService;
-    @Autowired RecruitmentSkillService recruitmentSkillService;
+    @Autowired RecruitSkillService recruitSkillService;
 
     @DisplayName("게시글 id로 해당 게시글에서 모집하는 기술 목록을 조회")
     @Test
@@ -30,10 +32,10 @@ class RecruitmentSkillCustomImplTest {
         // given
         List<Long> skillIds = List.of(1L, 2L);
         Post post = postRepository.save(Post.builder().build());
-        recruitmentSkillService.save(skillIds, post);
+        recruitSkillService.save(skillIds, post);
 
         // when
-        List<Skill> findSkills = recruitmentSkillRepository.findSkills(post.getId());
+        List<Skill> findSkills = recruitSkillRepository.findSkills(post.getId());
 
         // then
         assertThat(findSkills.get(0)).isEqualTo(skillService.findOne(skillIds.get(0)));

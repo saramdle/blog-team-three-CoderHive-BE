@@ -21,7 +21,7 @@ import java.util.Map;
 import static net.blogteamthreecoderhivebe.domain.member.entity.QApplicationInfo.applicationInfo;
 import static net.blogteamthreecoderhivebe.domain.post.entity.QPost.post;
 import static net.blogteamthreecoderhivebe.domain.post.entity.QRecruitJob.recruitJob;
-import static net.blogteamthreecoderhivebe.domain.post.entity.QRecruitmentSkill.recruitmentSkill;
+import static net.blogteamthreecoderhivebe.domain.post.entity.QRecruitSkill.recruitSkill;
 
 @RequiredArgsConstructor
 public class PostCustomImpl implements PostCustom {
@@ -66,7 +66,7 @@ public class PostCustomImpl implements PostCustom {
         List<Post> posts = queryFactory
                 .selectFrom(post)
                 .leftJoin(post.recruitJobs, recruitJob)
-                .leftJoin(post.recruitmentSkills, recruitmentSkill)
+                .leftJoin(post.recruitSkills, recruitSkill)
                 .where(
                         eqPostCategory(category),
                         eqPostStatus(status),

@@ -39,7 +39,7 @@ public class PostService {
     private final LocationService locationService;
     private final RecruitJobService recruitJobService;
     private final ApplicationInfoService applicationInfoService;
-    private final RecruitmentSkillService recruitmentSkillService;
+    private final RecruitSkillService recruitSkillService;
 
     /**
      * 게시글 등록
@@ -48,7 +48,7 @@ public class PostService {
     public PostResponseDto.Save save(PostRequestDto.Save dto, String memberEmail) {
         Post post = postRepository.save(makePost(dto, memberEmail));
 
-        recruitmentSkillService.save(dto.skillIds(), post);
+        recruitSkillService.save(dto.skillIds(), post);
         recruitJobService.save(dto.recruitmentJobs(), post);
 
         return new PostResponseDto.Save(post.getId());

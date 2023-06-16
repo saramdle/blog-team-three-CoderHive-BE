@@ -18,7 +18,7 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode(callSuper = false, of = "id")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(callSuper = true, exclude = {"member", "job", "location", "hearts", "recruitJobs", "recruitmentSkills"})
+@ToString(callSuper = true, exclude = {"member", "job", "location", "hearts", "recruitJobs", "recruitSkills"})
 @Table(indexes = @Index(columnList = "modifiedAt DESC"))
 @Entity
 public class Post extends AuditingFields {
@@ -46,7 +46,7 @@ public class Post extends AuditingFields {
     private List<RecruitJob> recruitJobs = new ArrayList<>();
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RecruitmentSkill> recruitmentSkills = new ArrayList<>();
+    private List<RecruitSkill> recruitSkills = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private PostCategory postCategory;
@@ -89,9 +89,9 @@ public class Post extends AuditingFields {
         recruitJobs.add(recruitJob);
     }
     
-    public void addRecruitSkill(RecruitmentSkill recruitmentSkill) {
-        recruitmentSkill.changePost(this);
-        recruitmentSkills.add(recruitmentSkill);
+    public void addRecruitSkill(RecruitSkill recruitSkill) {
+        recruitSkill.changePost(this);
+        recruitSkills.add(recruitSkill);
     }
 
     /**
@@ -105,8 +105,8 @@ public class Post extends AuditingFields {
      * 게시글의 사용 기술 목록
      */
     public List<String> getSkillDetails() {
-        return recruitmentSkills.stream()
-                .map(RecruitmentSkill::getSkill)
+        return recruitSkills.stream()
+                .map(RecruitSkill::getSkill)
                 .map(Skill::getDetail)
                 .toList();
     }

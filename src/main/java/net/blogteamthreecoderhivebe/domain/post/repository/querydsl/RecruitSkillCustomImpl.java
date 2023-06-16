@@ -7,22 +7,22 @@ import net.blogteamthreecoderhivebe.domain.info.entity.Skill;
 
 import java.util.List;
 
-import static net.blogteamthreecoderhivebe.domain.post.entity.QRecruitmentSkill.recruitmentSkill;
+import static net.blogteamthreecoderhivebe.domain.post.entity.QRecruitSkill.recruitSkill;
 
 @RequiredArgsConstructor
-public class RecruitmentSkillCustomImpl implements RecruitmentSkillCustom {
+public class RecruitSkillCustomImpl implements RecruitSkillCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
     public List<Skill> findSkills(Long postId) {
         return queryFactory
-                .select(recruitmentSkill.skill)
-                .from(recruitmentSkill)
+                .select(recruitSkill.skill)
+                .from(recruitSkill)
                 .where(eqPostId(postId))
                 .fetch();
     }
 
     private static BooleanExpression eqPostId(Long postId) {
-        return recruitmentSkill.post.id.eq(postId);
+        return recruitSkill.post.id.eq(postId);
     }
 }

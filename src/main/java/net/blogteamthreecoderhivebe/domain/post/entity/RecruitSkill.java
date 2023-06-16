@@ -11,7 +11,7 @@ import net.blogteamthreecoderhivebe.domain.info.entity.Skill;
 @ToString(exclude = {"skill", "post"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class RecruitmentSkill {
+public class RecruitSkill {
     @Id
     @Column(name = "recruitment_skill_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,12 +25,12 @@ public class RecruitmentSkill {
     @JoinColumn(name = "post_id")
     private Post post;
 
-    private RecruitmentSkill(Skill skill) {
+    private RecruitSkill(Skill skill) {
         this.skill = skill;
     }
 
-    public static RecruitmentSkill from(Skill skill) {
-        return new RecruitmentSkill(skill);
+    public static RecruitSkill from(Skill skill) {
+        return new RecruitSkill(skill);
     }
 
     /**
