@@ -32,12 +32,12 @@ public class PostResponseDto {
             List<String> skills,
             List<String> platforms,
             MemberInfoOnPostDetail leader,
-            List<MemberInfoOnPostDetail> members,
+            List<MemberInfoOnPostDetail> participants,
             String content,
             int likes
     ) {
         public static Detail from(Post post, List<RecruitInfoOnPostDetail> recruitInfos,
-                                  MemberInfoOnPostDetail leader, List<MemberInfoOnPostDetail> members) {
+                                  MemberInfoOnPostDetail leader, List<MemberInfoOnPostDetail> participants) {
             return Detail.builder()
                     .postId(post.getId())
                     .category(post.getPostCategory().toString())
@@ -48,7 +48,7 @@ public class PostResponseDto {
                     .skills(post.getSkillDetails())
                     .platforms(post.getPlatformList())
                     .leader(leader)
-                    .members(members)
+                    .participants(participants)
                     .content(post.getContent())
                     .likes(post.getTotalHearts())
                     .build();
