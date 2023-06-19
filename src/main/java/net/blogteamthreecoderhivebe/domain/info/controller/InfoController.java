@@ -19,32 +19,32 @@ public class InfoController {
     private final InfoService infoService;
 
     @GetMapping("/locations")
-    public LocationsResponse searchAllLocation() {
-        return LocationsResponse.from(infoService.searchAllLocation());
+    public LocationsResponse locationList() {
+        return LocationsResponse.from(infoService.findLocations());
     }
 
     @GetMapping("/jobs")
-    public JobsResponse searchAllJobs() {
-        return JobsResponse.from(infoService.searchAllJobs());
+    public JobsResponse jobList() {
+        return JobsResponse.from(infoService.findJobs());
     }
 
     @GetMapping("/skills")
-    public SkillResponse searchTop4Skills(@RequestParam(required = false, defaultValue = "") final String keyword) {
-        return SkillResponse.from(infoService.searchTop4Skills(keyword));
+    public SkillResponse skillList(@RequestParam(required = false, defaultValue = "") final String keyword) {
+        return SkillResponse.from(infoService.findTop4Skills(keyword));
     }
 
     @GetMapping("/careers")
-    public CareerResponse searchAllCareer() {
+    public CareerResponse careerList() {
         return CareerResponse.from(MemberCareer.toList());
     }
 
     @GetMapping("/levels")
-    public LevelResponse searchAllLevel() {
+    public LevelResponse levelList() {
         return LevelResponse.from(MemberLevel.toList());
     }
 
     @GetMapping("/platforms")
-    public PlatformResponse searchAllPlatform() {
+    public PlatformResponse platformList() {
         return PlatformResponse.from(Platform.toList());
     }
 }

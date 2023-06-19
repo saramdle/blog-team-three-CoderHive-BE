@@ -20,15 +20,18 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 @Service
 public class InfoService {
+
     private final JobRepository jobRepository;
     private final SkillRepository skillRepository;
     private final LocationRepository locationRepository;
 
-    public List<LocationDto> searchAllLocation() {
-        return locationRepository.findAll().stream().map(LocationDto::from).toList();
+    public List<LocationDto> findLocations() {
+        return locationRepository.findAll().stream()
+                .map(LocationDto::from)
+                .toList();
     }
 
-    public List<Map<String, Object>> searchAllJobs() {
+    public List<Map<String, Object>> findJobs() {
         return jobRepository.findAll().stream()
                 .collect(Collectors.groupingBy(
                         Job::getMain,
@@ -50,7 +53,7 @@ public class InfoService {
                 .toList();
     }
 
-    public List<SkillDto> searchTop4Skills(String keyword) {
+    public List<SkillDto> findTop4Skills(String keyword) {
         return skillRepository.findTop4ByDetailContaining(keyword).stream()
                 .map(SkillDto::from)
                 .toList();
