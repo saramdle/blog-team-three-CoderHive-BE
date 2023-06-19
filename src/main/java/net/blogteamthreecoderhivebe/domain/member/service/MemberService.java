@@ -60,7 +60,7 @@ public class MemberService {
                 .toList();
         Map<ApplicationResult, List<Post>> applyPostsMap = postRepository.memberApplyPost(memberId);
 
-        List<PostDto> appliedPostDtos = applyPostsMap.get(ApplicationResult.NON).stream()
+        List<PostDto> appliedPostDtos = applyPostsMap.get(ApplicationResult.APPLY).stream()
                 .map(p -> {
                     List<String> postSkills = recruitmentSkillService.findRecruitSkillDetails(p.getId());
                     return PostDto.from(p, postSkills);
