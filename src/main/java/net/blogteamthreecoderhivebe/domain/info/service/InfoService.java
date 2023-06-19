@@ -51,6 +51,8 @@ public class InfoService {
     }
 
     public List<SkillDto> searchTop4Skills(String keyword) {
-        return skillRepository.findTop4ByDetailContaining(keyword);
+        return skillRepository.findTop4ByDetailContaining(keyword).stream()
+                .map(SkillDto::from)
+                .toList();
     }
 }
