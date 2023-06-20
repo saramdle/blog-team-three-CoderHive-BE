@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import static net.blogteamthreecoderhivebe.domain.info.dto.response.JobResponseDto.JobList;
+
 @RequiredArgsConstructor
 @RequestMapping("/info")
 @RestController
@@ -24,8 +26,8 @@ public class InfoController {
     }
 
     @GetMapping("/jobs")
-    public JobsResponse jobList() {
-        return JobsResponse.from(infoService.findJobs());
+    public JobList jobList() {
+        return JobList.from(infoService.findJobs());
     }
 
     @GetMapping("/skills")
