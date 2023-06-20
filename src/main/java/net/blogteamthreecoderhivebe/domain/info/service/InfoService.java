@@ -28,9 +28,9 @@ public class InfoService {
     private final SkillRepository skillRepository;
     private final LocationRepository locationRepository;
 
-    public List<LocationDto> findLocations() {
+    public List<LocationDto.All> findLocations() {
         return locationRepository.findAll().stream()
-                .map(LocationDto::from)
+                .map(LocationDto.All::from)
                 .toList();
     }
 

@@ -2,7 +2,10 @@ package net.blogteamthreecoderhivebe.domain.info.controller;
 
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.info.constant.Platform;
-import net.blogteamthreecoderhivebe.domain.info.dto.response.*;
+import net.blogteamthreecoderhivebe.domain.info.dto.response.CareerResponse;
+import net.blogteamthreecoderhivebe.domain.info.dto.response.LevelResponse;
+import net.blogteamthreecoderhivebe.domain.info.dto.response.PlatformResponse;
+import net.blogteamthreecoderhivebe.domain.info.dto.response.SkillResponse;
 import net.blogteamthreecoderhivebe.domain.info.service.InfoService;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberCareer;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberLevel;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static net.blogteamthreecoderhivebe.domain.info.dto.JobDto.JobList;
+import static net.blogteamthreecoderhivebe.domain.info.dto.LocationDto.LocationList;
 
 @RequiredArgsConstructor
 @RequestMapping("/info")
@@ -21,8 +25,8 @@ public class InfoController {
     private final InfoService infoService;
 
     @GetMapping("/locations")
-    public LocationsResponse locationList() {
-        return LocationsResponse.from(infoService.findLocations());
+    public LocationList locationList() {
+        return LocationList.from(infoService.findLocations());
     }
 
     @GetMapping("/jobs")

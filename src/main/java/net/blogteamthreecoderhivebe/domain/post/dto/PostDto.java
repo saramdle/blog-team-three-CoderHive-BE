@@ -14,7 +14,7 @@ import java.util.List;
 public record PostDto(
         Long id,
         MemberDto memberDto,
-        LocationDto locationDto,
+        LocationDto.All locationDto,
         String title,
         String content,
         String thumbImageUrl,
@@ -29,7 +29,7 @@ public record PostDto(
         return PostDto.builder()
                 .id(post.getId())
                 .memberDto(MemberDto.from(post.getMember()))
-                .locationDto(LocationDto.from(post.getLocation()))
+                .locationDto(LocationDto.All.from(post.getLocation()))
                 .title(post.getTitle())
                 .content(post.getContent())
                 .thumbImageUrl(post.getThumbImageUrl())
@@ -45,7 +45,7 @@ public record PostDto(
         return PostDto.builder()
                 .id(post.getId())
                 .memberDto(MemberDto.from(post.getMember()))
-                .locationDto(LocationDto.from(post.getLocation()))
+                .locationDto(LocationDto.All.from(post.getLocation()))
                 .title(post.getTitle())
                 .content(post.getContent())
                 .thumbImageUrl(post.getThumbImageUrl())
