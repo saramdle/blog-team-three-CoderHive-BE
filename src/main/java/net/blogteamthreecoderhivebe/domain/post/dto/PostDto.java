@@ -1,8 +1,8 @@
 package net.blogteamthreecoderhivebe.domain.post.dto;
 
 import lombok.Builder;
-import net.blogteamthreecoderhivebe.domain.info.dto.JobDto;
 import net.blogteamthreecoderhivebe.domain.info.dto.LocationDto;
+import net.blogteamthreecoderhivebe.domain.info.dto.response.JobResponseDto;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberDto;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostStatus;
@@ -21,7 +21,7 @@ public record PostDto(
         PostCategory postCategory,
         String platforms,
         PostStatus postStatus,
-        JobDto jobDto,
+        JobResponseDto.All jobDto,
         List<String> skills,
         int likes
 ) {
@@ -36,7 +36,7 @@ public record PostDto(
                 .postCategory(post.getPostCategory())
                 .platforms(post.getPlatforms())
                 .postStatus(post.getPostStatus())
-                .jobDto(JobDto.from(post.getJob()))
+                .jobDto(JobResponseDto.All.from(post.getJob()))
                 .likes(post.getHearts().size())
                 .build();
     }
@@ -52,7 +52,7 @@ public record PostDto(
                 .postCategory(post.getPostCategory())
                 .platforms(post.getPlatforms())
                 .postStatus(post.getPostStatus())
-                .jobDto(JobDto.from(post.getJob()))
+                .jobDto(JobResponseDto.All.from(post.getJob()))
                 .skills(skills)
                 .likes(post.getHearts().size())
                 .build();

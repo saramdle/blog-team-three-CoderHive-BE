@@ -1,7 +1,7 @@
 package net.blogteamthreecoderhivebe.domain.member.dto.response;
 
 import lombok.Builder;
-import net.blogteamthreecoderhivebe.domain.info.dto.response.JobResponse;
+import net.blogteamthreecoderhivebe.domain.info.dto.response.JobResponseDto;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberCareer;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberLevel;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberRole;
@@ -15,7 +15,7 @@ public record MemberInfoWithPostResponse(
         Long id,
         String profileImageUrl,
         String nickname,
-        JobResponse job,
+        JobResponseDto.Info job,
         MemberLevel level,
         MemberCareer career,
         MemberRole memberRole,
@@ -27,7 +27,7 @@ public record MemberInfoWithPostResponse(
     public static MemberInfoWithPostResponse from(MemberWithPostDto dto, List<Long> likePostIds) {
         return MemberInfoWithPostResponse.builder()
                 .id(dto.id())
-                .job(JobResponse.from(dto.jobDto()))
+                .job(JobResponseDto.Info.from(dto.jobDto()))
                 .level(dto.level())
                 .career(dto.career())
                 .memberRole(dto.memberRole())

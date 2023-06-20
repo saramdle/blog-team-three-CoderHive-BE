@@ -9,6 +9,35 @@ import java.util.Map;
 public class JobResponseDto {
 
     @Builder
+    public record All(
+            Long id,
+            String main,
+            String detail
+    ) {
+        public static All from(Job entity) {
+            if (entity == null) return null;
+            return All.builder()
+                    .id(entity.getId())
+                    .main(entity.getMain())
+                    .detail(entity.getDetail())
+                    .build();
+        }
+    }
+
+    @Builder
+    public record Info(
+            String main,
+            String detail
+    ) {
+        public static Info from(All dto) {
+            return Info.builder()
+                    .main(dto.main())
+                    .detail(dto.detail())
+                    .build();
+        }
+    }
+
+    @Builder
     public record Detail(
             Long id,
             String detail
