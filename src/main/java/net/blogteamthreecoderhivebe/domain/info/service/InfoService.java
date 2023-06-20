@@ -3,6 +3,7 @@ package net.blogteamthreecoderhivebe.domain.info.service;
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.info.dto.LocationDto;
 import net.blogteamthreecoderhivebe.domain.info.dto.SkillDto;
+import net.blogteamthreecoderhivebe.domain.info.dto.response.JobResponseDto;
 import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 import net.blogteamthreecoderhivebe.domain.info.repository.JobRepository;
 import net.blogteamthreecoderhivebe.domain.info.repository.LocationRepository;
@@ -10,11 +11,13 @@ import net.blogteamthreecoderhivebe.domain.info.repository.SkillRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.*;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -32,25 +35,36 @@ public class InfoService {
     }
 
     public List<Map<String, Object>> findJobs() {
-        return jobRepository.findAll().stream()
-                .collect(Collectors.groupingBy(
+        List<Job> jobs = jobRepository.findAll();
+
+        Map<String, List<JobResponseDto.Detail>> groupingByJobMain = groupingByJobMain(jobs);
+        Stream<Map.Entry<String, List<JobResponseDto.Detail>>> sortingByJobId = sortingByJobId(groupingByJobMain);
+
+        return sortingByJobId.map(
+                entry -> {
+                    Map<String, Object> result = new HashMap<>();
+                    result.put("main", entry.getKey());
+                    result.put("details", entry.getValue());
+                    return result;
+                }).toList();
+    }
+
+    private static Stream<Map.Entry<String, List<JobResponseDto.Detail>>> sortingByJobId(Map<String, List<JobResponseDto.Detail>> groupedMapByMain) {
+        return groupedMapByMain.entrySet().stream()
+                .sorted(comparing(entry ->
+                        entry.getValue().stream()
+                                .map(JobResponseDto.Detail::id)
+                                .min(Long::compareTo)
+                                .orElse(Long.MAX_VALUE)
+                ));
+    }
+
+    private static Map<String, List<JobResponseDto.Detail>> groupingByJobMain(List<Job> jobs) {
+        return jobs.stream()
+                .collect(groupingBy(
                         Job::getMain,
-                        Collectors.mapping(
-                                job -> Map.of("jobId", job.getId(), "field", job.getDetail()),
-                                Collectors.toList()
-                        )
-                ))
-                .entrySet().stream()
-                .sorted(Comparator.comparing(
-                        entry -> entry.getValue().stream().mapToLong(m -> Math.toIntExact((Long) m.get("jobId"))).min().orElse(Long.MAX_VALUE))
-                )
-                .map(entry -> {
-                    Map<String, Object> resultEntry = new HashMap<>();
-                    resultEntry.put("main", entry.getKey());
-                    resultEntry.put("details", entry.getValue());
-                    return resultEntry;
-                })
-                .toList();
+                        mapping(JobResponseDto.Detail::from, toList())
+                ));
     }
 
     public List<SkillDto> findTop4Skills(String keyword) {
