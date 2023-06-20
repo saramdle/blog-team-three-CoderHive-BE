@@ -5,7 +5,6 @@ import net.blogteamthreecoderhivebe.domain.info.constant.Platform;
 import net.blogteamthreecoderhivebe.domain.info.dto.response.CareerResponse;
 import net.blogteamthreecoderhivebe.domain.info.dto.response.LevelResponse;
 import net.blogteamthreecoderhivebe.domain.info.dto.response.PlatformResponse;
-import net.blogteamthreecoderhivebe.domain.info.dto.response.SkillResponse;
 import net.blogteamthreecoderhivebe.domain.info.service.InfoService;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberCareer;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberLevel;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static net.blogteamthreecoderhivebe.domain.info.dto.JobDto.JobList;
 import static net.blogteamthreecoderhivebe.domain.info.dto.LocationDto.LocationList;
+import static net.blogteamthreecoderhivebe.domain.info.dto.SkillDto.SkillList;
 
 @RequiredArgsConstructor
 @RequestMapping("/info")
@@ -35,8 +35,8 @@ public class InfoController {
     }
 
     @GetMapping("/skills")
-    public SkillResponse skillList(@RequestParam(required = false, defaultValue = "") final String keyword) {
-        return SkillResponse.from(infoService.findTop4Skills(keyword));
+    public SkillList skillList(@RequestParam(required = false, defaultValue = "") final String keyword) {
+        return SkillList.from(infoService.findTop4Skills(keyword));
     }
 
     @GetMapping("/careers")

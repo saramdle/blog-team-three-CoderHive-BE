@@ -67,9 +67,9 @@ public class InfoService {
                 ));
     }
 
-    public List<SkillDto> findTop4Skills(String keyword) {
+    public List<SkillDto.All> findTop4Skills(String keyword) {
         return skillRepository.findTop4ByDetailContaining(keyword).stream()
-                .map(SkillDto::from)
+                .map(SkillDto.All::from)
                 .toList();
     }
 }
