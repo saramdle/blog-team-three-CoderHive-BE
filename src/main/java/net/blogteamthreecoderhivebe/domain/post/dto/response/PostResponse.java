@@ -1,7 +1,7 @@
 package net.blogteamthreecoderhivebe.domain.post.dto.response;
 
 import lombok.Builder;
-import net.blogteamthreecoderhivebe.domain.info.dto.response.JobResponseDto;
+import net.blogteamthreecoderhivebe.domain.info.dto.JobDto;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.dto.PostDto;
 
@@ -17,7 +17,7 @@ public record PostResponse(
         PostCategory postCategory,
         String platforms,
         String postStatus,
-        JobResponseDto.Info job,
+        JobDto.Info job,
         List<String> skills,
         Boolean likeBoolean,
         int likes
@@ -32,7 +32,7 @@ public record PostResponse(
                 .postCategory(dto.postCategory())
                 .platforms(dto.platforms())
                 .postStatus(dto.postStatus().getDescription())
-                .job(JobResponseDto.Info.from(dto.jobDto()))
+                .job(JobDto.Info.from(dto.jobDto()))
                 .skills(dto.skills())
                 .likeBoolean(
                         likePostIds.stream().anyMatch(id -> id.equals(dto.id()))

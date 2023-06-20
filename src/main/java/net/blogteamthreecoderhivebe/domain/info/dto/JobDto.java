@@ -1,4 +1,4 @@
-package net.blogteamthreecoderhivebe.domain.info.dto.response;
+package net.blogteamthreecoderhivebe.domain.info.dto;
 
 import lombok.Builder;
 import net.blogteamthreecoderhivebe.domain.info.entity.Job;
@@ -6,7 +6,7 @@ import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 import java.util.List;
 import java.util.Map;
 
-public class JobResponseDto {
+public class JobDto {
 
     @Builder
     public record All(

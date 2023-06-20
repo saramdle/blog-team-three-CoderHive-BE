@@ -1,7 +1,7 @@
 package net.blogteamthreecoderhivebe.domain.member.dto;
 
 import lombok.Builder;
-import net.blogteamthreecoderhivebe.domain.info.dto.response.JobResponseDto;
+import net.blogteamthreecoderhivebe.domain.info.dto.JobDto;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberCareer;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberLevel;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberRole;
@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 public record MemberDto(
         Long id,
-        JobResponseDto.All jobDto,
+        JobDto.All jobDto,
         String email,
         MemberLevel level,
         MemberCareer career,
@@ -25,7 +25,7 @@ public record MemberDto(
     public static MemberDto from(Member entity) {
         return MemberDto.builder()
                 .id(entity.getId())
-                .jobDto(JobResponseDto.All.from(entity.getJob()))
+                .jobDto(JobDto.All.from(entity.getJob()))
                 .email(entity.getEmail())
                 .level(entity.getLevel())
                 .career(entity.getCareer())
@@ -39,7 +39,7 @@ public record MemberDto(
     public static MemberDto from(Member entity, List<String> skills) {
         return MemberDto.builder()
                 .id(entity.getId())
-                .jobDto(JobResponseDto.All.from(entity.getJob()))
+                .jobDto(JobDto.All.from(entity.getJob()))
                 .email(entity.getEmail())
                 .level(entity.getLevel())
                 .career(entity.getCareer())

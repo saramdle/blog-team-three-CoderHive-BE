@@ -1,9 +1,9 @@
 package net.blogteamthreecoderhivebe.domain.info.service;
 
 import lombok.RequiredArgsConstructor;
+import net.blogteamthreecoderhivebe.domain.info.dto.JobDto;
 import net.blogteamthreecoderhivebe.domain.info.dto.LocationDto;
 import net.blogteamthreecoderhivebe.domain.info.dto.SkillDto;
-import net.blogteamthreecoderhivebe.domain.info.dto.response.JobResponseDto;
 import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 import net.blogteamthreecoderhivebe.domain.info.repository.JobRepository;
 import net.blogteamthreecoderhivebe.domain.info.repository.LocationRepository;
@@ -37,8 +37,8 @@ public class InfoService {
     public List<Map<String, Object>> findJobs() {
         List<Job> jobs = jobRepository.findAll();
 
-        Map<String, List<JobResponseDto.Detail>> groupingByJobMain = groupingByJobMain(jobs);
-        Stream<Map.Entry<String, List<JobResponseDto.Detail>>> sortingByJobId = sortingByJobId(groupingByJobMain);
+        Map<String, List<JobDto.Detail>> groupingByJobMain = groupingByJobMain(jobs);
+        Stream<Map.Entry<String, List<JobDto.Detail>>> sortingByJobId = sortingByJobId(groupingByJobMain);
 
         return sortingByJobId.map(
                 entry -> {
@@ -49,21 +49,21 @@ public class InfoService {
                 }).toList();
     }
 
-    private static Stream<Map.Entry<String, List<JobResponseDto.Detail>>> sortingByJobId(Map<String, List<JobResponseDto.Detail>> groupedMapByMain) {
+    private static Stream<Map.Entry<String, List<JobDto.Detail>>> sortingByJobId(Map<String, List<JobDto.Detail>> groupedMapByMain) {
         return groupedMapByMain.entrySet().stream()
                 .sorted(comparing(entry ->
                         entry.getValue().stream()
-                                .map(JobResponseDto.Detail::id)
+                                .map(JobDto.Detail::id)
                                 .min(Long::compareTo)
                                 .orElse(Long.MAX_VALUE)
                 ));
     }
 
-    private static Map<String, List<JobResponseDto.Detail>> groupingByJobMain(List<Job> jobs) {
+    private static Map<String, List<JobDto.Detail>> groupingByJobMain(List<Job> jobs) {
         return jobs.stream()
                 .collect(groupingBy(
                         Job::getMain,
-                        mapping(JobResponseDto.Detail::from, toList())
+                        mapping(JobDto.Detail::from, toList())
                 ));
     }
 
