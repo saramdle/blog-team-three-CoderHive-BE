@@ -3,16 +3,16 @@ package net.blogteamthreecoderhivebe.domain.post.service;
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.info.service.JobService;
 import net.blogteamthreecoderhivebe.domain.info.service.LocationService;
-import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
+import net.blogteamthreecoderhivebe.domain.member.constant.ApplyResult;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
-import net.blogteamthreecoderhivebe.domain.member.service.ApplicationInfoService;
+import net.blogteamthreecoderhivebe.domain.member.service.ApplyInfoService;
 import net.blogteamthreecoderhivebe.domain.member.service.MemberService;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.dto.request.PostRequestDto;
 import net.blogteamthreecoderhivebe.domain.post.dto.response.PostResponseDto;
 import net.blogteamthreecoderhivebe.domain.post.dto.response.PostSearchResponse;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
-import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
+import net.blogteamthreecoderhivebe.domain.post.entity.RecruitJob;
 import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
 import net.blogteamthreecoderhivebe.domain.post.service.vo.RecruitJobResult;
 import org.springframework.data.domain.Page;
@@ -37,9 +37,9 @@ public class PostService {
     private final JobService jobService;
     private final MemberService memberService;
     private final LocationService locationService;
-    private final RecruitmentJobService recruitmentJobService;
-    private final ApplicationInfoService applicationInfoService;
-    private final RecruitmentSkillService recruitmentSkillService;
+    private final ApplyInfoService applyInfoService;
+    private final RecruitJobService recruitJobService;
+    private final RecruitSkillService recruitSkillService;
 
     /**
      * 게시글 등록
@@ -48,8 +48,8 @@ public class PostService {
     public PostResponseDto.Save save(PostRequestDto.Save dto, String memberEmail) {
         Post post = postRepository.save(makePost(dto, memberEmail));
 
-        recruitmentSkillService.save(dto.skillIds(), post);
-        recruitmentJobService.save(dto.recruitmentJobs(), post);
+        recruitSkillService.save(dto.skillIds(), post);
+        recruitJobService.save(dto.recruitmentJobs(), post);
 
         return new PostResponseDto.Save(post.getId());
     }
@@ -83,10 +83,10 @@ public class PostService {
         Post post = findOne(postId);
 
         // 모집 정보
-        List<RecruitmentJob> recruitmentJobs = post.getRecruitmentJobs();
-        List<RecruitInfoOnPostDetail> recruitInfoOnPostDetails = recruitmentJobs.stream()
+        List<RecruitJob> recruitJobs = post.getRecruitJobs();
+        List<RecruitInfoOnPostDetail> recruitInfoOnPostDetails = recruitJobs.stream()
                 .map(recruitmentJob -> {
-                            ApplicationResult result = applicationInfoService.getApplyResult(loginMember, recruitmentJob);
+                            ApplyResult result = applyInfoService.getApplyResult(loginMember, recruitmentJob);
                             return RecruitInfoOnPostDetail.from(recruitmentJob, result);
                         }
                 ).toList();
@@ -94,7 +94,7 @@ public class PostService {
         // 작성자 -> leader
         MemberInfoOnPostDetail leader = MemberInfoOnPostDetail.from(post.getMember());
         // 참가자 -> participants
-        List<MemberInfoOnPostDetail> participants = applicationInfoService.findPassMembers(post).stream()
+        List<MemberInfoOnPostDetail> participants = applyInfoService.findPassMembers(post).stream()
                 .map(MemberInfoOnPostDetail::from)
                 .toList();
 
@@ -113,9 +113,9 @@ public class PostService {
     private RecruitJobResult makeRecruitResult(Post post) {
         int totalNumber = 0;
         int totalPassNumber = 0;
-        for (RecruitmentJob recruitmentJob : post.getRecruitmentJobs()) {
-            totalNumber += recruitmentJob.getNumber();
-            totalNumber += recruitmentJob.getPassNumber();
+        for (RecruitJob recruitJob : post.getRecruitJobs()) {
+            totalNumber += recruitJob.getNumber();
+            totalNumber += recruitJob.getPassNumber();
         }
         return new RecruitJobResult(totalNumber, totalPassNumber);
     }

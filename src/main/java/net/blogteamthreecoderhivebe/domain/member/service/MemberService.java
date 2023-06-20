@@ -4,7 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 import net.blogteamthreecoderhivebe.domain.info.service.JobService;
-import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
+import net.blogteamthreecoderhivebe.domain.member.constant.ApplyResult;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberDto;
 import net.blogteamthreecoderhivebe.domain.member.dto.MemberWithPostDto;
 import net.blogteamthreecoderhivebe.domain.member.dto.SignUpDto;
@@ -15,7 +15,7 @@ import net.blogteamthreecoderhivebe.domain.member.repository.MemberSkillReposito
 import net.blogteamthreecoderhivebe.domain.post.dto.PostDto;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
 import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
-import net.blogteamthreecoderhivebe.domain.post.service.RecruitmentSkillService;
+import net.blogteamthreecoderhivebe.domain.post.service.RecruitSkillService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +33,7 @@ public class MemberService {
     private final PostRepository postRepository;
     private final MemberRepository memberRepository;
     private final MemberSkillRepository memberSkillRepository;
-    private final RecruitmentSkillService recruitmentSkillService;
+    private final RecruitSkillService recruitSkillService;
 
     private Member searchMember(Long memberId) {
         return memberRepository.findById(memberId)
@@ -54,22 +54,22 @@ public class MemberService {
 
         List<PostDto> memberHostPostDtos = postRepository.findAllByMember_Id(memberId).stream()
                 .map(post -> {
-                    List<String> postSkills = recruitmentSkillService.findRecruitSkillDetails(post.getId());
+                    List<String> postSkills = recruitSkillService.findRecruitSkillDetails(post.getId());
                     return PostDto.from(post, postSkills);
                 })
                 .toList();
-        Map<ApplicationResult, List<Post>> applyPostsMap = postRepository.memberApplyPost(memberId);
+        Map<ApplyResult, List<Post>> applyPostsMap = postRepository.memberApplyPost(memberId);
 
-        List<PostDto> appliedPostDtos = applyPostsMap.get(ApplicationResult.APPLY).stream()
+        List<PostDto> appliedPostDtos = applyPostsMap.get(ApplyResult.APPLY).stream()
                 .map(p -> {
-                    List<String> postSkills = recruitmentSkillService.findRecruitSkillDetails(p.getId());
+                    List<String> postSkills = recruitSkillService.findRecruitSkillDetails(p.getId());
                     return PostDto.from(p, postSkills);
                 })
                 .toList();
 
-        List<PostDto> participatedDtos = applyPostsMap.get(ApplicationResult.PASS).stream()
+        List<PostDto> participatedDtos = applyPostsMap.get(ApplyResult.PASS).stream()
                 .map(p -> {
-                    List<String> postSkills = recruitmentSkillService.findRecruitSkillDetails(p.getId());
+                    List<String> postSkills = recruitSkillService.findRecruitSkillDetails(p.getId());
                     return PostDto.from(p, postSkills);
                 })
                 .toList();

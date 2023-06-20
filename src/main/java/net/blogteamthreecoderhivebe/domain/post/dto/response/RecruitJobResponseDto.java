@@ -1,8 +1,8 @@
 package net.blogteamthreecoderhivebe.domain.post.dto.response;
 
 import lombok.Builder;
-import net.blogteamthreecoderhivebe.domain.member.constant.ApplicationResult;
-import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
+import net.blogteamthreecoderhivebe.domain.member.constant.ApplyResult;
+import net.blogteamthreecoderhivebe.domain.post.entity.RecruitJob;
 
 public class RecruitJobResponseDto {
 
@@ -17,12 +17,12 @@ public class RecruitJobResponseDto {
             int passNumber, // 모집 완료된 인원
             String applyResult // 회원의 지원 현황
     ) {
-        public static RecruitInfoOnPostDetail from(RecruitmentJob recruitmentJob, ApplicationResult applyResult) {
+        public static RecruitInfoOnPostDetail from(RecruitJob recruitJob, ApplyResult applyResult) {
             return RecruitInfoOnPostDetail.builder()
-                    .recruitJobId(recruitmentJob.getId())
-                    .jobDetail(recruitmentJob.getJob().getDetail())
-                    .number(recruitmentJob.getNumber())
-                    .passNumber(recruitmentJob.getPassNumber())
+                    .recruitJobId(recruitJob.getId())
+                    .jobDetail(recruitJob.getJob().getDetail())
+                    .number(recruitJob.getNumber())
+                    .passNumber(recruitJob.getPassNumber())
                     .applyResult(applyResult.getDescription())
                     .build();
         }

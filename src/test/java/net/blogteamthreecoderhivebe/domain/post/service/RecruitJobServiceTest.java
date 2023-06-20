@@ -4,11 +4,11 @@ import net.blogteamthreecoderhivebe.domain.info.repository.JobRepository;
 import net.blogteamthreecoderhivebe.domain.info.repository.LocationRepository;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import net.blogteamthreecoderhivebe.domain.member.repository.MemberRepository;
-import net.blogteamthreecoderhivebe.domain.post.dto.request.RecruitmentJobRequestDto;
+import net.blogteamthreecoderhivebe.domain.post.dto.request.RecruitJobRequestDto;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
-import net.blogteamthreecoderhivebe.domain.post.entity.RecruitmentJob;
+import net.blogteamthreecoderhivebe.domain.post.entity.RecruitJob;
 import net.blogteamthreecoderhivebe.domain.post.repository.PostRepository;
-import net.blogteamthreecoderhivebe.domain.post.repository.RecruitmentJobRepository;
+import net.blogteamthreecoderhivebe.domain.post.repository.RecruitJobRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,13 +23,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
 @SpringBootTest
-class RecruitmentJobServiceTest {
+class RecruitJobServiceTest {
+
+    @Autowired RecruitJobService recruitJobService;
+
     @Autowired JobRepository jobRepository;
     @Autowired PostRepository postRepository;
     @Autowired MemberRepository memberRepository;
     @Autowired LocationRepository locationRepository;
-    @Autowired RecruitmentJobService recruitmentJobService;
-    @Autowired RecruitmentJobRepository recruitmentJobRepository;
+    @Autowired RecruitJobRepository recruitJobRepository;
 
     Post post;
 
@@ -49,16 +51,16 @@ class RecruitmentJobServiceTest {
     @Test
     void save() {
         // given
-        List<RecruitmentJobRequestDto.Save> dtos = new ArrayList<>();
-        dtos.add(new RecruitmentJobRequestDto.Save(1L, 1));
-        dtos.add(new RecruitmentJobRequestDto.Save(2L, 2));
-        dtos.add(new RecruitmentJobRequestDto.Save(3L, 3));
+        List<RecruitJobRequestDto.Save> dtos = new ArrayList<>();
+        dtos.add(new RecruitJobRequestDto.Save(1L, 1));
+        dtos.add(new RecruitJobRequestDto.Save(2L, 2));
+        dtos.add(new RecruitJobRequestDto.Save(3L, 3));
 
         // when
-        recruitmentJobService.save(dtos, post);
+        recruitJobService.save(dtos, post);
 
         // then
-        List<RecruitmentJob> findRecruitmentJobs = recruitmentJobRepository.findAll();
-        assertThat(findRecruitmentJobs).hasSize(3);
+        List<RecruitJob> findRecruitJobs = recruitJobRepository.findAll();
+        assertThat(findRecruitJobs).hasSize(3);
     }
 }
