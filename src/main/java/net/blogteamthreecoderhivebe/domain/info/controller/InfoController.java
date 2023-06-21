@@ -1,10 +1,7 @@
 package net.blogteamthreecoderhivebe.domain.info.controller;
 
 import lombok.RequiredArgsConstructor;
-import net.blogteamthreecoderhivebe.domain.info.constant.Platform;
 import net.blogteamthreecoderhivebe.domain.info.service.InfoService;
-import net.blogteamthreecoderhivebe.domain.member.constant.MemberCareer;
-import net.blogteamthreecoderhivebe.domain.member.constant.MemberLevel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,16 +38,16 @@ public class InfoController {
 
     @GetMapping("/careers")
     public CareerList careerList() {
-        return CareerList.from(MemberCareer.toList());
+        return CareerList.from(infoService.findCareers());
     }
 
     @GetMapping("/levels")
     public LevelList levelList() {
-        return LevelList.from(MemberLevel.toList());
+        return LevelList.from(infoService.findLevels());
     }
 
     @GetMapping("/platforms")
     public PlatformList platformList() {
-        return PlatformList.from(Platform.toList());
+        return PlatformList.from(infoService.findPlatforms());
     }
 }

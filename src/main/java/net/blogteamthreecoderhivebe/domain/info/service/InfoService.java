@@ -1,6 +1,7 @@
 package net.blogteamthreecoderhivebe.domain.info.service;
 
 import lombok.RequiredArgsConstructor;
+import net.blogteamthreecoderhivebe.domain.info.constant.Platform;
 import net.blogteamthreecoderhivebe.domain.info.dto.JobDto;
 import net.blogteamthreecoderhivebe.domain.info.dto.LocationDto;
 import net.blogteamthreecoderhivebe.domain.info.dto.SkillDto;
@@ -8,6 +9,8 @@ import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 import net.blogteamthreecoderhivebe.domain.info.repository.JobRepository;
 import net.blogteamthreecoderhivebe.domain.info.repository.LocationRepository;
 import net.blogteamthreecoderhivebe.domain.info.repository.SkillRepository;
+import net.blogteamthreecoderhivebe.domain.member.constant.MemberCareer;
+import net.blogteamthreecoderhivebe.domain.member.constant.MemberLevel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,5 +74,17 @@ public class InfoService {
         return skillRepository.findTop4ByDetailContaining(keyword).stream()
                 .map(SkillDto.All::from)
                 .toList();
+    }
+
+    public List<String> findCareers() {
+        return MemberCareer.toList();
+    }
+
+    public List<String> findLevels() {
+        return MemberLevel.toList();
+    }
+
+    public List<String> findPlatforms() {
+        return Platform.toList();
     }
 }
