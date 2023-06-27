@@ -7,6 +7,7 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.ObjectUtils;
 
 import java.util.Optional;
 
@@ -17,8 +18,13 @@ public class JpaConfig {
     public AuditorAware<String> auditorProvider() {
         return () -> {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            MemberPrincipal principal = (MemberPrincipal) authentication.getPrincipal();
-            return Optional.of(principal.getEmail());
+
+            if (ObjectUtils.isEmpty(authentication)) {
+                return Optional.empty();
+            } else {
+                MemberPrincipal principal = (MemberPrincipal) authentication.getPrincipal();
+                return Optional.of(principal.getEmail());
+            }
         };
     }
 }
