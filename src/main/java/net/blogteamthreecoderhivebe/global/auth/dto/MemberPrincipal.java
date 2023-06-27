@@ -22,4 +22,8 @@ public class MemberPrincipal extends DefaultOAuth2User {
         this.email = socialLoginDto.email();
         this.memberRole = memberRole;
     }
+
+    public boolean isGuest() {
+        return memberRole.isGuest();
+    }
 }

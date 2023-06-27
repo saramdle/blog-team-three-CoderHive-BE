@@ -13,4 +13,8 @@ public enum MemberRole {
     MemberRole(String description) {
         this.description = description;
     }
+
+    public boolean isGuest() {
+        return this == GUEST;
+    }
 }
