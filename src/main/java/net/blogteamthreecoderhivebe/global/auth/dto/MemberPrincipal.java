@@ -14,7 +14,6 @@ public class MemberPrincipal extends DefaultOAuth2User {
 
     public MemberPrincipal(SocialLoginDto socialLoginDto, MemberRole memberRole) {
         super(
-                // 지금은 인증만 하고 권한을 다루고 있지 않아서 임의로 세팅
                 Collections.singleton(new SimpleGrantedAuthority(memberRole.getDescription())),
                 socialLoginDto.attributes(),
                 socialLoginDto.nameAttributeKey()
