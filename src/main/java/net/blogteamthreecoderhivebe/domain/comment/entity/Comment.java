@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import net.blogteamthreecoderhivebe.domain.post.entity.Post;
-import net.blogteamthreecoderhivebe.global.common.AuditingFields;
+import net.blogteamthreecoderhivebe.global.common.BaseEntity;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -13,7 +13,7 @@ import java.util.Set;
 @ToString(callSuper = true, exclude = {"member", "post", "childComments"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Comment extends AuditingFields {
+public class Comment extends BaseEntity {
     @Id
     @Column(name = "comment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
