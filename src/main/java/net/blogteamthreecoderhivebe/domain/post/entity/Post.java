@@ -9,7 +9,7 @@ import net.blogteamthreecoderhivebe.domain.info.entity.Skill;
 import net.blogteamthreecoderhivebe.domain.member.entity.Member;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostCategory;
 import net.blogteamthreecoderhivebe.domain.post.constant.PostStatus;
-import net.blogteamthreecoderhivebe.global.common.AuditingFields;
+import net.blogteamthreecoderhivebe.global.common.BaseEntity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,7 +21,7 @@ import java.util.List;
 @ToString(callSuper = true, exclude = {"member", "job", "location", "hearts", "recruitJobs", "recruitSkills"})
 @Table(indexes = @Index(columnList = "modifiedAt DESC"))
 @Entity
-public class Post extends AuditingFields {
+public class Post extends BaseEntity {
     @Id
     @Column(name = "post_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

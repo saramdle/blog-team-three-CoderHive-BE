@@ -7,7 +7,7 @@ import net.blogteamthreecoderhivebe.domain.info.entity.Job;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberCareer;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberLevel;
 import net.blogteamthreecoderhivebe.domain.member.constant.MemberRole;
-import net.blogteamthreecoderhivebe.global.common.AuditingFields;
+import net.blogteamthreecoderhivebe.global.common.BaseTimeEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,7 @@ import static net.blogteamthreecoderhivebe.domain.member.constant.MemberRole.USE
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-public class Member extends AuditingFields {
+public class Member extends BaseTimeEntity {
     @Id
     @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
