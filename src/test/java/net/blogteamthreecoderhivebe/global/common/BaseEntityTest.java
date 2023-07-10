@@ -18,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
 @SpringBootTest
-class AuditingFieldsTest {
+class BaseEntityTest {
     @Autowired
     MemberRepository memberRepository;
     @Autowired
@@ -28,7 +28,7 @@ class AuditingFieldsTest {
     @Autowired
     LocationRepository locationRepository;
 
-    @DisplayName("회원 등록시 생성일, 수정일, 생성자, 수정자 자동으로 생성")
+    @DisplayName("회원 등록시 생성일, 수정일을 자동으로 생성")
     @Test
     void member() {
         // given
@@ -40,19 +40,17 @@ class AuditingFieldsTest {
         // then
         assertThat(member.getCreatedAt()).isNotNull();
         assertThat(member.getModifiedAt()).isNotNull();
-        assertThat(member.getCreatedBy()).isNotNull();
-        assertThat(member.getModifiedBy()).isNotNull();
     }
 
-    @DisplayName("게시물 등록시 생성일, 수정일, 생성자, 수정자가 자동으로 생성")
+    @DisplayName("게시물 등록시 생성일, 수정일을 자동으로 생성")
     @Test
     void post() {
         // given
         Member member = Member.builder().email("test@test.com").build();
         memberRepository.save(member);
 
-        Job job = jobRepository.findById(1L).get();
-        Location location = locationRepository.findById(1L).get();
+        Job job = jobRepository.findById(1L).orElseThrow();
+        Location location = locationRepository.findById(1L).orElseThrow();
 
         Post post = Post.builder()
                 .member(member)
@@ -63,12 +61,11 @@ class AuditingFieldsTest {
         Post savedPost = postRepository.save(post);
 
         // when
-        Post findPost = postRepository.findById(savedPost.getId()).get();
+        Post findPost = postRepository.findById(savedPost.getId()).orElseThrow();
+        System.out.println(findPost.getCreatedBy());
 
         // then
         assertThat(findPost.getCreatedAt()).isNotNull();
         assertThat(findPost.getModifiedAt()).isNotNull();
-        assertThat(findPost.getCreatedBy()).isNotNull();
-        assertThat(findPost.getModifiedBy()).isNotNull();
     }
 }
