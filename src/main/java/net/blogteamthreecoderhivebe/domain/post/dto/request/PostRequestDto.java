@@ -20,6 +20,18 @@ public class PostRequestDto {
             String platforms
     ) {}
 
+    @Builder
+    public record Edit(
+            String title,
+            Long locationId,
+            List<RecruitJobRequestDto.Edit> recruitmentJobs,
+            Long myJobId,
+            List<Long> skillIds,
+            String thumbImageUrl,
+            String content,
+            String platforms
+    ) {}
+
     public record SearchCond(
             PostCategory postCategory,
             List<Long> locations,
