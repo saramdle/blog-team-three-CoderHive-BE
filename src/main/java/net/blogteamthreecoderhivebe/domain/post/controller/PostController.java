@@ -32,10 +32,17 @@ public class PostController {
         return postService.searchPosts(memberId, searchCond, pageable);
     }
 
-    @RequestMapping("/{postId}")
-    @GetMapping
+    @GetMapping("/{postId}")
     public PostResponseDto.Detail detail(@PathVariable Long postId,
                                          @AuthenticationPrincipal MemberPrincipal principal) {
         return postService.findPost(postId, principal.getEmail());
+    }
+
+    @PutMapping("/{postId}")
+    public PostResponseDto.Edit edit(@PathVariable Long postId,
+                                     @RequestBody PostRequestDto.Edit dto) {
+        // todo: 현재 로그인된 회원이 작성한 글인지 확인하는 로직 구현
+
+        return postService.edit(postId, dto);
     }
 }
