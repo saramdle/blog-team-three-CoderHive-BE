@@ -57,4 +57,38 @@ class PostServiceTest {
         assertThat(posts).hasSize(1);
         assertThat(posts.get(0).getId()).isEqualTo(response.postId());
     }
+
+    @DisplayName("게시글을 수정한다.")
+    @Test
+    void edit() {
+        // given
+        Post post = postRepository.save(Post.builder()
+                .title("제목1")
+                .content("내용1")
+                .thumbImageUrl("url1")
+                .platforms("플랫폼1")
+                .build());
+
+        PostRequestDto.Edit request = PostRequestDto.Edit.builder()
+                .title("제목2")
+                .content("내용2")
+                .thumbImageUrl("url2")
+                .platforms("플랫폼2")
+                .locationId(2L)
+                .myJobId(1L)
+                .build();
+
+        // when
+        postService.edit(post.getId(), request);
+
+        // then
+        Post findPost = postRepository.findById(post.getId()).orElseThrow();
+
+        assertThat(findPost.getTitle()).isEqualTo(request.title());
+        assertThat(findPost.getContent()).isEqualTo(request.content());
+        assertThat(findPost.getThumbImageUrl()).isEqualTo(request.thumbImageUrl());
+        assertThat(findPost.getPlatforms()).isEqualTo(request.platforms());
+        assertThat(findPost.getLocation().getId()).isEqualTo(request.locationId());
+        assertThat(findPost.getJob().getId()).isEqualTo(request.myJobId());
+    }
 }

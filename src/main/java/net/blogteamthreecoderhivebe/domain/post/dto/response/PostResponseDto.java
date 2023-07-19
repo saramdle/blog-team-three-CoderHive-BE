@@ -19,6 +19,14 @@ public class PostResponseDto {
     }
 
     /**
+     * 게시글 수정
+     */
+    public record Edit(
+            Long postId
+    ) {
+    }
+
+    /**
      * 게시글 상세 조회
      */
     @Builder

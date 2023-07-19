@@ -55,6 +55,20 @@ public class PostService {
     }
 
     /**
+     * 게시글 수정
+     */
+    @Transactional
+    public PostResponseDto.Edit edit(Long postId, PostRequestDto.Edit dto) {
+        Post post = findOne(postId);
+        Post newPost = makePost(dto);
+        post.update(newPost);
+
+        // todo: 게시글의 모집 직무, 모집 기술 변경 로직 구현
+
+        return new PostResponseDto.Edit(post.getId());
+    }
+
+    /**
      * 게시글 전체 조회
      */
     @Transactional(readOnly = true)
@@ -130,6 +144,17 @@ public class PostService {
                 .content(dto.content())
                 .thumbImageUrl(dto.thumbImageUrl())
                 .platforms(dto.platforms())
+                .build();
+    }
+
+    private Post makePost(PostRequestDto.Edit request) {
+        return Post.builder()
+                .title(request.title())
+                .content(request.content())
+                .thumbImageUrl(request.thumbImageUrl())
+                .platforms(request.platforms())
+                .job(jobService.findOne(request.myJobId()))
+                .location(locationService.findOne(request.locationId()))
                 .build();
     }
 }

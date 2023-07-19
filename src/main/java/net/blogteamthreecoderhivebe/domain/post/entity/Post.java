@@ -127,4 +127,16 @@ public class Post extends BaseEntity {
     public List<String> getPlatformList() {
         return Arrays.stream(platforms.split("&")).toList();
     }
+
+    /**
+     * 게시글 수정
+     */
+    public void update(Post newPost) {
+        this.title = newPost.getTitle();
+        this.content = newPost.getContent();
+        this.thumbImageUrl = newPost.getThumbImageUrl();
+        this.job = newPost.getJob();
+        this.location = newPost.getLocation();
+        this.platforms = newPost.getPlatforms();
+    }
 }
